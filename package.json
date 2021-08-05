@@ -1,0 +1,49 @@
+{
+  "name": "node_web",
+  "version": "1.0.0",
+  "description": "Node Learn",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeonghun94/node-web.git"
+  },
+  "scripts": {
+    "dev:server": "nodemon",
+    "dev:assets": "webpack"
+  },
+  "author": "jhun",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jeonghun94/node-web/issues"
+  },
+  "homepage": "https://github.com/jeonghun94/node-web#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "dotenv": "^9.0.2",
+    "express": "^4.17.1",
+    "express-flash": "^0.0.2",
+    "express-session": "^1.17.2",
+    "morgan": "^1.10.0",
+    "mssql": "^7.0.0",
+    "net": "^1.0.2",
+    "node-fetch": "^2.6.1",
+    "node-onvif": "^0.1.7",
+    "node-rtsp-stream": "^0.0.9",
+    "pug": "^3.0.2",
+    "sweetalert2": "^11.0.18",
+    "tedious": "^11.0.8"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.14.0",
+    "@babel/node": "^7.13.13",
+    "@babel/preset-env": "^7.14.0",
+    "babel-loader": "^8.2.2",
+    "css-loader": "^5.2.2",
+    "mini-css-extract-plugin": "^1.5.0",
+    "nodemon": "^2.0.7",
+    "sass": "^1.32.10",
+    "sass-loader": "^11.0.1",
+    "style-loader": "^2.0.0",
+    "webpack": "^5.33.2",
+    "webpack-cli": "^4.6.0"
+  }
+}

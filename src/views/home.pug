@@ -1,0 +1,49 @@
+extends base
+//- include mixins/discount
+
+block content 
+    link(rel="stylesheet", href="https://unpkg.com/swiper/swiper-bundle.min.css")
+    link(rel="stylesheet", href="/client/css/swiper.css")
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    header 
+        nav 
+            img(src="/client/img/logo.gif", alt="이미지를 찾을 수 없습니다...", style="width:110px; ")
+            //- img(src="/client/img/logo.png", alt="이미지를 찾을 수 없습니다...")
+    main 
+        //- .title CCTV
+        script(src="/client/js/jsmpeg.min.js") 
+        .swiper-container.mySwiper
+            .swiper-wrapper
+                .swiper-slide
+                    canvas#chanel1
+                .swiper-slide
+                    canvas#chanel2   
+                .swiper-slide
+                    canvas#chanel3  
+            br 
+            .swiper-pagination
+        script(src="/client/js/cameraPlayer.js") 
+        script(src="https://unpkg.com/swiper/swiper-bundle.min.js") 
+        script(src="/client/js/ts.js") 
+
+        //- .title 차단기 제어
+        .content#content
+            .content-item(data-action="open")
+                div     
+                    h1 열림
+                    h3 차단기를 올립니다.
+                div    
+                    img(src="/client/img/up.png", alt="이미지를 찾지 못했습니다.")
+                    //- i.fas.fa-mobile-alt
+                    //- i.fas.fa-hand-lizard
+            .content-item(data-action="close")
+                div     
+                    h1 내림
+                    h3 차단기를 내립니다.
+                div    
+                    img(src="/client/img/close.png", alt="이미지를 찾지 못했습니다.")
+                    //- i.fas.fa-mobile-alt
+                    //- i.fas.fa-hand-lizard
+
+        footer(style="text-aligin:center;") Copyright #{new Date().getFullYear()} CMCNI co.,Ltd All rights reserved.
+

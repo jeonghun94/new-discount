@@ -1,0 +1,17 @@
+.swiper-container {
+    padding: 0px 20px;
+}
+
+.swiper-slide {
+    background-position: center;
+    background-size: cover;
+}
+
+.swiper-slide canvas {
+    display: block;
+    width: 100%;
+}
+/* 
+.swiper-pagination {
+    margin-top: 20px;
+} */
