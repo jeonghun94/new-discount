@@ -1,4 +1,4 @@
-var swiper = new Swiper(".mySwiper", {
+let swiper = new Swiper(".mySwiper", {
     effect: "cube",
     grabCursor: true,
     cubeEffect: {
@@ -12,4 +12,7 @@ var swiper = new Swiper(".mySwiper", {
     },
 });
 
-swiper.on('transitionEnd', function() { console.log('index is ', swiper.realIndex +1); });
+swiper.on('transitionEnd', function () {
+    const idx = "0" + parseInt(swiper.realIndex + 1);
+    console.log(idx);
+});
