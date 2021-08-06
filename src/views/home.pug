@@ -1,10 +1,10 @@
 extends base
 block content 
     link(rel="stylesheet", href="/client/css/swiper.css")
-    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    //- <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     header 
         nav 
-            img(src="/client/img/logo.gif", alt="이미지를 찾을 수 없습니다...", style="width:110px; ")
+            img(src="/client/img/logo.gif", alt="이미지를 찾을 수 없습니다...", style="width:110px;")
     main 
         //- .title CCTV
         script(src="/client/js/jsmpeg.min.js") 
@@ -29,5 +29,4 @@ block content
                     h3 차단기를 내립니다.
                 div    
                     img(src="/client/img/close.png", alt="이미지를 찾지 못했습니다.")
-
-        footer(style="text-aligin:center;") Copyright #{new Date().getFullYear()} CMCNI co.,Ltd All rights reserved.
+        include ./partials/footer
