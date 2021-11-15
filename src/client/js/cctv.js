@@ -13,6 +13,7 @@ for (let i = 1; i <= CCTV_CNT; i++) {
     div.append(canvas);
     wrapper.append(div);
 
+    // new jsmpeg(new WebSocket("ws://localhost:900"+i), {
     new jsmpeg(new WebSocket("ws://"+SERVER_IP+":900"+i), {
         canvas: document.getElementById("chanel"+i),
         autoplay: true,
