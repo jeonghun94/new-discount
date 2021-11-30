@@ -111,21 +111,24 @@ footer {
   width: 100%;
   height: auto;
   padding: 0px 20px;
+  margin-bottom: 30px;
   box-sizing: border-box;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  flex-direction: column;
+  gap: 10px;
 }
 
 .content-item {
   cursor: pointer;
-  border-top: 2px solid $main;
   width: 100%;
-  height: 170px;
   margin-bottom: 20px;
-  background-color: white;
-  display: grid;
+  background-color: $main;
+  color: $white;
+  font-size: 16px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
   grid-template-columns: 1fr 1fr;
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11),
     0 1px 3px rgba(0, 0, 0, 0.08);
@@ -135,6 +138,11 @@ footer {
   -ms-transform: scale(1);
   -o-transform: scale(1);
   transition: all 0.3s ease-in-out;
+
+  &:last-child{
+    background-color: $sub;
+  }
+
   &:hover{
     transform: scale(1.015);
     -webkit-transform: scale(1.015);
@@ -146,35 +154,7 @@ footer {
       box-sizing: border-box;
       padding: 20px;
   }
-  h1{
-    font-size: 1.5em;
-  }
-  h3{
-    margin: 5px;
-    font-size: 0.9rem;
-  }
-  div:nth-child(2) {
-    display: grid;
-    justify-self: center;
-    align-items: center;
-    position: relative;
-    img{
-      width: 105px;
-      height: auto;
-    }
-    i{
-      font-size: 25px;
-      color: $main;
-      position: absolute;
-      left: 21px;
-      bottom: 30px;
-      &:nth-child(2){
-        left: 15px;
-        bottom: 37px;
-      }
-    }
 
-  }
 }
 
 #target {
@@ -203,9 +183,9 @@ footer {
   font-weight: 600;
 }
 
-
-
-
+.swiper-wrapper {
+  height: 800px;
+}
 
 
 

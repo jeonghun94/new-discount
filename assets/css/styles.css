@@ -247,21 +247,24 @@ footer {
   width: 100%;
   height: auto;
   padding: 0px 20px;
+  margin-bottom: 30px;
   box-sizing: border-box;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  flex-direction: column;
+  gap: 10px;
 }
 
 .content-item {
   cursor: pointer;
-  border-top: 2px solid #012D6B;
   width: 100%;
-  height: 170px;
   margin-bottom: 20px;
-  background-color: white;
-  display: grid;
+  background-color: #012D6B;
+  color: #fff;
+  font-size: 16px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
   grid-template-columns: 1fr 1fr;
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
   transform: scale(1);
@@ -270,6 +273,9 @@ footer {
   -ms-transform: scale(1);
   -o-transform: scale(1);
   transition: all 0.3s ease-in-out;
+}
+.content-item:last-child {
+  background-color: #f8981c;
 }
 .content-item:hover {
   transform: scale(1.015);
@@ -281,34 +287,6 @@ footer {
 .content-item div {
   box-sizing: border-box;
   padding: 20px;
-}
-.content-item h1 {
-  font-size: 1.5em;
-}
-.content-item h3 {
-  margin: 5px;
-  font-size: 0.9rem;
-}
-.content-item div:nth-child(2) {
-  display: grid;
-  justify-self: center;
-  align-items: center;
-  position: relative;
-}
-.content-item div:nth-child(2) img {
-  width: 105px;
-  height: auto;
-}
-.content-item div:nth-child(2) i {
-  font-size: 25px;
-  color: #012D6B;
-  position: absolute;
-  left: 21px;
-  bottom: 30px;
-}
-.content-item div:nth-child(2) i:nth-child(2) {
-  left: 15px;
-  bottom: 37px;
 }
 
 #target {
@@ -334,4 +312,8 @@ footer {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   font-size: 10px;
   font-weight: 600;
+}
+
+.swiper-wrapper {
+  height: 800px;
 }
