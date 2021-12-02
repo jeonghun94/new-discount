@@ -16,3 +16,11 @@ swiper.on('transitionEnd', function () {
     const idx = "0" + parseInt(swiper.realIndex + 1);
     console.log(idx);
 });
+
+
+window.onload = function () {
+    
+    setInterval(() => {
+        location.reload();
+    }, 4000);
+}
