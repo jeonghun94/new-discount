@@ -1,3 +1,4 @@
+let idx;
 let swiper = new Swiper(".mySwiper", {
     effect: "cube",
     grabCursor: true,
@@ -19,8 +20,9 @@ swiper.on('transitionEnd', function () {
 
 
 window.onload = function () {
-    
+
     setInterval(() => {
         location.reload();
     }, 4000);
+
 }
