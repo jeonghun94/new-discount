@@ -264,6 +264,7 @@ footer {
   justify-content: space-between;
   align-items: center;
   gap: 20px;
+  cursor: pointer;
 }
 
 .content-item {
@@ -271,6 +272,7 @@ footer {
   width: 100%;
   margin-bottom: 20px;
   background-color: #012D6B;
+  padding: 20px;
   color: #fff;
   font-size: 16px;
   text-align: center;
@@ -278,26 +280,9 @@ footer {
   justify-content: center;
   grid-template-columns: 1fr 1fr;
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-  transform: scale(1);
-  -webkit-transform: scale(1);
-  -moz-transform: scale(1);
-  -ms-transform: scale(1);
-  -o-transform: scale(1);
-  transition: all 0.3s ease-in-out;
 }
 .content-item:last-child {
   background-color: #f8981c;
-}
-.content-item:hover {
-  transform: scale(1.015);
-  -webkit-transform: scale(1.015);
-  -moz-transform: scale(1.015);
-  -ms-transform: scale(1.015);
-  -o-transform: scale(1.015);
-}
-.content-item div {
-  box-sizing: border-box;
-  padding: 20px;
 }
 
 #target {

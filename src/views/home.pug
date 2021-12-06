@@ -31,8 +31,7 @@ block content
 
             //- .title 차단기 제어
             .content#content
-                .content-item(data-action="open")
-                    div 차단기 올림
-                .content-item(data-action="close")
-                    div 차단기 내림
+                .content-item(data-action="@open") 차단기 올림
+                .content-item(data-action="@close") 차단기 내림
+        script(src="/static/js/gate.js") 
         include ./partials/footer

@@ -1,17 +1,52 @@
 import Swal from 'sweetalert2'
 
-const items = document.getElementsByClassName("content-item");
+// const socket = new WebSocket('ws://192.168.4.101:10000');
 
-function action() {
+const items = document.querySelectorAll(".content-item");
+let idx = '@01';
+let swiper = new Swiper(".mySwiper", {
+    effect: "cube",
+    grabCursor: true,
+    cubeEffect: {
+        shadow: false,
+        slideShadows: true,
+        shadowOffset: 20,
+        shadowScale: 0.94,
+    },
+    pagination: {
+        el: ".swiper-pagination",
+    },
+});
+
+//websocket
+
+
+//swiper
+swiper.on('transitionEnd', function () {
+    idx = "@0" + parseInt(swiper.realIndex + 1);
+});
+
+// socket.onopen = function () {
+//   console.log('연결 완료');
+// };
+
+// socket.onmessage = function () {
+//   //sendMessage();
+// };
+
+window.onload = function () {
+  
   for(var i=0; i<items.length; i++){
-    (function(i){
-      items[i].addEventListener("click", a);
-      function a() {
-        fetch(`/gate/${items[i].dataset.action}`, { method: "GET" })
+    items[i].addEventListener("click", function () {
+      const action = this.getAttribute("data-action");
+        //socket.send(`gate${idx}${action}`);
+        // socket.send(JSON.stringify(`gate${idx} ${action}`));
+      
+      
+      fetch(`/gate/gate${idx}${action}`, { method: "GET" })
           .then(res => res.json())
           .then(res => {
-            console.log(res.re);
-
+            //console.log(res.re);
             const Toast = Swal.mixin({
               toast: true,
               position: 'center-center',
@@ -37,9 +72,12 @@ function action() {
             }
             
           });
-      }
-    })(i);
+
+    });
   }
+
 }
 
-action();
+
+
+
