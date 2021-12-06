@@ -7,27 +7,16 @@ export const home = async (req, res) => {
 
 export const action =  (req, res) => {
     const { action } = req.params;
-    let result;
-
-    console.log('@@@@@@@@@@@@');
-    console.log(action);
-    console.log('@@@@@@@@@@@@');
+    console.log(action.split("@")[2]);  
+    
     
     const socket = net.connect({ host: process.env.SO_IP, port: process.env.SO_PORT }, function() {
         socket.setTimeout(1000);
         socket.write(action);
 
         this.on('data', function (data) {
-            result = data.toString().trim();
-            console.log(data);
-
-
-            // if (result === "ok") {
-            //     res.send({re:true, action:type});
-            // } else {
-            //     res.send({re:false, action:type});
-            // }
-
+            const result = data.toString().trim();
+            console.log(`@@@@@@@@@\n${result}\n@@@@@@@@@`);
             socket.end();
         });
     
@@ -44,7 +33,7 @@ export const action =  (req, res) => {
             console.log('Socekt Connect Close...');
         });
 
-        res.send({re:true});
+        res.send({res:true, action:action.split('@')[2] === 'open' ? '올렸' : '내렸'});
     });
     
 }; 

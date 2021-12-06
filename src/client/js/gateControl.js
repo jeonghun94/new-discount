@@ -1,7 +1,5 @@
 import Swal from 'sweetalert2'
 
-// const socket = new WebSocket('ws://192.168.4.101:10000');
-
 const items = document.querySelectorAll(".content-item");
 let idx = '@01';
 let swiper = new Swiper(".mySwiper", {
@@ -18,35 +16,18 @@ let swiper = new Swiper(".mySwiper", {
     },
 });
 
-//websocket
-
-
-//swiper
 swiper.on('transitionEnd', function () {
     idx = "@0" + parseInt(swiper.realIndex + 1);
 });
-
-// socket.onopen = function () {
-//   console.log('연결 완료');
-// };
-
-// socket.onmessage = function () {
-//   //sendMessage();
-// };
 
 window.onload = function () {
   
   for(var i=0; i<items.length; i++){
     items[i].addEventListener("click", function () {
       const action = this.getAttribute("data-action");
-        //socket.send(`gate${idx}${action}`);
-        // socket.send(JSON.stringify(`gate${idx} ${action}`));
-      
-      
       fetch(`/gate/gate${idx}${action}`, { method: "GET" })
           .then(res => res.json())
           .then(res => {
-            //console.log(res.re);
             const Toast = Swal.mixin({
               toast: true,
               position: 'center-center',
@@ -59,7 +40,7 @@ window.onload = function () {
               }
             });
 
-            if (res.re) {
+            if (res.res) {
               Toast.fire({
                 icon: 'success',
                 title: `차단기를 ${res.action}습니다.`
