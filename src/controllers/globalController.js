@@ -1,5 +1,6 @@
 require("dotenv").config();
 import net from "net";
+import "regenerator-runtime";
 
 const renderPage = (level, res) => {
     if (level === "1") {

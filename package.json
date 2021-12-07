@@ -7,6 +7,8 @@
     "url": "git+https://github.com/jeonghun94/node-web.git"
   },
   "scripts": {
+    "start": "node build/init.js",
+    "build:server": "babel src -d build",
     "dev:server": "nodemon",
     "dev:assets": "webpack"
   },
@@ -29,12 +31,15 @@
     "node-onvif": "^0.1.7",
     "node-rtsp-stream": "^0.0.9",
     "pug": "^3.0.2",
+    "regenerator-runtime": "^0.13.7",
     "sweetalert2": "^11.0.18",
     "tedious": "^11.0.8"
   },
   "devDependencies": {
-    "@babel/core": "^7.14.0",
+    "@babel/cli": "^7.16.0",
+    "@babel/core": "^7.16.0",
     "@babel/node": "^7.13.13",
+    "@babel/plugin-transform-runtime": "^7.16.4",
     "@babel/preset-env": "^7.14.0",
     "babel-loader": "^8.2.2",
     "css-loader": "^5.2.2",
