@@ -1,0 +1,12 @@
+extends base
+block content 
+    body                        
+        .permisson__container 
+            .icon__box 
+                span !
+            .text__box 
+                h1 페이지에 접근할 수 없습니다.
+                h3 사유: 권한이 없습니다.
+            .redirect__box(onclick="location.href='http://localhost:8090/logout.jsp'") 
+                i.fas.fa-undo 
+                    span 돌아가기

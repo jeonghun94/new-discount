@@ -1,22 +1,43 @@
 require("dotenv").config();
 import net from "net";
 
-export const home = async (req, res) => {
-    res.render("home");
+const renderPage = (level, res) => {
+    if (level === "1") {
+        res.render("home");
+    } else {
+        res.render("permission");
+    }
+};
+
+export const postRenderHome = async (req, res) => {
+    const { level } = req.body;
+    renderPage(level, res);
+}
+
+export const getRenderHome = async (req, res) => {
+    const { level } = req.query;
+    renderPage(level, res);
 }
 
 export const action =  (req, res) => {
-    const { action } = req.params;
-    console.log(action.split("@")[2]);  
+    const { action, idx } = req.query;
+    let SO_PORT = '1000';
+
+    SO_PORT += parseInt(idx) -1;
+
+    console.log('###############################################');
+    console.log(action);
+    console.log(SO_PORT);
+    console.log('###############################################');
     
     
-    const socket = net.connect({ host: process.env.SO_IP, port: process.env.SO_PORT }, function() {
+    const socket = net.connect({ host: process.env.SO_IP, port: SO_PORT }, function() {
         socket.setTimeout(1000);
         socket.write(action);
 
         this.on('data', function (data) {
             const result = data.toString().trim();
-            console.log(`@@@@@@@@@\n${result}\n@@@@@@@@@`);
+            console.log(`${result}`);
             socket.end();
         });
     

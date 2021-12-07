@@ -6,17 +6,17 @@ block content
         header 
             nav 
                 //- img(src="/client/img/logo.gif", alt="이미지를 찾을 수 없습니다...", style="width:110px;")
-                div CMCNI
+                div(onclick="location.href='http://localhost:8090/main.jsp'") CMCNI
                 div.dropdown
                     i.fas.fa-bars
                     .dropdown-content 
-                        div(onclick="location.href='myPage.jsp'")
+                        div(onclick="location.href='http://localhost:8090/myPage.jsp'")
                             i.fas.fa-user  마이페이지
-                        div(onclick="location.href='myPage.jsp'")
+                        div(onclick="location.href='http://localhost:8090/update.jsp'")
                             i.fas.fa-lock  암호변경
-                        div(onclick="location.href='myPage.jsp'")
+                        div(onclick="location.href='http://localhost:8090/history.jsp'")
                             i.fas.fa-chart-bar  할인내역
-                        div(onclick="location.href='myPage.jsp'")
+                        div(onclick="location.href='http://localhost:8090/logout.jsp'")
                             i.fas.fa-sign-out-alt  로그아웃
         main 
             //- .title CCTV
