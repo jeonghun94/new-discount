@@ -10,8 +10,8 @@ module.exports = {
     gate: BASE_JS + "gateControl.js",
     jsmpeg: BASE_JS + "jsmpeg.min.js",
   },
-  mode: "development",
-  watch: true,
+  // mode: "development",
+  // watch: true,
   plugins: [
     new MiniCssExtractPlugin({
       filename: "css/styles.css",
