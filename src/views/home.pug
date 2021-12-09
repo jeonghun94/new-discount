@@ -11,13 +11,13 @@ block content
                     i.fas.fa-bars
                     .dropdown-content 
                         div(onclick="location.href='http://localhost:8090/myPage.jsp'")
-                            i.fas.fa-user  마이페이지
+                            i.fas.fa-user  &nbsp 마이페이지
                         div(onclick="location.href='http://localhost:8090/update.jsp'")
-                            i.fas.fa-lock  암호변경
+                            i.fas.fa-lock &nbsp 암호변경
                         div(onclick="location.href='http://localhost:8090/history.jsp'")
-                            i.fas.fa-chart-bar  할인내역
+                            i.fas.fa-chart-bar &nbsp 할인내역
                         div(onclick="location.href='http://localhost:8090/logout.jsp'")
-                            i.fas.fa-sign-out-alt  로그아웃
+                            i.fas.fa-sign-out-alt &nbsp 로그아웃
         main 
             //- .title CCTV
             script(src="/client/js/jsmpeg.min.js") 
@@ -27,7 +27,6 @@ block content
                 .swiper-pagination
             script(src="/client/js/cctv.js") 
             script(src="/client/js/swiper.js") 
-            script(src="/client/js/swiperInit.js") 
 
             //- .title 차단기 제어
             .content#content

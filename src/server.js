@@ -3,7 +3,6 @@ import { localsVariable } from "./middleware";
 import Stream from "node-rtsp-stream";
 import express from "express";
 import morgan from "morgan"
-require("dotenv").config();
 
 const app = express();
 const logger = morgan("dev");

@@ -1,4 +1,3 @@
-require("dotenv").config();
 import net from "net";
 
 const renderPage = (level, res) => {
@@ -15,7 +14,7 @@ export const postRenderHome = async (req, res) => {
 }
 
 export const getRenderHome = async (req, res) => {
-    const { level } = req.query;
+    const { level } = req.params;
     renderPage(level, res);
 }
 
@@ -26,10 +25,7 @@ export const action =  (req, res) => {
     SO_PORT += parseInt(idx) -1;
 
     console.log('###############################################');
-    console.log(action);
-    console.log(SO_PORT);
-    console.log('###############################################');
-    
+    // console.log(action, SO_PORT);
     
     const socket = net.connect({ host: process.env.SO_IP, port: SO_PORT }, function() {
         socket.setTimeout(1000);

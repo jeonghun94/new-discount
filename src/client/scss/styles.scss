@@ -73,18 +73,22 @@ nav {
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 10;
   color: $main;
-}
 
-.dropdown-content div {
-  color: $main !important;
-  padding: 10px 20px;
-  font-size: 14px !important;
-  text-decoration: none;
-  display: block;
-}
+  div {
+    color: $main !important;
+    padding: 15px 20px;
+    font-size: 14px !important;
+    text-decoration: none;
+    display: block;
 
-.dropdown-content div:hover {
-  background-color: #f1f1f1
+    i {
+      margin-right: 5px;
+    }
+  }
+
+  div:hover {
+    background-color: #f1f1f1
+  }
 }
 
 .dropdown:hover .dropdown-content {
@@ -188,14 +192,16 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: $main;
-    color: $white;
+    //background-color: $main;
+    color: $main;
     margin: 30px 0;
-    padding: 15px 22px;
+    width: 70px;
+    height: 70px;
+    border-radius: 3%;
 
     span{
       margin-top: -5px;
-      font-size: 56px;
+      font-size: 120px;
       font-weight: 600;
     }
   }
@@ -203,7 +209,7 @@ footer {
   .text__box{
     opacity: .8;
     h1{
-      font-size: 32px;
+      font-size: 1.5rem;
       margin: 20px;
     }
 
@@ -216,18 +222,20 @@ footer {
   .redirect__box{
     cursor: pointer;
     padding: 10px 15px;
-    background-color: #999;
+    //background-color: #999;
     border-radius: 2px;
     margin: 20px 0;
-    color: $white;
+    color: #999;
+    opacity: .6;
+    font-size: 1rem;
 
     i span{
-      font-weight: lighter;
+      font-weight: bold;
     }
 
-    &:hover{
-      background-color: #777;
-    }
+    // &:hover{
+    //   // background-color: #777;
+    // }
 
   }
   
