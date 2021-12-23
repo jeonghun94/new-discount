@@ -1,4 +1,6 @@
+import exp from "constants";
 import net from "net";
+import { executeQuery } from "../server";
 
 const renderPage = (level, res) => {
     if (level === "1") {
@@ -15,6 +17,9 @@ export const postRenderHome = async (req, res) => {
 
 export const getRenderHome = async (req, res) => {
     const { level } = req.params;
+
+ 
+
     renderPage(level, res);
 }
 
@@ -54,3 +59,11 @@ export const action =  (req, res) => {
     });
     
 }; 
+
+export const test = (req, res) => {
+
+    executeQuery();
+
+    
+    res.render("login");
+}
