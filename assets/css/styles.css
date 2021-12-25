@@ -392,6 +392,7 @@ footer {
   border: 1px solid #c8c8c8;
   margin-bottom: 15px;
   background-color: transparent;
+  transition: all 0.3s linear;
 }
 .login__form article input:focus {
   border-color: #f8981c;
@@ -404,6 +405,7 @@ footer {
   background-color: #012D6B;
   color: white;
   font-size: 1.3rem;
+  transition: all 0.25s linear;
 }
 .login__form article button:hover {
   background-color: #f8981c;
@@ -411,5 +413,6 @@ footer {
 .login__form article img {
   width: 100%;
   height: auto;
+  cursor: pointer;
   margin-top: 30px;
 }
