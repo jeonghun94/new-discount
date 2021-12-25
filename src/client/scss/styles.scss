@@ -278,6 +278,7 @@ footer {
       border-radius: 0;
       border: 1px solid #c8c8c8;
       margin-bottom: 15px;
+      background-color: transparent;
 
       &:focus {
         border-color: $sub;
@@ -296,6 +297,12 @@ footer {
       &:hover {
         background-color: $sub;
       }
+    }
+
+    img {
+      width: 100%;
+      height: auto;
+      margin-top: 30px;
     }
 
   }

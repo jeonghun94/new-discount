@@ -391,6 +391,7 @@ footer {
   border-radius: 0;
   border: 1px solid #c8c8c8;
   margin-bottom: 15px;
+  background-color: transparent;
 }
 .login__form article input:focus {
   border-color: #f8981c;
@@ -406,4 +407,9 @@ footer {
 }
 .login__form article button:hover {
   background-color: #f8981c;
+}
+.login__form article img {
+  width: 100%;
+  height: auto;
+  margin-top: 30px;
 }
