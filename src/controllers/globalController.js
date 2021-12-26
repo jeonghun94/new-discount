@@ -11,7 +11,7 @@ const renderPage = (level, res) => {
 };
 
 export const postRenderHome = async (req, res) => {
-    const { level } = req.body;
+    const { level } = req.params;
     renderPage(level, res);
 }
 
@@ -67,3 +67,13 @@ export const test = (req, res) => {
     
     res.render("login");
 }
+
+export const login = (req, res) =>{
+
+    const {id, password} = req.body;
+
+    console.log(id, password);
+
+    res.render("main");
+
+};
