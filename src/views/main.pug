@@ -16,14 +16,29 @@ block content
                             i.fas.fa-chart-bar &nbsp 할인내역
                         div(onclick="location.href='http://localhost:8090/logout.jsp'")
                             i.fas.fa-sign-out-alt &nbsp 로그아웃
-        section.login__form                            
-            form(action="", method="get") 
-                article 
-                    main
-                        h6 차량번호
-                        input(type="text" name="차량번호")
-                        .content#content
-                            .content-item(data-action="@open") 차단기 올림
-                            .content-item(data-action="@close") 차단기 내림
-        script(src="/static/js/gate.js") 
+        section.main__form                            
+            article 
+                    h6 차량번호
+                    input(type="text" maxlength="4" name="차량번호" placeholder="ex) 차량번호 4자리" id="inCarNo" oninput="checkVal(this)" )
+                    button(type="button" id="searchBtn") 검색
+        script.
+            const inCarNo = document.querySelector('#inCarNo');
+            const searchBtn = document.querySelector('#searchBtn');
+            searchBtn.addEventListener('click',function(){
+                if(inCarNo.value.length === 4) {
+                    fetch(`/main2`, {
+                        method: "POST",
+                        //- headers: {
+                        //- "Content-Type": "application/json",
+                        //- },
+                        body: inCarNo.value,
+                    });
+                }else {
+                    alert('차량번호는 4자리이어야 합니다.')
+                }
+            });
+
+            function checkVal(obj){
+                obj.value = obj.value.replace(/[^0-9]/g, '');
+            }
         include ./partials/footer

@@ -18,8 +18,6 @@ export const postRenderHome = async (req, res) => {
 export const getRenderHome = async (req, res) => {
     const { level } = req.params;
 
- 
-
     renderPage(level, res);
 }
 
@@ -77,3 +75,12 @@ export const login = (req, res) =>{
     res.render("main");
 
 };
+
+
+export const searchDiscountInCarNo = (req, res) => {
+    const  inCarNo = req.body;
+
+    console.log(inCarNo);
+
+    res.send({ res: true });
+}

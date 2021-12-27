@@ -29,7 +29,7 @@
     "morgan": "^1.10.0",
     "mssql": "^7.0.0",
     "net": "^1.0.2",
-    "node-fetch": "^2.6.1",
+    "node-fetch": "^2.6.6",
     "node-onvif": "^0.1.7",
     "node-rtsp-stream": "^0.0.9",
     "pug": "^3.0.2",

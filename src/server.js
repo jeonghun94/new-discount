@@ -20,7 +20,7 @@ const logger = morgan("dev");
 const config = { 
     user: 'sa',
     password: 'key0123', 
-    server: '59.15.58.143',
+    server: 'localhost',
     database: 'PCMS', 
     stream: true,
     encrypt:false,

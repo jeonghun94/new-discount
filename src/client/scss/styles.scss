@@ -311,3 +311,69 @@ footer {
   }
 
 }
+
+.main__form {
+  width: 90%;
+  margin: 40px 0 20px 0;
+  border-top: 2px solid $main;
+  padding: 15px 0px;
+  align-self: center;
+  box-sizing: border-box;
+  background-color: white;
+  box-shadow: 0 1px 3px 0 rgb(32 33 36 / 8%);
+
+  article {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0px 20px;
+    height: auto;
+
+    h6 {
+      margin-bottom: 10px;
+      font-size: .9rem;
+      font-weight: 600;
+      color: #808080;
+    }
+
+    input {
+      padding: 15px;
+      border-radius: 0;
+      border: 1px solid #c8c8c8;
+      margin-bottom: 15px;
+      background-color: transparent;
+      transition: all .3s linear;
+
+      &:focus {
+        border-color: $sub;
+      }
+    }
+
+    button {
+      width: 100%;
+      padding: 15px 0px;
+      box-sizing: border-box;
+      border-radius: 0;
+      border-color: transparent;
+      background-color: $main;
+      color: white;
+      font-size: 1rem;
+      transition: all .25s linear;
+
+      &:hover {
+        background-color: $sub;
+      }
+    }
+
+    img {
+      width: 100%;
+      height: auto;
+      cursor: pointer;
+      margin-top: 30px;
+    }
+
+  }
+
+
+}

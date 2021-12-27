@@ -416,3 +416,59 @@ footer {
   cursor: pointer;
   margin-top: 30px;
 }
+
+.main__form {
+  width: 90%;
+  margin: 40px 0 20px 0;
+  border-top: 2px solid #012D6B;
+  padding: 15px 0px;
+  align-self: center;
+  box-sizing: border-box;
+  background-color: white;
+  box-shadow: 0 1px 3px 0 rgba(32, 33, 36, 0.08);
+}
+.main__form article {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0px 20px;
+  height: auto;
+}
+.main__form article h6 {
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #808080;
+}
+.main__form article input {
+  padding: 15px;
+  border-radius: 0;
+  border: 1px solid #c8c8c8;
+  margin-bottom: 15px;
+  background-color: transparent;
+  transition: all 0.3s linear;
+}
+.main__form article input:focus {
+  border-color: #f8981c;
+}
+.main__form article button {
+  width: 100%;
+  padding: 15px 0px;
+  box-sizing: border-box;
+  border-radius: 0;
+  border-color: transparent;
+  background-color: #012D6B;
+  color: white;
+  font-size: 1rem;
+  transition: all 0.25s linear;
+}
+.main__form article button:hover {
+  background-color: #f8981c;
+}
+.main__form article img {
+  width: 100%;
+  height: auto;
+  cursor: pointer;
+  margin-top: 30px;
+}

@@ -9,6 +9,7 @@ module.exports = {
     cctv: BASE_JS + "cctv.js",
     gate: BASE_JS + "gateControl.js",
     jsmpeg: BASE_JS + "jsmpeg.min.js",
+    discount: BASE_JS + "discount.js",
   },
   // mode: "development",
   // watch: true,
