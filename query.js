@@ -1,5 +1,7 @@
 export const QUERY = {
-    SEARCH_DISCOUNT_IN_CAR_NO: inCarNo => {`
+    SEARCH_DISCOUNT_IN_CAR_NO: inCarNo => {
+        
+        return `
         SELECT result.*  
             FROM   (SELECT Row_number()  
                         OVER (  
@@ -18,7 +20,7 @@ export const QUERY = {
                                     ON a.systemno = b.systemno  
                     LEFT OUTER JOIN ps070 c   
                                     ON a.mainunitno = c.mainunitno  
-                WHERE  a.incarno LIKE '%'+${inCarNo}+'%'  
+                WHERE  a.incarno LIKE '%${inCarNo}%'  
                     AND a.intksts IN( '1', '3' )  
                     AND a.tktype IN( '1', '3' )  
                     AND a.procdate > Dateadd(ww, -1, Getdate())) result  
