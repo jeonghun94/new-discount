@@ -1,4 +1,5 @@
-function checkVal(obj){
+import fetch from "node-fetch";
+function checkVal(obj) {
     obj.value = obj.value.replace(/[^0-9]/g, '');
 }
 

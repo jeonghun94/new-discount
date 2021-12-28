@@ -27,12 +27,15 @@ block content
             searchBtn.addEventListener('click',function(){
                 if(inCarNo.value.length === 4) {
                     fetch(`/main2`, {
-                        method: "POST",
-                        //- headers: {
-                        //- "Content-Type": "application/json",
-                        //- },
-                        body: inCarNo.value,
-                    });
+                        method:"POST",
+                        headers : {"Content-Type" : "application/json"},
+                        body:  JSON.stringify({
+                            inCarNo : inCarNo.value,
+                        }),
+                    })
+                    .then(response=>response.json())
+                    .then(data=>console.log(data))
+                    .catch(error=>console.log(error));
                 }else {
                     alert('차량번호는 4자리이어야 합니다.')
                 }

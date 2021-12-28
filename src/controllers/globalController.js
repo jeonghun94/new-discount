@@ -1,5 +1,6 @@
-import exp from "constants";
+
 import net from "net";
+import { QUERY } from "../../query";
 import { executeQuery } from "../server";
 
 const renderPage = (level, res) => {
@@ -77,10 +78,10 @@ export const login = (req, res) =>{
 };
 
 
-export const searchDiscountInCarNo = (req, res) => {
-    const  inCarNo = req.body;
-
+export const searchDiscountInCarNo = async (req, res) => {
+    const { inCarNo } = req.body;
     console.log(inCarNo);
+    const result =  await executeQuery(QUERY.SEARCH_DISCOUNT_IN_CAR_NO(inCarNo));
 
-    res.send({ res: true });
+    res.send({ result });
 }
