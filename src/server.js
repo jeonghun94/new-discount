@@ -11,7 +11,8 @@ const logger = morgan("dev");
 const config = { 
     user: 'sa',
     password: 'key0123', 
-    server: 'localhost',
+    server: '59.15.58.143',
+    // server: 'localhost',
     database: 'PCMS', 
     stream: true,
     encrypt:false,
@@ -39,7 +40,7 @@ export const executeQuery = async(query) => {
         // arr.map((x, idx) => {
         //     console.log(`${idx}: ${x.ShopName}`);
         // })
-        return result;
+        return result.recordset;
     } catch (err) {
         console.error('SQL error', err);
     }

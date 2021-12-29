@@ -21,6 +21,7 @@ block content
                     h6 차량번호
                     input(type="text" maxlength="4" name="차량번호" placeholder="ex) 차량번호 4자리" id="inCarNo" oninput="checkVal(this)" )
                     button(type="button" id="searchBtn") 검색
+            textarea(name="", cols="30", rows="10") #{result}                   
         script.
             const inCarNo = document.querySelector('#inCarNo');
             const searchBtn = document.querySelector('#searchBtn');
@@ -34,7 +35,12 @@ block content
                         }),
                     })
                     .then(response=>response.json())
-                    .then(data=>console.log(data))
+                    .then(data => {
+                            console.log(data)
+                            const { result } = data;
+                            const t = document.querySelector("textarea");
+                            t.value = JSON.stringify(result);
+                        })
                     .catch(error=>console.log(error));
                 }else {
                     alert('차량번호는 4자리이어야 합니다.')
