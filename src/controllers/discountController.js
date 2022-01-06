@@ -12,7 +12,7 @@ export const searchInCarNo = async (req, res) => {
 };
 
 export const main = (req, res) => {
-  res.render("discount/main");
+  res.render("discount/main", { pageTitle: "차량조회" });
 };
 
 export const history = (req, res) => {
