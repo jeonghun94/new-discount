@@ -2,7 +2,7 @@ import express from "express";
 import morgan from "morgan";
 import session from "express-session";
 import cookieParser from "cookie-parser";
-import { localsVariable } from "./middleware";
+import { localsVariable, protectorMiddleware } from "./middleware";
 import globalRouter from "./routers/globalRouter";
 import discountRouter from "./routers/discountRouter";
 import sql from "mssql";
@@ -71,10 +71,11 @@ app.use(
 //   });
 // });
 
-app.use(localsVariable);
 app.use("/static", express.static("assets"));
 app.use("/client", express.static("src/client"));
+app.use(localsVariable);
 app.use("/", globalRouter);
+app.use(protectorMiddleware);
 app.use("/discount", discountRouter);
 
 export default app;

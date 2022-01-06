@@ -1,7 +1,7 @@
 import { DISCOUNT_QUERY } from "../../query";
 import { executeQuery } from "../server";
 
-export const searchDiscountInCarNo = async (req, res) => {
+export const searchInCarNo = async (req, res) => {
   const { inCarNo } = req.body;
   console.log(inCarNo);
   const result = await executeQuery(
