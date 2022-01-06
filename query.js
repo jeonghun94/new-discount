@@ -1,7 +1,13 @@
-export const QUERY = {
-    SEARCH_DISCOUNT_IN_CAR_NO: inCarNo => {
-        return `
-            SELECT result.*
+export const LOCALS_QUERY = {
+  USER_LOGGED_IN: (id, pw) => `SELECT *
+                      FROM   ps130
+                      WHERE  id = '${id}'
+                          AND pwd = '${pw}'`,
+};
+
+export const DISCOUNT_QUERY = {
+  SEARCH_DISCOUNT_IN_CAR_NO: (inCarNo) => {
+    return `SELECT result.*
             FROM   (SELECT Row_number()
                             OVER (
                             partition BY a.incarno
@@ -26,5 +32,6 @@ export const QUERY = {
             WHERE  result.row_no = '1'
             ORDER  BY procdate DESC,
                     proctime DESC 
-        `}, 
-}
+        `;
+  },
+};

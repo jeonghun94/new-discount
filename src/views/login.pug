@@ -5,10 +5,15 @@ block content
     section.login__form
         form(action="/", method="post") 
             article
-                input(type="text" placeholder="아이디" name="id" required)
-                input(type="password" placeholder="비밀번호" name="password" required)
+                input(type="text" placeholder="아이디" name="id" value=`${COOKIES.id || ''}` required)
+                input(type="password" placeholder="비밀번호" name="password" value=`${COOKIES.password || ''}` required)
                 div
-                    input(type="checkbox", name="saveInfo" id="saveInfo")
-                    label(for="saveInfo") 아이디 저장
+                    if COOKIES.saveUserInfo
+                        input(type="checkbox", name="saveUserInfo" id="saveUserInfo" checked)
+                    else
+                        input(type="checkbox", name="saveUserInfo" id="saveUserInfo")
+                    label(for="saveUserInfo") 정보 저장
+                    if notValid
+                        p &nbsp; 아이디와 비밀번호를 정확히 입력해주세요.
                 button(type="submit") 로그인
                 img(src="http://59.15.58.146/dist/img/image.jpg", alt="이미지 로드 실패", srcset="")    

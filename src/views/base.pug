@@ -8,23 +8,11 @@ html(lang="ko")
         meta(name="description", content="차별화된 Orange Parking 솔루션")
         meta(property="og:locale", content="ko_KR")
         //- link(rel="shortcut icon", href="/client/img/favicon.ico", type="image/x-icon")
+        //- link(rel="stylesheet", href="/client/css/swiper.css")
         link(rel="stylesheet", href="/static/css/styles.css")
-        link(rel="stylesheet", href="/client/css/swiper.css")
         script(src="https://kit.fontawesome.com/e07b3cc652.js" crossorigin="anonymous") 
-        //- script(src="https://unpkg.com/axios/dist/axios.min.js") 
     body
-        header 
-            nav 
-                a(href="/") CMCNI
-                .dropdown
-                    i.fas.fa-bars
-                    .dropdown-content 
-                        a(href="/my-page")
-                            i.fas.fa-user  &nbsp 마이페이지
-                        a(href="/password")
-                            i.fas.fa-lock &nbsp 암호변경
-                        a(href="/discount/history")
-                            i.fas.fa-chart-bar &nbsp 할인내역
-                        a(href="/logout")
-                            i.fas.fa-sign-out-alt &nbsp 로그아웃
+        if loggedIn
+            include ./partials/nav       
         block content
+        

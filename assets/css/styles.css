@@ -397,6 +397,11 @@ footer {
 .login__form article input:focus {
   border-color: #f8981c;
 }
+.login__form article p {
+  color: tomato;
+  font-size: 0.8rem;
+  margin: 5px 0;
+}
 .login__form article button {
   width: 100%;
   padding: 15px 0px;
