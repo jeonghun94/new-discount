@@ -3,7 +3,7 @@ html(lang="ko")
     head
         meta(http-equiv="X-UA-Compatible", content="IE=edge")
         meta(name="viewport", content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=yes")
-        title 차단기제어
+        title 웹 할인
         link(rel="canonical", href="http://59.15.58.143")
         meta(name="description", content="차별화된 Orange Parking 솔루션")
         meta(property="og:locale", content="ko_KR")
@@ -13,4 +13,18 @@ html(lang="ko")
         script(src="https://kit.fontawesome.com/e07b3cc652.js" crossorigin="anonymous") 
         //- script(src="https://unpkg.com/axios/dist/axios.min.js") 
     body
+        header 
+            nav 
+                a(href="/") CMCNI
+                .dropdown
+                    i.fas.fa-bars
+                    .dropdown-content 
+                        a(href="/my-page")
+                            i.fas.fa-user  &nbsp 마이페이지
+                        a(href="/password")
+                            i.fas.fa-lock &nbsp 암호변경
+                        a(href="/discount/history")
+                            i.fas.fa-chart-bar &nbsp 할인내역
+                        a(href="/logout")
+                            i.fas.fa-sign-out-alt &nbsp 로그아웃
         block content

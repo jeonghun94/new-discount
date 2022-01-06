@@ -1,87 +1,45 @@
-
-import net from "net";
 import { QUERY } from "../../query";
 import { executeQuery } from "../server";
 
 const renderPage = (level, res) => {
-    if (level === "1") {
-        res.render("home");
-    } else {
-        res.render("permission");
-    }
+  if (level === "1") {
+    res.render("home");
+  } else {
+    res.render("permission");
+  }
 };
 
 export const postRenderHome = async (req, res) => {
-    const { level } = req.params;
-    renderPage(level, res);
-}
-
-export const getRenderHome = async (req, res) => {
-    const { level } = req.params;
-
-    renderPage(level, res);
-}
-
-export const action =  (req, res) => {
-    const { action, idx } = req.query;
-    let SO_PORT = '1000';
-
-    SO_PORT += parseInt(idx) -1;
-
-    console.log('###############################################');
-    // console.log(action, SO_PORT);
-    
-    const socket = net.connect({ host: process.env.SO_IP, port: SO_PORT }, function() {
-        socket.setTimeout(1000);
-        socket.write(action);
-
-        this.on('data', function (data) {
-            const result = data.toString().trim();
-            console.log(`${result}`);
-            socket.end();
-        });
-    
-        socket.on('end', function() {
-            console.log('Socket Server Close...');
-        });
-
-        socket.on('error', function(err) {
-            console.log('Socekt Connect Error... ', JSON.stringify(err));
-            res.send({ re:false });
-        });
-
-        socket.on('close', function() {
-            console.log('Socekt Connect Close...');
-        });
-
-        res.send({res:true, action:action.split('@')[2] === 'open' ? '올렸' : '내렸'});
-    });
-    
-}; 
-
-export const test = (req, res) => {
-
-    executeQuery();
-
-    
-    res.render("login");
-}
-
-export const login = (req, res) =>{
-
-    const {id, password} = req.body;
-
-    console.log(id, password);
-
-    res.render("main");
-
+  const { level } = req.params;
+  renderPage(level, res);
 };
 
+export const getRenderHome = async (req, res) => {
+  const { level } = req.params;
+  renderPage(level, res);
+};
 
-export const searchDiscountInCarNo = async (req, res) => {
-    const { inCarNo } = req.body;
-    console.log(inCarNo);
-    const result =  await executeQuery(QUERY.SEARCH_DISCOUNT_IN_CAR_NO(inCarNo));
+export const login = (req, res) => {
+  const { method } = req;
+  console.log(method);
 
-    res.send({ result });
-}
+  if (method === "GET") {
+    res.render("login");
+  } else if (method === "POST") {
+    const { id, password } = req.body;
+    console.log(id, password);
+    res.redirect("/discount/main");
+  }
+};
+
+export const logout = (req, res) => {
+  res.send("로그아웃");
+};
+
+export const password = (req, res) => {
+  res.send("비밀번호");
+};
+
+export const mypage = (req, res) => {
+  res.send("마이페이지");
+};

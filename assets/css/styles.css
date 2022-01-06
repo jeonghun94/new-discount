@@ -187,7 +187,7 @@ nav {
   display: flex;
   justify-content: space-between;
 }
-nav div:first-child {
+nav a {
   color: #012D6B;
   font-size: 20px;
   font-weight: 500;
@@ -213,14 +213,14 @@ nav div:last-child {
   z-index: 10;
   color: #012D6B;
 }
-.dropdown-content div {
+.dropdown-content a {
   color: #012D6B !important;
   padding: 15px 20px;
   font-size: 14px !important;
   text-decoration: none;
   display: block;
 }
-.dropdown-content div i {
+.dropdown-content a i {
   margin-right: 5px;
 }
 .dropdown-content div:hover {
