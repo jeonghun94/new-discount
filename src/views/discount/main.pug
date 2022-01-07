@@ -6,6 +6,7 @@ block content
                     input(type="text" maxlength="4" name="차량번호" placeholder="ex) 차량번호 4자리" id="inCarNo" oninput="checkVal(this)" )
                     button(type="button" id="searchBtn") 검색
             textarea(name="", cols="30", rows="10") #{result}                   
+        script(src="/static/js/discount.js") 
         script.
             const inCarNo = document.querySelector('#inCarNo');
             const searchBtn = document.querySelector('#searchBtn');

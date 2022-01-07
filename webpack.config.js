@@ -1,4 +1,5 @@
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const Dotenv = require("dotenv-webpack");
 const path = require("path");
 
 const BASE_JS = "./src/client/js/";
@@ -17,6 +18,7 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: "css/styles.css",
     }),
+    new Dotenv(),
   ],
   output: {
     filename: "js/[name].js",

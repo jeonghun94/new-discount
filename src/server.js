@@ -6,6 +6,8 @@ import { localsVariable, protectorMiddleware } from "./middleware";
 import globalRouter from "./routers/globalRouter";
 import discountRouter from "./routers/discountRouter";
 import sql from "mssql";
+import cron from "node-cron";
+import { camelizeKeys } from "../util";
 
 const app = express();
 const logger = morgan("dev");
@@ -32,6 +34,10 @@ pool.on("error", (err) => {
   console.log(err, "WTF!!!");
 });
 
+cron.schedule("*/10 * * * * *", function () {
+  console.log("executing cron");
+});
+
 export const executeQuery = async (query) => {
   await poolConnect;
   try {
@@ -42,7 +48,8 @@ export const executeQuery = async (query) => {
     // arr.map((x, idx) => {
     //     console.log(`${idx}: ${x.ShopName}`);
     // })
-    return result.recordset;
+    console.log(result.recordset[0]);
+    return camelizeKeys(result.recordset);
   } catch (err) {
     console.error("SQL error", err);
   }
