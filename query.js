@@ -31,7 +31,8 @@ export const DISCOUNT_QUERY = {
                           a.InSeqNo,
                           a.InCarPicName,
                           b.ParkName,
-                          c.UnitName
+                          c.UnitName,
+                          a.InsDate
                     FROM   ps500 a
                           LEFT OUTER JOIN ps020 b
                                         ON a.systemno = b.systemno

@@ -477,3 +477,33 @@ footer {
   cursor: pointer;
   margin-top: 30px;
 }
+
+.search__container {
+  width: 100%;
+  height: auto;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  border-bottom: 1px dashed #eee;
+}
+.search__container .search__img {
+  margin: 15px 0 10px 0;
+  width: 40%;
+  height: 85px;
+  margin-right: 10px;
+  border: 2px #012d6b solid;
+}
+.search__container .search__info {
+  color: #999;
+}
+.search__container .search__info p {
+  font-size: 0.8rem;
+  margin: 7px 0;
+}
+.search__container .search__info p:first-child {
+  color: black;
+  font-size: 1rem;
+  font-weight: 600;
+}
