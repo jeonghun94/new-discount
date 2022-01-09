@@ -3,6 +3,29 @@ const LIST_DIV = document.querySelector("#listDiv");
 const searchBtn = document.querySelector("#searchBtn");
 const inCarNo = document.querySelector("#inCarNo");
 
+function searchInCarT() {
+  fetch(`/search-in-car`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      const { result } = data;
+
+      const testInCarNo = result[0].inCarNo;
+
+      inCarNo.value = testInCarNo.substring(
+        testInCarNo.length - 4,
+        testInCarNo.length
+      );
+
+      result.map((x, idx) => {
+        console.log(`${idx}: ${x.inCarNo}`);
+      });
+    })
+    .catch((error) => console.log(error));
+}
+
 function checkVal(obj) {
   obj.value = obj.value.replace(/[^0-9]/g, "");
 }
@@ -85,6 +108,7 @@ function searchInCar() {
 }
 
 searchBtn.addEventListener("click", searchInCar);
+
 inCarNo.addEventListener("keyup", function (e) {
   if (window.event.keyCode == 13) {
     searchInCar();
@@ -92,6 +116,9 @@ inCarNo.addEventListener("keyup", function (e) {
 });
 
 window.onload = function () {
-  console.log(process.env.SERVER_PORT);
+  // console.log(process.env.SERVER_PORT);
   inCarNo.focus();
+
+  const footer = document.querySelector("footer");
+  footer.addEventListener("click", searchInCarT);
 };

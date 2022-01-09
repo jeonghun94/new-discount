@@ -79,3 +79,13 @@ export const password = (req, res) => {
 export const mypage = (req, res) => {
   res.send("마이페이지");
 };
+
+export const searchInCar = async (req, res) => {
+  const result = await executeQuery(LOCALS_QUERY.SEARCH_IN_CAR());
+
+  result.map((x, idx) => {
+    console.log(`${idx}: ${x.inCarNo}`);
+  });
+
+  res.send({ result });
+};
