@@ -22,6 +22,8 @@ function searchInCarT() {
       result.map((x, idx) => {
         console.log(`${idx}: ${x.inCarNo}`);
       });
+
+      searchBtn.click();
     })
     .catch((error) => console.log(error));
 }
