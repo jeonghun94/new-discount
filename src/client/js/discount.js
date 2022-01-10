@@ -16,6 +16,7 @@ function backToSearch() {
   SEARCH_ARTICLE.style.display = "block";
   CRUD_ARTICLE.style.display = "none";
   CRUD_ARTICLE.querySelector(".search__container").remove();
+  CRUD_ARTICLE.querySelector(".coupon__container").remove();
 }
 
 //차량조회 리스트 추가
@@ -29,7 +30,7 @@ function appendSearchList(result) {
 
       const img = document.createElement("img");
       img.classList.add("search__img");
-      img.src = `http://smcity.iptime.org/${result[i].inCarPicName}`;
+      img.src = `${process.env.IMAGE_SERVER_ADDRESS}:${process.env.IMAGE_SERVER_PORT}/${result[i].inCarPicName}`;
       img.alt = "이미지를 불러오지 못했습니다.";
 
       const info = document.createElement("div");
@@ -205,7 +206,8 @@ inCarNo.addEventListener("keyup", function (e) {
 });
 
 window.onload = function () {
-  // console.log(process.env.SERVER_PORT);
+  console.log(process.env.IMAGE_SERVER_ADDRESS);
+  console.log(process.env.IMAGE_SERVER_PORT);
   inCarNo.focus();
   CRUD_ARTICLE.style.display = "none";
 
