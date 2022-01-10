@@ -454,6 +454,37 @@ footer {
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
 }
+.main__form article .main__form-title .main__form-btn__container {
+  display: inline;
+  float: right;
+  font-size: 0.8rem;
+  z-index: 2;
+  margin-top: 3px;
+}
+.main__form article .main__form-title .main__form-btn__container a {
+  background-color: #012D6B;
+  color: white;
+  padding: 6px 18px;
+}
+.main__form article .main__form-title .main__form-btn__container a:first-child {
+  margin-right: 10px;
+}
+.main__form article .main__form-title .main__form-btn__container a:first-child:hover {
+  color: #012D6B;
+  border: 1px solid #012D6B;
+  background-color: transparent;
+  transition: all 0.5s linear;
+}
+.main__form article .main__form-title .main__form-btn__container a:last-child {
+  background-color: transparent;
+  color: #f8981c;
+  border: 1px solid #f8981c;
+}
+.main__form article .main__form-title .main__form-btn__container a:last-child:hover {
+  background-color: #f8981c;
+  color: white;
+  transition: all 0.5s linear;
+}
 .main__form article h6 {
   margin-bottom: 10px;
   padding: 10px;
@@ -469,6 +500,8 @@ footer {
   margin-bottom: 15px;
   background-color: transparent;
   transition: all 0.3s linear;
+  box-sizing: border-box;
+  width: 100%;
 }
 .main__form article input:focus {
   border-color: #f8981c;
@@ -524,6 +557,38 @@ footer {
   font-weight: 600;
 }
 
+.coupon__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.coupon__container .coupon__container-type {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 10px;
+}
+.coupon__container .coupon__container-type h6 {
+  width: 30%;
+  display: flex;
+  justify-content: center;
+  color: #012D6B !important;
+  font-size: 1.1rem !important;
+  font-weight: 600;
+  margin-top: 5px;
+}
+.coupon__container .coupon__container-type select {
+  width: 70%;
+  padding: 18px 10px;
+  background-color: #012D6B;
+  border: 0;
+  color: white;
+  font-size: 1.2rem;
+  align-self: center center;
+}
+
 .no__data {
   margin: 40px 30% !important;
   width: 70px !important;
@@ -531,6 +596,10 @@ footer {
   background: linear-gradient(to left, #012D6B, #012D6B);
   border-radius: 50% 0 50% 50%;
   transform: rotate(-45deg);
+}
+
+.no__border {
+  border: none;
 }
 
 .test {

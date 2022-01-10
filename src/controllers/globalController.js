@@ -83,9 +83,9 @@ export const mypage = (req, res) => {
 export const searchInCar = async (req, res) => {
   const result = await executeQuery(LOCALS_QUERY.SEARCH_IN_CAR());
 
-  result.map((x, idx) => {
-    console.log(`${idx}: ${x.inCarNo}`);
-  });
+  // result.map((x, idx) => {
+  //   console.log(`${idx}: ${x.inCarNo}`);
+  // });
 
   res.send({ result });
 };

@@ -43,12 +43,6 @@ export const executeQuery = async (query) => {
   try {
     const request = pool.request();
     const result = await request.query(query);
-    //console.log(query);
-    // const arr = result.recordset;
-    // arr.map((x, idx) => {
-    //     console.log(`${idx}: ${x.ShopName}`);
-    // })
-    console.log(result.recordset[0]);
     return camelizeKeys(result.recordset);
   } catch (err) {
     console.error("SQL error", err);

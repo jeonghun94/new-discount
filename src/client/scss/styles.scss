@@ -342,6 +342,42 @@ footer {
         border-top-left-radius: 4px;
         border-top-right-radius: 4px;
       }
+
+      .main__form-btn__container {
+        display: inline;
+        float: right;
+        font-size: 0.8rem;
+        z-index: 2;
+        margin-top: 3px;
+        a {
+          background-color: $main;
+          color: white;
+          padding: 6px 18px;
+
+          &:first-child {
+            margin-right: 10px;
+
+            &:hover {
+              color: $main;
+              border: 1px solid $main;
+              background-color: transparent;
+              transition: all 0.5s linear;
+            }
+          }
+
+          &:last-child {
+            background-color: transparent;
+            color: $sub;
+            border: 1px solid $sub;
+
+            &:hover {
+              background-color: $sub;
+              color: white;
+              transition: all 0.5s linear;
+            }
+          }
+        }
+      }
     }
 
     h6 {
@@ -360,6 +396,8 @@ footer {
       margin-bottom: 15px;
       background-color: transparent;
       transition: all 0.3s linear;
+      box-sizing: border-box;
+      width: 100%;
 
       &:focus {
         border-color: $sub;
@@ -425,6 +463,42 @@ footer {
   }
 }
 
+//할인권
+.coupon__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  .coupon__container-type {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 10px;
+
+    h6 {
+      width: 30%;
+      display: flex;
+      justify-content: center;
+      color: $main !important;
+      font-size: 1.1rem !important;
+      font-weight: 600;
+      margin-top: 5px;
+    }
+
+    select {
+      width: 70%;
+      padding: 18px 10px;
+      background-color: $main;
+      border: 0;
+      color: white;
+      font-size: 1.2rem;
+      align-self: center center;
+    }
+  }
+}
+
 .no__data {
   margin: 40px 30% !important;
   width: 70px !important;
@@ -432,6 +506,10 @@ footer {
   background: linear-gradient(to left, $main, $main);
   border-radius: 50% 0 50% 50%;
   transform: rotate(-45deg);
+}
+
+.no__border {
+  border: none;
 }
 
 .test {

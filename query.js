@@ -13,7 +13,7 @@ export const LOCALS_QUERY = {
 };
 
 export const DISCOUNT_QUERY = {
-  SEARCH_DISCOUNT_IN_CAR_NO: (inCarNo) => {
+  SEARCH_IN_CAR_NO: (inCarNo) => {
     return `SELECT result.*
             FROM   (SELECT Row_number()
                             OVER (
@@ -46,5 +46,8 @@ export const DISCOUNT_QUERY = {
             ORDER  BY procdate DESC,
                       proctime DESC 
         `;
+  },
+  SEARCH_IN_SEQ_NO: (inSeqNo) => {
+    return `SELECT * FROM PS500 WHERE inseqno = ${inSeqNo}`;
   },
 };
