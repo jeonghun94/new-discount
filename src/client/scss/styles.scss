@@ -361,7 +361,7 @@ footer {
               color: $main;
               border: 1px solid $main;
               background-color: transparent;
-              transition: all 0.5s linear;
+              transition: all 0.3s linear;
             }
           }
 
@@ -373,7 +373,7 @@ footer {
             &:hover {
               background-color: $sub;
               color: white;
-              transition: all 0.5s linear;
+              transition: all 0.3s linear;
             }
           }
         }
@@ -447,18 +447,18 @@ footer {
     margin-right: 10px;
     border: 2px #012d6b solid;
   }
+}
+.search__info,
+.discount__info {
+  color: #999;
+  p {
+    font-size: 0.85rem;
+    margin: 7px 0;
 
-  .search__info {
-    color: #999;
-    p {
-      font-size: 0.8rem;
-      margin: 7px 0;
-
-      &:first-child {
-        color: black;
-        font-size: 1rem;
-        font-weight: 600;
-      }
+    &:first-child {
+      color: black;
+      font-size: 1rem;
+      font-weight: 600;
     }
   }
 }
@@ -495,6 +495,42 @@ footer {
       color: white;
       font-size: 1.2rem;
       align-self: center center;
+      outline: none;
+    }
+  }
+}
+
+//할인내역
+.discount__container {
+  width: 100%;
+  height: auto;
+  .discount__header {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: $main;
+    color: white;
+  }
+
+  .discount__info-container {
+    display: flex;
+    padding: 5px 10px;
+    margin-bottom: 5px;
+    border: 1px solid $main;
+    .discount__info {
+      width: 80%;
+    }
+
+    .discount__info-delete {
+      width: 20%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bolder;
+      font-size: 1.1rem;
+      cursor: pointer;
+      color: $sub;
     }
   }
 }

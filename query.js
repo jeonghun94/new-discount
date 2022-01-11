@@ -50,4 +50,22 @@ export const DISCOUNT_QUERY = {
   SEARCH_IN_SEQ_NO: (inSeqNo) => {
     return `SELECT * FROM PS500 WHERE inseqno = ${inSeqNo}`;
   },
+  SEARCH_FREE_COUPON: `SELECT * FROM PS132 WHERE paytype = '01'`,
+  SEARCH_PAY_COUPON: `SELECT * FROM PS132 WHERE paytype = '02'`,
+  SEARCH_DISCOUNT_LIST: (inSeqNo) => {
+    return `SELECT CONVERT(DATETIME, b.ProcDate + ' ' + STUFF(STUFF(b.proctime, 3, 0, ':'), 6, 0, ':'), 120) as InTime,
+                a.InCarNo,
+                b.Idx,
+                c.DcName,
+                d.ShopName
+            FROM   ps500 a
+                  LEFT OUTER JOIN ps134 b
+                              ON a.inseqno = b.inseqno
+                  LEFT OUTER JOIN ps132 c
+                              ON b.coupontype = c.coupontype
+                  LEFT OUTER JOIN ps130 d
+                              ON b.shopcode = d.shopcode 
+            WHERE a.InSeqNo = '${inSeqNo}'
+            ORDER  BY b.idx DESC`;
+  },
 };

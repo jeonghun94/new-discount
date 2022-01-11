@@ -9,10 +9,15 @@ export const searchInCarNo = async (req, res) => {
 
 export const searchInSeqNo = async (req, res) => {
   const { inSeqNo } = req.body;
-  console.log(inSeqNo);
 
   const result = await executeQuery(DISCOUNT_QUERY.SEARCH_IN_SEQ_NO(inSeqNo));
-  res.send({ result });
+  const freeCouponList = await executeQuery(DISCOUNT_QUERY.SEARCH_FREE_COUPON);
+  const payCouponList = await executeQuery(DISCOUNT_QUERY.SEARCH_PAY_COUPON);
+  const discountList = await executeQuery(
+    DISCOUNT_QUERY.SEARCH_DISCOUNT_LIST(inSeqNo)
+  );
+
+  res.send({ result, freeCouponList, payCouponList, discountList });
 };
 
 export const main = async (req, res) => {

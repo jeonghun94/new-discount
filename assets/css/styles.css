@@ -473,7 +473,7 @@ footer {
   color: #012D6B;
   border: 1px solid #012D6B;
   background-color: transparent;
-  transition: all 0.5s linear;
+  transition: all 0.3s linear;
 }
 .main__form article .main__form-title .main__form-btn__container a:last-child {
   background-color: transparent;
@@ -483,7 +483,7 @@ footer {
 .main__form article .main__form-title .main__form-btn__container a:last-child:hover {
   background-color: #f8981c;
   color: white;
-  transition: all 0.5s linear;
+  transition: all 0.3s linear;
 }
 .main__form article h6 {
   margin-bottom: 10px;
@@ -544,14 +544,18 @@ footer {
   margin-right: 10px;
   border: 2px #012d6b solid;
 }
-.search__container .search__info {
+
+.search__info,
+.discount__info {
   color: #999;
 }
-.search__container .search__info p {
-  font-size: 0.8rem;
+.search__info p,
+.discount__info p {
+  font-size: 0.85rem;
   margin: 7px 0;
 }
-.search__container .search__info p:first-child {
+.search__info p:first-child,
+.discount__info p:first-child {
   color: black;
   font-size: 1rem;
   font-weight: 600;
@@ -587,6 +591,39 @@ footer {
   color: white;
   font-size: 1.2rem;
   align-self: center center;
+  outline: none;
+}
+
+.discount__container {
+  width: 100%;
+  height: auto;
+}
+.discount__container .discount__header {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  box-sizing: border-box;
+  background-color: #012D6B;
+  color: white;
+}
+.discount__container .discount__info-container {
+  display: flex;
+  padding: 5px 10px;
+  margin-bottom: 5px;
+  border: 1px solid #012D6B;
+}
+.discount__container .discount__info-container .discount__info {
+  width: 80%;
+}
+.discount__container .discount__info-container .discount__info-delete {
+  width: 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bolder;
+  font-size: 1.1rem;
+  cursor: pointer;
+  color: #f8981c;
 }
 
 .no__data {
