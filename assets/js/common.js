@@ -15,7 +15,7 @@
   \*********************************/
 /***/ (() => {
 
-eval("function nodata(container) {\r\n  const noDataContainer = document.createElement(\"div\");\r\n  noDataContainer.classList.add(\"nodata__container\");\r\n\r\n  const icon = document.createElement(\"i\");\r\n  icon.classList.add(\"fas\", \"fa-exclamation\");\r\n\r\n  const p = document.createElement(\"p\");\r\n  p.innerText = \"조회된 내역이 없습니다.\";\r\n\r\n  noDataContainer.appendChild(icon);\r\n  noDataContainer.appendChild(p);\r\n\r\n  container.append(noDataContainer);\r\n}\r\n\n\n//# sourceURL=webpack://node_web/./src/client/js/common.js?");
+eval("function nodata(container) {\n  var noDataContainer = document.createElement(\"div\");\n  noDataContainer.classList.add(\"nodata__container\");\n  var icon = document.createElement(\"i\");\n  icon.classList.add(\"fas\", \"fa-exclamation\");\n  var p = document.createElement(\"p\");\n  p.innerText = \"조회된 내역이 없습니다.\";\n  noDataContainer.appendChild(icon);\n  noDataContainer.appendChild(p);\n  container.append(noDataContainer);\n}\n\n//# sourceURL=webpack://node_web/./src/client/js/common.js?");
 
 /***/ })
 

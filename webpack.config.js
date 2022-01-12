@@ -38,6 +38,14 @@ module.exports = {
         },
       },
       {
+        test: /\.(png|jp(e*)g)$/,
+        loader: "url-loader",
+        options: {
+          limit: 8000,
+          name: "images/[hash]-[name].[ext]",
+        },
+      },
+      {
         test: /\.scss$/,
         use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
       },

@@ -608,11 +608,16 @@ input#saveUserInfo:checked + label:before {
 }
 
 select {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
+  padding: 10px;
+  padding-right: 30px;
 
-  // background: url("../img/arrow.png") no-repeat 98% center;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("../img/arrow.png");
+  background-repeat: no-repeat, repeat;
+  background-position: right 0.7em top 50%, 0 0;
+  background-size: 0.65em auto, 100%;
 }
 
 select::-ms-expand {
