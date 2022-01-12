@@ -1,3 +1,4 @@
+@charset "UTF-8";
 html,
 body,
 div,
@@ -626,17 +627,21 @@ footer {
   color: #f8981c;
 }
 
-.no__data {
-  margin: 40px 30% !important;
-  width: 70px !important;
-  height: 70px !important;
-  background: linear-gradient(to left, #012D6B, #012D6B);
-  border-radius: 50% 0 50% 50%;
-  transform: rotate(-45deg);
+.nodata__container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 100px 30px;
+  color: #012D6B;
+  gap: 40px;
 }
-
-.no__border {
-  border: none;
+.nodata__container i {
+  font-size: 4.5rem;
+}
+.nodata__container p {
+  font-size: 0.9rem;
+  font-weight: 600;
 }
 
 .test {
@@ -652,4 +657,55 @@ footer {
 }
 .test p:first-child {
   font-size: 2rem;
+}
+
+/*input 은 숨겨주기*/
+input#saveUserInfo {
+  display: none;
+}
+
+/*input 바로 다음의 label*/
+input#saveUserInfo + label {
+  cursor: pointer;
+}
+
+/*input 바로 다음의 label:before 에 체크하기 전 CSS 설정*/
+input#saveUserInfo + label:before {
+  content: "";
+  display: inline-block;
+  width: 17px;
+  height: 17px;
+  line-height: 17px;
+  border: 1px solid #cbcbcb;
+  border-radius: 4px;
+  vertical-align: middle;
+  /*체크 전과 체크 후 높이 차이 때문에 설정*/
+  margin: 5px 5px 5px 0;
+}
+
+/*checked된 input 바로 다음의 label:before 에 체크 후 CSS 설정*/
+input#saveUserInfo:checked + label:before {
+  content: "";
+  /*폰트어썸 유니코드*/
+  font-family: "Font Awesome 5 free";
+  /*폰트어썸 아이콘 사용*/
+  font-weight: 900;
+  /*폰트어썸 설정*/
+  color: #fff;
+  background-color: #012D6B;
+  border-color: transparent;
+  border-radius: 4px;
+  font-size: 13px;
+  text-align: center;
+  margin: 5px 5px 5px 0;
+}
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+select::-ms-expand {
+  display: none;
 }

@@ -49,6 +49,25 @@ export const executeQuery = async (query) => {
   }
 };
 
+export const executeUpdate = async (query) => {
+  await poolConnect;
+  try {
+    const request = pool.request();
+    await request.query(query);
+  } catch (err) {
+    console.error("SQL error", err);
+  }
+};
+
+console.log(process.env.IMAGE_SERVER_ADDRESS);
+console.log(process.env.IMAGE_SERVER_PORT);
+console.log(process.env.MAX_CNT);
+console.log(process.env.FREE_CNT);
+console.log(process.env.PAY_CNT);
+console.log(process.env.SHOP_DUPLICATION);
+console.log(process.env.TIME_LIMIT_USE);
+console.log(process.env.TIME_LIMIT_MINUTE);
+
 app.set("view engine", "pug");
 app.set("views", process.cwd() + "/src/views");
 app.use(express.static(process.cwd() + "/src/assets"));

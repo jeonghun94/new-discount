@@ -8,6 +8,7 @@ module.exports = {
   entry: {
     main: BASE_JS + "main.js",
     cctv: BASE_JS + "cctv.js",
+    common: BASE_JS + "common.js",
     gate: BASE_JS + "gateControl.js",
     jsmpeg: BASE_JS + "jsmpeg.min.js",
     discount: BASE_JS + "discount.js",

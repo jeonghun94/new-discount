@@ -25,6 +25,24 @@ function backToSearch() {
   CRUD_ARTICLE.querySelector(".search__container").remove();
   CRUD_ARTICLE.querySelector(".coupon__container").remove();
   COUPON_CONTAINER.innerHTML = "";
+  DISCOUNT_CONTAINER.innerHTML = "";
+}
+
+//조히내역 없음
+function nodata(container) {
+  const noDataContainer = document.createElement("div");
+  noDataContainer.classList.add("nodata__container");
+
+  const icon = document.createElement("i");
+  icon.classList.add("fas", "fa-exclamation");
+
+  const p = document.createElement("p");
+  p.innerText = "조회된 내역이 없습니다.";
+
+  noDataContainer.appendChild(icon);
+  noDataContainer.appendChild(p);
+
+  container.append(noDataContainer);
 }
 
 //차량조회 리스트 추가
@@ -70,18 +88,7 @@ function appendSearchList(result) {
       LIST_DIV.append(container);
     }
   } else {
-    const container = document.createElement("div");
-    container.classList.add("test");
-
-    const icon = document.createElement("div");
-    icon.classList.add("no__data");
-
-    const text = document.createElement("p");
-    text.innerText = "조회된 차량이 없습니다.";
-    container.appendChild(icon);
-    container.appendChild(text);
-
-    LIST_DIV.append(container);
+    nodata(LIST_DIV);
   }
 
   const searchInCarByInSeqNo = document.querySelectorAll(".search__container");
@@ -169,52 +176,78 @@ function searchInSeqNo(inSeqNo, cloneNode) {
       couponInvalid();
 
       //할인내역 리스트 추가
-      discountList(dList);
+      discountList(dList, inSeqNo);
     })
     .catch((error) => console.log(error));
 }
 
-function discountList(list) {
-  const discountHeader = document.createElement("div");
-  discountHeader.classList.add("discount__header");
-  discountHeader.innerHTML = "할인내역";
-  DISCOUNT_CONTAINER.append(discountHeader);
+//할인내역 추가
+function discountList(list, inSeqNo) {
+  if (list.length !== 0) {
+    const discountHeader = document.createElement("div");
+    discountHeader.classList.add("discount__header");
+    discountHeader.innerHTML = "할인내역";
+    DISCOUNT_CONTAINER.append(discountHeader);
 
-  list.map((x) => {
-    const discountInfoContainer = document.createElement("div");
-    discountInfoContainer.classList.add("discount__info-container");
+    list.map((x) => {
+      const discountInfoContainer = document.createElement("div");
+      discountInfoContainer.classList.add("discount__info-container");
+      discountInfoContainer.dataset.idx = x.idx;
+      console.log(x.idx);
 
-    const discountInfo = document.createElement("div");
-    discountInfo.classList.add("discount__info");
+      const discountInfo = document.createElement("div");
+      discountInfo.classList.add("discount__info");
 
-    const discounInfoTitle = document.createElement("p");
-    discounInfoTitle.classList.add("discount__info-title");
-    discounInfoTitle.innerText = `${x.dcName} 할인권`;
+      const discounInfoTitle = document.createElement("p");
+      discounInfoTitle.classList.add("discount__info-title");
+      discounInfoTitle.innerText = `${x.dcName} 할인권`;
 
-    const discountInfoShopName = document.createElement("p");
-    discountInfoShopName.innerText = `등록매장: ${x.shopName}`;
+      const discountInfoShopName = document.createElement("p");
+      discountInfoShopName.innerText = `등록매장: ${x.shopName}`;
 
-    const discountInfoInDate = document.createElement("p");
-    discountInfoInDate.innerText = `등록일시: ${x.inTime.substring(
-      0,
-      10
-    )} ${x.inTime.substring(11, 19)}`;
+      const discountInfoInDate = document.createElement("p");
+      discountInfoInDate.innerText = `등록일시: ${x.inTime.substring(
+        0,
+        10
+      )} ${x.inTime.substring(11, 19)}`;
 
-    discountInfo.appendChild(discounInfoTitle);
-    discountInfo.appendChild(discountInfoShopName);
-    discountInfo.appendChild(discountInfoInDate);
+      discountInfo.appendChild(discounInfoTitle);
+      discountInfo.appendChild(discountInfoShopName);
+      discountInfo.appendChild(discountInfoInDate);
 
-    const discountInfoDelete = document.createElement("div");
-    discountInfoDelete.classList.add("discount__info-delete");
-    discountInfoDelete.innerHTML = "삭제";
+      const discountInfoDelete = document.createElement("div");
+      discountInfoDelete.classList.add("discount__info-delete");
+      discountInfoDelete.innerHTML = "삭제";
 
-    discountInfoContainer.appendChild(discountInfo);
-    discountInfoContainer.appendChild(discountInfoDelete);
+      discountInfoDelete.addEventListener("click", (e) => {
+        const idx = e.currentTarget.parentNode.dataset.idx;
+        deleteList(idx, inSeqNo);
+      });
 
-    DISCOUNT_CONTAINER.append(discountInfoContainer);
-  });
+      discountInfoContainer.appendChild(discountInfo);
+      discountInfoContainer.appendChild(discountInfoDelete);
+
+      DISCOUNT_CONTAINER.append(discountInfoContainer);
+    });
+  } else {
+    // const noDataContainer = document.createElement("div");
+    // noDataContainer.classList.add("nodata__container");
+
+    // const icon = document.createElement("i");
+    // icon.classList.add("fas", "fa-exclamation");
+
+    // const p = document.createElement("p");
+    // p.innerText = "조회된 내역이 없습니다.";
+
+    // noDataContainer.appendChild(icon);
+    // noDataContainer.appendChild(p);
+
+    // DISCOUNT_CONTAINER.append(noDataContainer);
+    nodata(DISCOUNT_CONTAINER);
+  }
 }
 
+//무료권 혹 유료권 2개가 아닐시 명칭 변경
 function couponInvalid() {
   const coupon = document.querySelectorAll(".coupon__container-type");
 
@@ -223,6 +256,7 @@ function couponInvalid() {
   }
 }
 
+//할인권 SELECT 추가
 function couponList(list, text) {
   if (list.length !== 0) {
     const type = document.createElement("div");
@@ -236,7 +270,20 @@ function couponList(list, text) {
 
     const option = document.createElement("option");
     option.innerText = "할인권 선택";
+    option.value = "00";
+
     select.append(option);
+
+    //할인권 선택 시 할인 내역 추가
+    select.addEventListener("change", (e) => {
+      const inSeqNo =
+        CRUD_ARTICLE.querySelector(".search__container").dataset.inseqno;
+      const { text: dcName, value: couponType } = e.currentTarget;
+
+      if (couponType !== "00" && confirm(`할인권을 등록하시겠습니까?`)) {
+        insertList(inSeqNo, couponType);
+      }
+    });
 
     list.map((x) => {
       const option = document.createElement("option");
@@ -249,6 +296,50 @@ function couponList(list, text) {
     type.append(select);
 
     COUPON_CONTAINER.append(type);
+  }
+}
+
+//할인권 삭제
+function deleteList(idx, inSeqNo) {
+  if (confirm("할인내역을 삭제하시겠습니까?")) {
+    fetch(`/discount/list`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        inSeqNo,
+        idx,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.result) {
+          DISCOUNT_CONTAINER.innerHTML = "";
+          discountList(data.list, inSeqNo);
+        }
+      })
+      .catch((error) => console.log(error));
+  }
+}
+
+//할인내역 추가
+function insertList(inSeqNo, couponType) {
+  if (couponType !== "00") {
+    fetch(`/discount/list`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        inSeqNo,
+        couponType,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.result) {
+          DISCOUNT_CONTAINER.innerHTML = "";
+          discountList(data.list, inSeqNo);
+        }
+      })
+      .catch((error) => console.log(error));
   }
 }
 

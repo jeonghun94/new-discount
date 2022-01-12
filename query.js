@@ -53,19 +53,40 @@ export const DISCOUNT_QUERY = {
   SEARCH_FREE_COUPON: `SELECT * FROM PS132 WHERE paytype = '01'`,
   SEARCH_PAY_COUPON: `SELECT * FROM PS132 WHERE paytype = '02'`,
   SEARCH_DISCOUNT_LIST: (inSeqNo) => {
-    return `SELECT CONVERT(DATETIME, b.ProcDate + ' ' + STUFF(STUFF(b.proctime, 3, 0, ':'), 6, 0, ':'), 120) as InTime,
-                a.InCarNo,
-                b.Idx,
+    return `SELECT CONVERT(DATETIME, a.ProcDate + ' ' + STUFF(STUFF(a.proctime, 3, 0, ':'), 6, 0, ':'), 120) as InTime,
+                b.InCarNo,
+                a.Idx,
                 c.DcName,
                 d.ShopName
-            FROM   ps500 a
-                  LEFT OUTER JOIN ps134 b
+            FROM   ps134 a
+                  LEFT OUTER JOIN ps500 b
                               ON a.inseqno = b.inseqno
                   LEFT OUTER JOIN ps132 c
-                              ON b.coupontype = c.coupontype
+                              ON a.coupontype = c.coupontype
                   LEFT OUTER JOIN ps130 d
-                              ON b.shopcode = d.shopcode 
+                              ON a.shopcode = d.shopcode 
             WHERE a.InSeqNo = '${inSeqNo}'
-            ORDER  BY b.idx DESC`;
+            ORDER  BY a.idx DESC`;
+  },
+  DELETE_LIST: (idx) => `DELETE FROM PS134 WHERE idx = ${idx}`,
+  INSERT_LIST: (obj) => {
+    return `INSERT INTO ps134 
+                    (procdate, 
+                    proctime, 
+                    inseqno, 
+                    dcseqno, 
+                    shopcode,  
+                    coupontype, 
+                    dcstatus) 
+            VALUES  ((SELECT CONVERT(VARCHAR, Getdate(), 112)), 
+                    (SELECT Replace(CONVERT(VARCHAR, Getdate(), 8), ':', '') ), 
+                    '${obj.inSeqNo}', 
+                    (SELECT Isnull(Max(dcseqno), 0) + 1 
+                    FROM   ps134 
+                    WHERE  inseqno = '${obj.inSeqNo}'), 
+                    '${obj.shopCode}',
+                    '${obj.couponType}',
+                    '0')
+  `;
   },
 };

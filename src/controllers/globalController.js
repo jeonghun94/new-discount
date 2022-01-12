@@ -58,7 +58,6 @@ export const login = async (req, res) => {
       }
 
       console.log("Cookies: ", req.cookies);
-      console.log(req.cookies.id);
       res.redirect("/discount/main");
     } else {
       // 로그인 실패
