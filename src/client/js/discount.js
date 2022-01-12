@@ -336,6 +336,7 @@ function insertList(inSeqNo, couponType) {
       .then((data) => {
         if (data.result) {
           DISCOUNT_CONTAINER.innerHTML = "";
+          document.querySelector("select").value = "00";
           discountList(data.list, inSeqNo);
         }
       })
