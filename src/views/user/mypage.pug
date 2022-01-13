@@ -1,0 +1,23 @@
+extends ../base
+block content 
+    section.mypage__form
+        article.userInfo 
+            h2 #{userInfo.shopName}
+            div
+                span 아이디
+                sapn #{userInfo.id}
+            div
+                span 관리자명
+                span #{userInfo.chiefName}
+            div
+                span 전화번호
+                span #{userInfo.telNo}
+        article.userStockInfo 
+            h2 할인권 정보 
+            div 
+                each x in result 
+                    span #{x.dcName} - #{x.stock}개
+        article.userMenuInfo 
+            a(href="/password") 할인내역
+            a(href="/password") 암호변경
+    include ../partials/footer

@@ -52,7 +52,7 @@ export const insertList = async (req, res) => {
 };
 
 export const main = async (req, res) => {
-  res.render("discount/main", { pageTitle: "차량조회" });
+  res.render("discount/main", { pageTitle: "할인 등록" });
 };
 
 export const history = (req, res) => {

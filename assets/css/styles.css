@@ -423,7 +423,8 @@ footer {
   margin-top: 30px;
 }
 
-.main__form {
+.main__form,
+.mypage__form {
   width: 90%;
   margin: 40px 0 20px 0;
   border-top: 2px solid #012D6B;
@@ -433,7 +434,8 @@ footer {
   background-color: white;
   box-shadow: 0 1px 3px 0 rgba(32, 33, 36, 0.08);
 }
-.main__form article {
+.main__form article,
+.mypage__form article {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -441,10 +443,12 @@ footer {
   padding: 0px 20px;
   height: auto;
 }
-.main__form article .main__form-title {
+.main__form article .main__form-title,
+.mypage__form article .main__form-title {
   border-bottom: 1px solid #eee;
 }
-.main__form article .main__form-title span {
+.main__form article .main__form-title span,
+.mypage__form article .main__form-title span {
   display: inline-block;
   padding: 10px;
   color: #012D6B;
@@ -455,45 +459,53 @@ footer {
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
 }
-.main__form article .main__form-title .main__form-btn__container {
+.main__form article .main__form-title .main__form-btn__container,
+.mypage__form article .main__form-title .main__form-btn__container {
   display: inline;
   float: right;
   font-size: 0.8rem;
   z-index: 2;
   margin-top: 3px;
 }
-.main__form article .main__form-title .main__form-btn__container a {
+.main__form article .main__form-title .main__form-btn__container a,
+.mypage__form article .main__form-title .main__form-btn__container a {
   background-color: #012D6B;
   color: white;
   padding: 6px 18px;
 }
-.main__form article .main__form-title .main__form-btn__container a:first-child {
+.main__form article .main__form-title .main__form-btn__container a:first-child,
+.mypage__form article .main__form-title .main__form-btn__container a:first-child {
   margin-right: 10px;
 }
-.main__form article .main__form-title .main__form-btn__container a:first-child:hover {
+.main__form article .main__form-title .main__form-btn__container a:first-child:hover,
+.mypage__form article .main__form-title .main__form-btn__container a:first-child:hover {
   color: #012D6B;
   border: 1px solid #012D6B;
   background-color: transparent;
   transition: all 0.3s linear;
 }
-.main__form article .main__form-title .main__form-btn__container a:last-child {
+.main__form article .main__form-title .main__form-btn__container a:last-child,
+.mypage__form article .main__form-title .main__form-btn__container a:last-child {
   background-color: transparent;
   color: #f8981c;
   border: 1px solid #f8981c;
 }
-.main__form article .main__form-title .main__form-btn__container a:last-child:hover {
+.main__form article .main__form-title .main__form-btn__container a:last-child:hover,
+.mypage__form article .main__form-title .main__form-btn__container a:last-child:hover {
   background-color: #f8981c;
   color: white;
   transition: all 0.3s linear;
 }
-.main__form article h6 {
+.main__form article h6,
+.mypage__form article h6 {
   margin-bottom: 10px;
   padding: 10px;
   font-size: 0.9rem;
   font-weight: 600;
   color: #808080;
 }
-.main__form article input {
+.main__form article input,
+.mypage__form article input {
   margin-top: 15px;
   padding: 15px;
   border-radius: 0;
@@ -504,10 +516,12 @@ footer {
   box-sizing: border-box;
   width: 100%;
 }
-.main__form article input:focus {
+.main__form article input:focus,
+.mypage__form article input:focus {
   border-color: #f8981c;
 }
-.main__form article button {
+.main__form article button,
+.mypage__form article button {
   width: 100%;
   padding: 15px 0px;
   box-sizing: border-box;
@@ -518,10 +532,12 @@ footer {
   font-size: 1rem;
   transition: all 0.25s linear;
 }
-.main__form article button:hover {
+.main__form article button:hover,
+.mypage__form article button:hover {
   opacity: 0.9;
 }
-.main__form article img {
+.main__form article img,
+.mypage__form article img {
   width: 100%;
   height: auto;
   cursor: pointer;
@@ -644,21 +660,6 @@ footer {
   font-weight: 600;
 }
 
-.test {
-  height: 200px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  color: #012D6B;
-}
-.test p {
-  margin: 10px 0;
-}
-.test p:first-child {
-  font-size: 2rem;
-}
-
 /*input 은 숨겨주기*/
 input#saveUserInfo {
   display: none;
@@ -714,4 +715,75 @@ select {
 
 select::-ms-expand {
   display: none;
+}
+
+.mypage__form {
+  padding: 20px 0px;
+}
+.mypage__form .userInfo {
+  border-bottom: 1px solid #eee;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+.mypage__form .userInfo h2 {
+  color: black;
+  font-size: 1.7rem;
+  margin: 35px 0;
+  font-weight: 500;
+  text-align: center;
+}
+.mypage__form .userInfo div {
+  display: grid;
+  grid-template-columns: 20% 80%;
+  margin-bottom: 10px;
+}
+.mypage__form .userStockInfo {
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+}
+.mypage__form .userStockInfo h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+.mypage__form .userStockInfo div {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  font-size: 0.9rem;
+}
+.mypage__form .userStockInfo div span {
+  padding: 5px 0;
+}
+.mypage__form .userMenuInfo {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin: 20px 0 0 0;
+}
+.mypage__form .userMenuInfo a {
+  padding: 15px 0;
+  color: white;
+  text-align: center;
+  background-color: #012D6B;
+}
+
+.password .main__form-title {
+  margin-bottom: 5px;
+}
+.password .main__form-title .main__form-btn__container a {
+  background-color: #012D6B !important;
+  border: 0 !important;
+  color: white !important;
+}
+.password .main__form-title .main__form-btn__container a:hover {
+  color: #012D6B !important;
+  border: 1px solid #012D6B !important;
+  background-color: transparent !important;
+  transition: all 0.3s linear !important;
+}
+.password input {
+  margin: 10px 0 !important;
+}
+.password button {
+  margin-top: 5px;
 }

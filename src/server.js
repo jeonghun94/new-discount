@@ -59,14 +59,14 @@ export const executeUpdate = async (query) => {
   }
 };
 
-console.log(process.env.IMAGE_SERVER_ADDRESS);
-console.log(process.env.IMAGE_SERVER_PORT);
-console.log(process.env.MAX_CNT);
-console.log(process.env.FREE_CNT);
-console.log(process.env.PAY_CNT);
-console.log(process.env.SHOP_DUPLICATION);
-console.log(process.env.TIME_LIMIT_USE);
-console.log(process.env.TIME_LIMIT_MINUTE);
+// console.log(process.env.IMAGE_SERVER_ADDRESS);
+// console.log(process.env.IMAGE_SERVER_PORT);
+// console.log(process.env.MAX_CNT);
+// console.log(process.env.FREE_CNT);
+// console.log(process.env.PAY_CNT);
+// console.log(process.env.SHOP_DUPLICATION);
+// console.log(process.env.TIME_LIMIT_USE);
+// console.log(process.env.TIME_LIMIT_MINUTE);
 
 app.set("view engine", "pug");
 app.set("views", process.cwd() + "/src/views");

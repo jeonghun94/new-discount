@@ -72,11 +72,16 @@ export const logout = (req, res) => {
 };
 
 export const password = (req, res) => {
-  res.send("비밀번호");
+  res.render("user/password", { pageTitle: "암호 변경" });
 };
 
-export const mypage = (req, res) => {
-  res.send("마이페이지");
+export const mypage = async (req, res) => {
+  const { shopCode } = req.session.user;
+  const userInfo = req.session.user;
+  const result = await executeQuery(
+    LOCALS_QUERY.USER_COUPON_STOCK_INFO(shopCode)
+  );
+  res.render("user/mypage", { pageTitle: "마이 페이지", result, userInfo });
 };
 
 export const searchInCar = async (req, res) => {

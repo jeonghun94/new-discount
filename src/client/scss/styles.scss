@@ -310,7 +310,8 @@ footer {
   }
 }
 
-.main__form {
+.main__form,
+.mypage__form {
   width: 90%;
   margin: 40px 0 20px 0;
   border-top: 2px solid $main;
@@ -556,21 +557,6 @@ footer {
   }
 }
 
-.test {
-  height: 200px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  color: $main;
-  p {
-    margin: 10px 0;
-    &:first-child {
-      font-size: 2rem;
-    }
-  }
-}
-
 /*input 은 숨겨주기*/
 input#saveUserInfo {
   display: none;
@@ -622,4 +608,94 @@ select {
 
 select::-ms-expand {
   display: none;
+}
+
+//마이페이지
+.mypage__form {
+  padding: 20px 0px;
+  .userInfo {
+    border-bottom: 1px solid #eee;
+    font-size: 0.9rem;
+    opacity: 0.9;
+
+    h2 {
+      color: black;
+      font-size: 1.7rem;
+      margin: 35px 0;
+      font-weight: 500;
+      text-align: center;
+    }
+
+    div {
+      display: grid;
+      grid-template-columns: 20% 80%;
+      margin-bottom: 10px;
+
+      span {
+        &:first-child {
+          // color: #555;
+        }
+      }
+    }
+  }
+
+  .userStockInfo {
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+    h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+
+    div {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      font-size: 0.9rem;
+      span {
+        padding: 5px 0;
+      }
+    }
+  }
+
+  .userMenuInfo {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin: 20px 0 0 0;
+
+    a {
+      padding: 15px 0;
+      color: white;
+      text-align: center;
+      background-color: $main;
+    }
+  }
+}
+
+//암호 변경
+.password {
+  .main__form-title {
+    margin-bottom: 5px;
+    .main__form-btn__container {
+      a {
+        background-color: $main !important;
+        border: 0 !important;
+        color: white !important;
+
+        &:hover {
+          color: $main !important;
+          border: 1px solid $main !important;
+          background-color: transparent !important;
+          transition: all 0.3s linear !important;
+        }
+      }
+    }
+  }
+  input {
+    margin: 10px 0 !important;
+  }
+  button {
+    margin-top: 5px;
+  }
 }

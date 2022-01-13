@@ -3,7 +3,13 @@ export const LOCALS_QUERY = {
                                 FROM   ps130
                                 WHERE  id = '${id}'
                                     AND pwd = '${pw}'`,
-
+  USER_COUPON_STOCK_INFO: (shopCode) => `SELECT a.DcName,
+                                        b.Stock
+                                FROM   ps132 a
+                                      LEFT OUTER JOIN ps135 b
+                                                    ON a.coupontype = b.coupontype
+                                WHERE  b.shopcode = '${shopCode}'
+                                      AND a.paytype = '02' `,
   SEARCH_IN_CAR: () => `SELECT TOP (10)*
                         FROM   ps500
                         WHERE  procdate = CONVERT(CHAR(8), Getdate(), 112)
