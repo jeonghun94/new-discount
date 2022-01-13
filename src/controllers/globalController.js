@@ -1,5 +1,5 @@
 import { LOCALS_QUERY, QUERY } from "../../query";
-import { executeQuery } from "../server";
+import { executeQuery, executeUpdate } from "../server";
 
 const cookieConfig = {
   httpOnly: true,
@@ -71,8 +71,32 @@ export const logout = (req, res) => {
   res.redirect("/");
 };
 
-export const password = (req, res) => {
-  res.render("user/password", { pageTitle: "암호 변경" });
+export const password = async (req, res) => {
+  const {
+    method,
+    body: { oldPassword, newPassword },
+    session: {
+      user: { shopCode, pwd },
+    },
+  } = req;
+
+  if (method === "GET") {
+    res.render("user/password", { pageTitle: "암호 변경" });
+  } else if (method === "PUT") {
+    if (oldPassword !== pwd) {
+      res.send(
+        JSON.stringify({ result: "fail", msg: "비밀번호가 일치하지 않습니다." })
+      );
+    }
+    console.log(pwd);
+    console.log(oldPassword);
+    console.log(newPassword);
+    console.log(shopCode);
+
+    // await executeUpdate(LOCALS_QUERY.UPDATE_PASSWORD(shopCode, newPassword));
+    const result = await executeQuery(LOCALS_QUERY.SEARCH_IN_CAR());
+    res.send({ result });
+  }
 };
 
 export const mypage = async (req, res) => {
@@ -86,10 +110,6 @@ export const mypage = async (req, res) => {
 
 export const searchInCar = async (req, res) => {
   const result = await executeQuery(LOCALS_QUERY.SEARCH_IN_CAR());
-
-  // result.map((x, idx) => {
-  //   console.log(`${idx}: ${x.inCarNo}`);
-  // });
 
   res.send({ result });
 };

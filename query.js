@@ -10,6 +10,11 @@ export const LOCALS_QUERY = {
                                                     ON a.coupontype = b.coupontype
                                 WHERE  b.shopcode = '${shopCode}'
                                       AND a.paytype = '02' `,
+  USER_PASSWORD_UPDATE: (shopCode, newPassword) => `UPDATE ps130
+                                                    SET pwd = '${newPassword}',
+                                                        updpgm = 'WEB',
+                                                        upddate = (select convert(varchar, GETDATE(),120))
+                                                    WHERE shopcode = '${shopCode}'`,
   SEARCH_IN_CAR: () => `SELECT TOP (10)*
                         FROM   ps500
                         WHERE  procdate = CONVERT(CHAR(8), Getdate(), 112)
