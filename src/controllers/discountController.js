@@ -1,4 +1,4 @@
-import { DISCOUNT_QUERY, LOCALS_QUERY } from "../../query";
+import { DISCOUNT_QUERY, LOCALS_QUERY } from "../query";
 import { executeQuery, executeUpdate } from "../server";
 
 export const searchInCarNo = async (req, res) => {

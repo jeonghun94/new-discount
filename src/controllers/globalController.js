@@ -1,5 +1,5 @@
 import { escapeRegExp } from "lodash";
-import { LOCALS_QUERY, QUERY } from "../../query";
+import { LOCALS_QUERY, QUERY } from "../query";
 import { executeQuery, executeUpdate } from "../server";
 
 const cookieConfig = {

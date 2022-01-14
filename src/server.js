@@ -7,7 +7,7 @@ import globalRouter from "./routers/globalRouter";
 import discountRouter from "./routers/discountRouter";
 import sql from "mssql";
 import cron from "node-cron";
-import { camelizeKeys } from "../util";
+import { camelizeKeys } from "./util";
 
 const app = express();
 const logger = morgan("dev");
