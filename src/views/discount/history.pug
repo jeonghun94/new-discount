@@ -1,0 +1,21 @@
+extends ../base
+block content 
+        section.main__form                            
+            article#searchArticle
+                    .main__form-title 
+                        span 할인내역
+                        .main__form-btn__container
+                            a(href="javascript:;" id="preBtn" ) 이전
+                            a(href="/") 엑셀
+                    .main__form-date 
+                        //- p 시작일
+                        //- p 종료일
+                        input(id="calender")
+                        input(type="date" value="2022-01-01")
+                    input(type="text" maxlength="4" name="차량번호" placeholder="ex) 차량번호 4자리(선택사항)" id="inCarNo")
+                    button(type="button" id="searchBtn") 조회
+                    div(id="listDiv")
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        script(src="/static/js/discount.js") 
+        include ../partials/footer

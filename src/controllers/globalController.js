@@ -1,3 +1,4 @@
+import { escapeRegExp } from "lodash";
 import { LOCALS_QUERY, QUERY } from "../../query";
 import { executeQuery, executeUpdate } from "../server";
 
@@ -84,18 +85,24 @@ export const password = async (req, res) => {
     res.render("user/password", { pageTitle: "암호 변경" });
   } else if (method === "PUT") {
     if (oldPassword !== pwd) {
+      res.status(400);
       res.send(
-        JSON.stringify({ result: "fail", msg: "비밀번호가 일치하지 않습니다." })
+        JSON.stringify({
+          result: "fail",
+          msg: "현재 비밀번호가 일치하지 않습니다.",
+        })
       );
+    } else {
+      try {
+        await executeUpdate(
+          LOCALS_QUERY.USER_PASSWORD_UPDATE(shopCode, newPassword)
+        );
+        res.status(200);
+        res.send(JSON.stringify({ result: "success" }));
+      } catch (error) {
+        res.send(JSON.stringify({ result: "fail", msg: "DB 실행 오류" }));
+      }
     }
-    console.log(pwd);
-    console.log(oldPassword);
-    console.log(newPassword);
-    console.log(shopCode);
-
-    // await executeUpdate(LOCALS_QUERY.UPDATE_PASSWORD(shopCode, newPassword));
-    const result = await executeQuery(LOCALS_QUERY.SEARCH_IN_CAR());
-    res.send({ result });
   }
 };
 

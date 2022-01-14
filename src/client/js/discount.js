@@ -356,11 +356,15 @@ inCarNo.addEventListener("keyup", function (e) {
 });
 
 window.onload = function () {
-  console.log(process.env.IMAGE_SERVER_ADDRESS);
-  console.log(process.env.IMAGE_SERVER_PORT);
+  // console.log(process.env.IMAGE_SERVER_ADDRESS);
+  // console.log(process.env.IMAGE_SERVER_PORT);
   inCarNo.focus();
   CRUD_ARTICLE.style.display = "none";
 
   const footer = document.querySelector("footer");
   footer.addEventListener("click", searchInCarT);
+
+  if (window.location.pathname === "/discount/history") {
+    flatpickr(document.querySelector("#calender"));
+  }
 };

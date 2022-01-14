@@ -53,10 +53,10 @@ function userPasswordUpdate() {
         .then((data) => {
           console.log(data);
           if (data.result === "success") {
-            alert("비밀번호가 변경되었습니다.");
-            window.location.href = "/";
+            alert("비밀번호가 변경되었습니다.\n다시 로그인해주세요.");
+            window.location.href = "/logout";
           } else {
-            alert("비밀번호 변경에 실패하였습니다.", `사유: ${data.msg}`);
+            alert(`비밀번호 변경에 실패하였습니다.\n사유: ${data.msg}`);
             return false;
           }
         });

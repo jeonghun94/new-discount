@@ -56,5 +56,5 @@ export const main = async (req, res) => {
 };
 
 export const history = (req, res) => {
-  res.send("할인내역");
+  res.render("discount/history", { pageTitle: "할인 내역" });
 };

@@ -163,7 +163,7 @@ body {
 main {
   width: 90%;
   margin: 40px 0 20px 0;
-  border-top: 2px solid #012D6B;
+  border-top: 2px solid #012d6b;
   padding: 10px 0px;
   align-self: center;
   box-sizing: border-box;
@@ -173,9 +173,9 @@ main {
 
 header {
   width: 100%;
-  height: 70px;
+  height: auto;
   display: flex;
-  padding: 0px 33px;
+  padding: 25px 33px;
   box-sizing: border-box;
   justify-content: center;
   align-items: center;
@@ -189,13 +189,21 @@ nav {
   justify-content: space-between;
 }
 nav a {
-  color: #012D6B;
+  color: #012d6b;
   font-size: 20px;
   font-weight: 500;
 }
 nav div:last-child {
   color: #f8981c;
   font-size: 16px;
+}
+
+.dropbtn {
+  color: #f8981c;
+  background-color: transparent;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
 }
 
 .dropdown {
@@ -206,34 +214,27 @@ nav div:last-child {
 .dropdown-content {
   display: none;
   position: absolute;
-  top: 20px;
+  background-color: white;
   right: -10px;
-  background-color: #f9f9f9;
-  min-width: 160px;
+  min-width: 170px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  z-index: 10;
-  color: #012D6B;
+  z-index: 1;
 }
+
 .dropdown-content a {
-  color: #012D6B !important;
-  padding: 15px 20px;
-  font-size: 14px !important;
+  color: #012d6b;
+  padding: 12px 16px;
+  font-size: 0.9rem;
   text-decoration: none;
   display: block;
 }
-.dropdown-content a i {
-  margin-right: 5px;
-}
-.dropdown-content div:hover {
+
+.dropdown-content a:hover {
   background-color: #f1f1f1;
 }
 
 .dropdown:hover .dropdown-content {
   display: block;
-}
-
-.dropdown:hover .dropbtn {
-  background-color: #3e8e41;
 }
 
 .footer-container {
@@ -274,7 +275,7 @@ footer {
   cursor: pointer;
   width: 100%;
   margin-bottom: 20px;
-  background-color: #012D6B;
+  background-color: #012d6b;
   padding: 20px;
   color: #fff;
   font-size: 16px;
@@ -290,7 +291,7 @@ footer {
 
 #target {
   height: 100px;
-  background-color: #012D6B;
+  background-color: #012d6b;
   opacity: 0;
 }
 
@@ -326,7 +327,7 @@ footer {
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #012D6B;
+  color: #012d6b;
   margin: 30px 0;
   width: 70px;
   height: 70px;
@@ -371,7 +372,7 @@ footer {
 .login__logo h1 {
   font-size: 2.2rem;
   font-weight: 700;
-  color: #012D6B;
+  color: #012d6b;
 }
 
 .login__form {
@@ -408,7 +409,7 @@ footer {
   padding: 15px 0px;
   border-radius: 0;
   border-color: transparent;
-  background-color: #012D6B;
+  background-color: #012d6b;
   color: white;
   font-size: 1.3rem;
   transition: all 0.25s linear;
@@ -427,7 +428,7 @@ footer {
 .mypage__form {
   width: 90%;
   margin: 40px 0 20px 0;
-  border-top: 2px solid #012D6B;
+  border-top: 2px solid #012d6b;
   padding: 15px 0px;
   align-self: center;
   box-sizing: border-box;
@@ -451,7 +452,7 @@ footer {
 .mypage__form article .main__form-title span {
   display: inline-block;
   padding: 10px;
-  color: #012D6B;
+  color: #012d6b;
   font-size: 0.9rem;
   font-weight: 600;
   border: 1px solid #eee;
@@ -469,7 +470,7 @@ footer {
 }
 .main__form article .main__form-title .main__form-btn__container a,
 .mypage__form article .main__form-title .main__form-btn__container a {
-  background-color: #012D6B;
+  background-color: #012d6b;
   color: white;
   padding: 6px 18px;
 }
@@ -479,8 +480,8 @@ footer {
 }
 .main__form article .main__form-title .main__form-btn__container a:first-child:hover,
 .mypage__form article .main__form-title .main__form-btn__container a:first-child:hover {
-  color: #012D6B;
-  border: 1px solid #012D6B;
+  color: #012d6b;
+  border: 1px solid #012d6b;
   background-color: transparent;
   transition: all 0.3s linear;
 }
@@ -495,6 +496,18 @@ footer {
   background-color: #f8981c;
   color: white;
   transition: all 0.3s linear;
+}
+.main__form article .main__form-date,
+.mypage__form article .main__form-date {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  margin-bottom: -15px;
+  gap: 20px;
+}
+.main__form article .main__form-date:first-child,
+.mypage__form article .main__form-date:first-child {
+  gap: 0;
+  margin-bottom: 0;
 }
 .main__form article h6,
 .mypage__form article h6 {
@@ -527,7 +540,7 @@ footer {
   box-sizing: border-box;
   border-radius: 0;
   border-color: transparent;
-  background-color: #012D6B;
+  background-color: #012d6b;
   color: white;
   font-size: 1rem;
   transition: all 0.25s linear;
@@ -595,7 +608,7 @@ footer {
   width: 30%;
   display: flex;
   justify-content: center;
-  color: #012D6B !important;
+  color: #012d6b !important;
   font-size: 1.1rem !important;
   font-weight: 600;
   margin-top: 5px;
@@ -603,7 +616,7 @@ footer {
 .coupon__container .coupon__container-type select {
   width: 70%;
   padding: 18px 10px;
-  background-color: #012D6B;
+  background-color: #012d6b;
   border: 0;
   color: white;
   font-size: 1.2rem;
@@ -620,14 +633,14 @@ footer {
   justify-content: center;
   padding: 10px;
   box-sizing: border-box;
-  background-color: #012D6B;
+  background-color: #012d6b;
   color: white;
 }
 .discount__container .discount__info-container {
   display: flex;
   padding: 5px 10px;
   margin-bottom: 5px;
-  border: 1px solid #012D6B;
+  border: 1px solid #012d6b;
 }
 .discount__container .discount__info-container .discount__info {
   width: 80%;
@@ -649,7 +662,7 @@ footer {
   justify-content: center;
   align-items: center;
   padding: 100px 30px;
-  color: #012D6B;
+  color: #012d6b;
   gap: 40px;
 }
 .nodata__container i {
@@ -693,7 +706,7 @@ input#saveUserInfo:checked + label:before {
   font-weight: 900;
   /*폰트어썸 설정*/
   color: #fff;
-  background-color: #012D6B;
+  background-color: #012d6b;
   border-color: transparent;
   border-radius: 4px;
   font-size: 13px;
@@ -764,20 +777,20 @@ select::-ms-expand {
   padding: 15px 0;
   color: white;
   text-align: center;
-  background-color: #012D6B;
+  background-color: #012d6b;
 }
 
 .password .main__form-title {
   margin-bottom: 5px;
 }
 .password .main__form-title .main__form-btn__container a {
-  background-color: #012D6B !important;
+  background-color: #012d6b !important;
   border: 0 !important;
   color: white !important;
 }
 .password .main__form-title .main__form-btn__container a:hover {
-  color: #012D6B !important;
-  border: 1px solid #012D6B !important;
+  color: #012d6b !important;
+  border: 1px solid #012d6b !important;
   background-color: transparent !important;
   transition: all 0.3s linear !important;
 }
