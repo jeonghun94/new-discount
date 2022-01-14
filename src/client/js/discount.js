@@ -29,9 +29,9 @@ function backToSearch() {
 }
 
 //조히내역 없음
-function nodata(container) {
-  const noDataContainer = document.createElement("div");
-  noDataContainer.classList.add("nodata__container");
+function notFound(container) {
+  const notFoundContainer = document.createElement("div");
+  notFoundContainer.classList.add("nodata__container");
 
   const icon = document.createElement("i");
   icon.classList.add("fas", "fa-exclamation");
@@ -39,10 +39,10 @@ function nodata(container) {
   const p = document.createElement("p");
   p.innerText = "조회된 내역이 없습니다.";
 
-  noDataContainer.appendChild(icon);
-  noDataContainer.appendChild(p);
+  notFoundContainer.appendChild(icon);
+  notFoundContainer.appendChild(p);
 
-  container.append(noDataContainer);
+  container.append(notFoundContainer);
 }
 
 //차량조회 리스트 추가
@@ -88,7 +88,7 @@ function appendSearchList(result) {
       LIST_DIV.append(container);
     }
   } else {
-    nodata(LIST_DIV);
+    notFound(LIST_DIV);
   }
 
   const searchInCarByInSeqNo = document.querySelectorAll(".search__container");
@@ -230,20 +230,7 @@ function discountList(list, inSeqNo) {
       DISCOUNT_CONTAINER.append(discountInfoContainer);
     });
   } else {
-    // const noDataContainer = document.createElement("div");
-    // noDataContainer.classList.add("nodata__container");
-
-    // const icon = document.createElement("i");
-    // icon.classList.add("fas", "fa-exclamation");
-
-    // const p = document.createElement("p");
-    // p.innerText = "조회된 내역이 없습니다.";
-
-    // noDataContainer.appendChild(icon);
-    // noDataContainer.appendChild(p);
-
-    // DISCOUNT_CONTAINER.append(noDataContainer);
-    nodata(DISCOUNT_CONTAINER);
+    notFound(DISCOUNT_CONTAINER);
   }
 }
 
@@ -282,6 +269,8 @@ function couponList(list, text) {
 
       if (couponType !== "00" && confirm(`할인권을 등록하시겠습니까?`)) {
         insertList(inSeqNo, couponType);
+      } else {
+        document.querySelector("select").value = "00";
       }
     });
 

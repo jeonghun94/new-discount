@@ -673,12 +673,6 @@ select::-ms-expand {
       display: grid;
       grid-template-columns: 20% 80%;
       margin-bottom: 10px;
-
-      span {
-        &:first-child {
-          // color: #555;
-        }
-      }
     }
   }
 
