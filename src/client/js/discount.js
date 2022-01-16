@@ -172,6 +172,7 @@ function searchInSeqNo(inSeqNo, cloneNode) {
 
       //할인권 리스트 추가
       couponList(freeCouponList, "무료");
+      couponList(payCouponList, "무료");
       couponList(payCouponList, "유료");
       couponInvalid();
 
