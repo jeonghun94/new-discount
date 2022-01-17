@@ -2,7 +2,7 @@ import express from "express";
 import morgan from "morgan";
 import session from "express-session";
 import cookieParser from "cookie-parser";
-import { localsVariable, protectorMiddleware } from "./middleware";
+import { localsVariable } from "./middleware";
 import globalRouter from "./routers/globalRouter";
 import discountRouter from "./routers/discountRouter";
 import sql from "mssql";
@@ -16,7 +16,6 @@ const config = {
   user: "sa",
   password: "key0123",
   server: "smcity.iptime.org",
-  // server: "localhost",
   database: "PCMS",
   stream: true,
   encrypt: false,
@@ -35,7 +34,15 @@ pool.on("error", (err) => {
 });
 
 cron.schedule("*/10 * * * * *", function () {
-  console.log("executing cron");
+  for (let i = 1; i <= process.env.CCTV_CNT; i++) {
+    new Stream({
+      streamUrl: `rtsp://${process.env.CCTV_ID}:${process.env.CCTV_PW}@${process.env.CCTV_IP}:901${i}/Streaming/Channels/102/?transportmode=unicast`,
+      wsPort: 9000 + i,
+    });
+
+    console.log(`${i}번 CCTV 시작`);
+  }
+  console.log("cron 시작");
 });
 
 export const executeQuery = async (query) => {
@@ -84,18 +91,10 @@ app.use(
   })
 );
 
-// app.use((req, res, next) => {
-//   req.sessionStore.all((error, sessions) => {
-//     console.log(sessions);
-//     next();
-//   });
-// });
-
+app.use(localsVariable);
 app.use("/static", express.static("assets"));
 app.use("/client", express.static("src/client"));
-app.use(localsVariable);
 app.use("/", globalRouter);
-app.use(protectorMiddleware);
 app.use("/discount", discountRouter);
 
 export default app;

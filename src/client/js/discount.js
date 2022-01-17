@@ -172,7 +172,6 @@ function searchInSeqNo(inSeqNo, cloneNode) {
 
       //할인권 리스트 추가
       couponList(freeCouponList, "무료");
-      couponList(payCouponList, "무료");
       couponList(payCouponList, "유료");
       couponInvalid();
 
@@ -194,7 +193,6 @@ function discountList(list, inSeqNo) {
       const discountInfoContainer = document.createElement("div");
       discountInfoContainer.classList.add("discount__info-container");
       discountInfoContainer.dataset.idx = x.idx;
-      console.log(x.idx);
 
       const discountInfo = document.createElement("div");
       discountInfo.classList.add("discount__info");
@@ -271,7 +269,7 @@ function couponList(list, text) {
       if (couponType !== "00" && confirm(`할인권을 등록하시겠습니까?`)) {
         insertList(inSeqNo, couponType);
       } else {
-        document.querySelector("select").value = "00";
+        resetSelect();
       }
     });
 
@@ -287,6 +285,13 @@ function couponList(list, text) {
 
     COUPON_CONTAINER.append(type);
   }
+}
+
+function resetSelect() {
+  const select = document.querySelectorAll("select");
+  select.forEach((x) => {
+    x.value = "00";
+  });
 }
 
 //할인권 삭제
@@ -326,7 +331,7 @@ function insertList(inSeqNo, couponType) {
       .then((data) => {
         if (data.result) {
           DISCOUNT_CONTAINER.innerHTML = "";
-          document.querySelector("select").value = "00";
+          resetSelect();
           discountList(data.list, inSeqNo);
         }
       })

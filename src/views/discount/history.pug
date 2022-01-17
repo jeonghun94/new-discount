@@ -10,12 +10,26 @@ block content
                     .main__form-date 
                         //- p 시작일
                         //- p 종료일
-                        input(id="calender")
-                        input(type="date" value="2022-01-01")
+                        input(type="text" id="start")
+                        input(type="text" id="end")
                     input(type="text" maxlength="4" name="차량번호" placeholder="ex) 차량번호 4자리(선택사항)" id="inCarNo")
                     button(type="button" id="searchBtn") 조회
                     div(id="listDiv")
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+        link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css")
+        script(src="https://cdn.jsdelivr.net/npm/flatpickr") 
+        script(src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/rangePlugin.js") 
+        script(src="https://npmcdn.com/flatpickr/dist/flatpickr.min.js") 
+        script(src="https://npmcdn.com/flatpickr/dist/l10n/ko.js") 
+        script.
+            flatpickr.localize(flatpickr.l10ns.ko);
+
+            flatpickr("#start", {
+                local: 'ko',
+                mode:'range',
+                defaultDate:  ['today','today'],
+                plugins: [new rangePlugin({ input: "#end"})]
+            });
+
         script(src="/static/js/discount.js") 
         include ../partials/footer
