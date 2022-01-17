@@ -55,6 +55,25 @@ export const main = async (req, res) => {
   res.render("discount/main", { pageTitle: "할인 등록" });
 };
 
-export const history = (req, res) => {
-  res.render("discount/history", { pageTitle: "할인 내역" });
+export const history = async (req, res) => {
+  const {
+    method,
+    body: { startDate, endDate, inCarNo },
+  } = req;
+
+  if (method === "POST") {
+    const obj = {
+      startDate,
+      endDate,
+      inCarNo,
+      shopCode: req.session.user.shopCode,
+    };
+
+    const result = await executeQuery(
+      DISCOUNT_QUERY.SEARCH_DISCOUNT_HISTORY(obj)
+    );
+    res.send({ result });
+  } else {
+    res.render("discount/history", { pageTitle: "할인 내역" });
+  }
 };

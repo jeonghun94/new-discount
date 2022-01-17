@@ -98,6 +98,33 @@ export const DISCOUNT_QUERY = {
                     '${obj.shopCode}',
                     '${obj.couponType}',
                     '0')
-  `;
+      `;
+  },
+  SEARCH_DISCOUNT_HISTORY: (obj) => {
+    obj.startDate = obj.startDate.replace(/-/g, "");
+    obj.endDate = obj.endDate.replace(/-/g, "");
+    obj.inCarNo =
+      obj.inCarNo === undefined ? "" : `AND a.incarno LIKE '%${obj.inCarNo}%'`;
+    return `SELECT a.InCarNo, 
+                  b.DcName, 
+                  d.dcode_name as DcodeName,
+                  CONVERT(DATETIME, c.procdate + ' ' + STUFF(STUFF(c.proctime, 3, 0, ':'), 6, 0, ':'), 120) as DcTime,
+                  CONVERT(DATETIME, a.procdate + ' ' + STUFF(STUFF(a.proctime, 3, 0, ':'), 6, 0, ':'), 120) as InTime,
+                  CONVERT(DATETIME, e.procdate + ' ' + STUFF(STUFF(e.proctime, 3, 0, ':'), 6, 0, ':'), 120) as OutTime
+            FROM   ps500 a 
+                  LEFT OUTER JOIN ps134 c  
+                                ON a.inseqno = c.inseqno  
+                  LEFT OUTER JOIN ps132 b 
+                                ON c.coupontype = b.coupontype  
+                  LEFT OUTER JOIN ps011 d 
+                                ON b.paytype = '0' + d.dcode_seq  
+                                  AND d.mcode = 'z01' 
+                  LEFT OUTER JOIN ps510 e 
+                                ON a.inseqno = e.inseqno  
+            WHERE c.procdate+c.ProcTime BETWEEN '${obj.startDate}'+'000000' AND '${obj.endDate}'+'235959'
+                  AND c.shopcode = '${obj.shopCode}' 
+                  ${obj.inCarNo}
+            ORDER  BY c.procdate DESC, 
+                      c.proctime DESC`;
   },
 };

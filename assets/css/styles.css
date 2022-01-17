@@ -148,13 +148,13 @@ body {
   background-color: #f6f6f6;
   display: flex;
   flex-direction: column;
+  font-size: 16px;
 }
 
 @media only screen and (min-width: 1024px) {
   body {
     margin: 0px auto;
     width: 25%;
-    font-size: 16px;
     top: auto;
     left: auto;
     position: relative;
@@ -733,19 +733,22 @@ select::-ms-expand {
 .mypage__form {
   padding: 20px 0px;
 }
-.mypage__form .userInfo {
+.mypage__form .userInfo,
+.mypage__form .dchistory__container {
   border-bottom: 1px solid #eee;
   font-size: 0.9rem;
   opacity: 0.9;
 }
-.mypage__form .userInfo h2 {
+.mypage__form .userInfo h2,
+.mypage__form .dchistory__container h2 {
   color: black;
   font-size: 1.7rem;
   margin: 35px 0;
   font-weight: 500;
   text-align: center;
 }
-.mypage__form .userInfo div {
+.mypage__form .userInfo div,
+.mypage__form .dchistory__container div {
   display: grid;
   grid-template-columns: 20% 80%;
   margin-bottom: 10px;
@@ -799,4 +802,27 @@ select::-ms-expand {
 }
 .password button {
   margin-top: 5px;
+}
+
+.dchistory__container {
+  margin: 10px 0;
+  padding: 5px 10px;
+  border: 1px solid #012d6b;
+  border-radius: 2px;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+.dchistory__container h2 {
+  color: black;
+  font-size: 1.1rem;
+  margin: 10px 0;
+  font-weight: 600;
+}
+.dchistory__container div {
+  display: grid;
+  grid-template-columns: 20% 80%;
+  margin-bottom: 10px;
+}
+.dchistory__container div span:first-child {
+  opacity: 0.8;
 }

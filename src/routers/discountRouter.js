@@ -21,6 +21,10 @@ discountRouter
   .route("/search/inseqno")
   .all(protectorMiddleware)
   .post(searchInSeqNo);
-discountRouter.route("/history").all(protectorMiddleware).get(history);
+discountRouter
+  .route("/history")
+  .all(protectorMiddleware)
+  .get(history)
+  .post(history);
 
 export default discountRouter;

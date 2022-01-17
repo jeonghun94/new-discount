@@ -233,6 +233,69 @@ function discountList(list, inSeqNo) {
   }
 }
 
+function discountHistoryList(list) {
+  LIST_DIV.innerHTML = "";
+  if (list.length !== 0) {
+    list.map((x) => {
+      const history = document.createElement("div");
+      history.classList.add("dchistory__container");
+
+      const inCarNo = document.createElement("h2");
+      inCarNo.innerText = `${x.inCarNo}`;
+
+      const div1 = document.createElement("div");
+      const div2 = document.createElement("div");
+      const div3 = document.createElement("div");
+      const div4 = document.createElement("div");
+
+      const div1Title = document.createElement("span");
+      const div2Title = document.createElement("span");
+      const div3Title = document.createElement("span");
+      const div4Title = document.createElement("span");
+
+      div1Title.innerText = "할인종류";
+      div2Title.innerText = "할인일시";
+      div3Title.innerText = "입차일시";
+      div4Title.innerText = "출차일시";
+
+      const dcName = document.createElement("span");
+      dcName.innerText = `${x.dcName} 할인권`;
+
+      const dcTime = document.createElement("span");
+      dcTime.innerText = dateConvert(x.dcTime);
+
+      const inTime = document.createElement("span");
+      inTime.innerText = dateConvert(x.inTime);
+
+      const outTime = document.createElement("span");
+      outTime.innerText =
+        x.outTime === null ? "출차전" : dateConvert(x.outTime);
+
+      div1.append(div1Title);
+      div1.append(dcName);
+
+      div2.append(div2Title);
+      div2.append(dcTime);
+
+      div3.append(div3Title);
+      div3.append(inTime);
+
+      div4.append(div4Title);
+      div4.append(outTime);
+
+      history.append(inCarNo);
+      history.append(div1);
+      history.append(div2);
+      history.append(div3);
+      history.append(div4);
+
+      LIST_DIV.append(history);
+    });
+  } else {
+    notFound(LIST_DIV);
+  }
+}
+
 //무료권 혹 유료권 2개가 아닐시 명칭 변경
 function couponInvalid() {
   const coupon = document.querySelectorAll(".coupon__container-type");
@@ -339,27 +402,62 @@ function insertList(inSeqNo, couponType) {
   }
 }
 
-//이벤트 리스너
-preBtn.addEventListener("click", backToSearch);
-searchBtn.addEventListener("click", searchInCar);
+function history() {
+  const startDate = document.querySelector("#startDate").value;
+  const endDate = document.querySelector("#endDate").value;
+  const inCarNo = document.querySelector("#inCarNo").value;
 
-inCarNo.addEventListener("input", checkVal);
-inCarNo.addEventListener("keyup", function (e) {
-  if (window.event.keyCode == 13) {
-    searchInCar();
-  }
-});
+  fetch(`/discount/history`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      startDate,
+      endDate,
+      inCarNo,
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.result) {
+        discountHistoryList(data.result);
+      }
+    })
+    .catch((error) => console.log(error));
+}
+
+function dateConvert(date) {
+  console.log(date);
+  return `${date.substring(0, 10)} ${date.substring(11, 19)}`;
+}
 
 window.onload = function () {
   // console.log(process.env.IMAGE_SERVER_ADDRESS);
   // console.log(process.env.IMAGE_SERVER_PORT);
   inCarNo.focus();
-  CRUD_ARTICLE.style.display = "none";
 
   const footer = document.querySelector("footer");
   footer.addEventListener("click", searchInCarT);
+  inCarNo.addEventListener("input", checkVal);
 
+  // 경로에 따라 다른 페이지로 이동
   if (window.location.pathname === "/discount/history") {
-    flatpickr(document.querySelector("#calender"));
+    const historyBtn = document.querySelector("#historyBtn");
+    historyBtn.addEventListener("click", history);
+    inCarNo.addEventListener("keyup", function (e) {
+      if (window.event.keyCode == 13) {
+        history();
+      }
+    });
+  } else if (window.location.pathname === "/discount/main") {
+    CRUD_ARTICLE.style.display = "none";
+    //이벤트 리스너
+    preBtn.addEventListener("click", backToSearch);
+    searchBtn.addEventListener("click", searchInCar);
+
+    inCarNo.addEventListener("keyup", function (e) {
+      if (window.event.keyCode == 13) {
+        searchInCar();
+      }
+    });
   }
 };
