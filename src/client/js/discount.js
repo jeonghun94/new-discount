@@ -402,6 +402,7 @@ function insertList(inSeqNo, couponType) {
   }
 }
 
+// 웹 할인내역 추가
 function history() {
   const startDate = document.querySelector("#startDate").value;
   const endDate = document.querySelector("#endDate").value;
@@ -425,17 +426,22 @@ function history() {
     .catch((error) => console.log(error));
 }
 
+// 할인내역 엑셀 출력
 function historyExcel() {
+  const historyContainer = document.querySelectorAll(".dchistory__container");
   const startDate = document.querySelector("#startDate").value;
   const endDate = document.querySelector("#endDate").value;
   const inCarNo = document.querySelector("#inCarNo").value;
 
-  fetch(`/excel?startDate=${startDate}&endDate=${endDate}&inCarNo=${inCarNo}`, {
-    method: "GET",
-  }).catch((error) => console.log(error));
+  if (historyContainer.length === 0) {
+    alert("내려받을 내용이 없습니다.");
+  } else {
+    location.href = `/excel?startDate=${startDate}&endDate=${endDate}&inCarNo=${inCarNo}`;
+  }
 }
+
+// 조회 후 날짜 가공
 function dateConvert(date) {
-  console.log(date);
   return `${date.substring(0, 10)} ${date.substring(11, 19)}`;
 }
 
@@ -455,6 +461,7 @@ window.onload = function () {
 
     const historyBtn = document.querySelector("#historyBtn");
     historyBtn.addEventListener("click", history);
+
     inCarNo.addEventListener("keyup", function (e) {
       if (window.event.keyCode == 13) {
         history();

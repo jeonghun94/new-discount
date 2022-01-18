@@ -60,21 +60,50 @@ export const excel = async (req, res) => {
   const { startDate, endDate, inCarNo } = req.query;
 
   const obj = {
-    startDate: "2022-01-18",
-    endDate: "2022-01-18",
-    inCarNo: "",
+    startDate,
+    endDate,
+    inCarNo,
     shopCode: req.session.user.shopCode,
   };
 
+  const style = {
+    numFmt: "yyyy-mm-dd hh:mm:ss",
+    alignment: { horizontal: "left" },
+  };
+
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = ("0" + (date.getMonth() + 1)).slice(-2);
+  const day = ("0" + date.getDate()).slice(-2);
+
+  const today = `${year}.${month}.${day}`;
+
+  console.log(`${today} ${JSON.stringify(obj)}`);
+
   const workbook = new Workbook();
-  const worksheet = workbook.addWorksheet("My Sheet");
+  const worksheet = workbook.addWorksheet("할인내역");
 
   worksheet.columns = [
     { header: "차량번호", key: "inCarNo", width: 15 },
     { header: "할인종류", key: "dcName", width: 15 },
-    { header: "할인일시", key: "dcTime", width: 20 },
-    { header: "입차일시", key: "inTime", width: 20 },
-    { header: "출차일시", key: "outTime", width: 20 },
+    {
+      header: "할인일시",
+      key: "dcTime",
+      width: 20,
+      style,
+    },
+    {
+      header: "입차일시",
+      key: "inTime",
+      width: 20,
+      style,
+    },
+    {
+      header: "출차일시",
+      key: "outTime",
+      width: 20,
+      style,
+    },
   ];
 
   const result = await executeQuery(
@@ -86,7 +115,10 @@ export const excel = async (req, res) => {
   });
 
   res.setHeader("Content-Type", "application/vnd.openxmlformats");
-  res.setHeader("Content-Disposition", "attachment; filename=sdsds.xlsx");
+  res.setHeader(
+    "Content-Disposition",
+    `attachment; filename=${encodeURI("웹할인내역_")}${today}.xlsx`
+  );
 
   await workbook.xlsx.write(res);
 
