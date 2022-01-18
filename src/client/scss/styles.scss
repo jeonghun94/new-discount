@@ -749,9 +749,9 @@ select::-ms-expand {
 
   h2 {
     color: black;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     margin: 10px 0;
-    font-weight: 600;
+    font-weight: 700;
   }
 
   div {
@@ -762,6 +762,9 @@ select::-ms-expand {
     span {
       &:first-child {
         opacity: 0.8;
+      }
+      &:last-child {
+        font-weight: 500;
       }
     }
   }

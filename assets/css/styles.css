@@ -814,9 +814,9 @@ select::-ms-expand {
 }
 .dchistory__container h2 {
   color: black;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   margin: 10px 0;
-  font-weight: 600;
+  font-weight: 700;
 }
 .dchistory__container div {
   display: grid;
@@ -825,4 +825,7 @@ select::-ms-expand {
 }
 .dchistory__container div span:first-child {
   opacity: 0.8;
+}
+.dchistory__container div span:last-child {
+  font-weight: 500;
 }

@@ -1,5 +1,6 @@
 import { DISCOUNT_QUERY, LOCALS_QUERY } from "../query";
 import { executeQuery, executeUpdate } from "../server";
+import { ExcelJS, Workbook } from "exceljs";
 
 export const searchInCarNo = async (req, res) => {
   const { inCarNo } = req.body;
@@ -55,6 +56,43 @@ export const main = async (req, res) => {
   res.render("discount/main", { pageTitle: "할인 등록" });
 };
 
+export const excel = async (req, res) => {
+  const { startDate, endDate, inCarNo } = req.query;
+
+  const obj = {
+    startDate: "2022-01-18",
+    endDate: "2022-01-18",
+    inCarNo: "",
+    shopCode: req.session.user.shopCode,
+  };
+
+  const workbook = new Workbook();
+  const worksheet = workbook.addWorksheet("My Sheet");
+
+  worksheet.columns = [
+    { header: "차량번호", key: "inCarNo", width: 15 },
+    { header: "할인종류", key: "dcName", width: 15 },
+    { header: "할인일시", key: "dcTime", width: 20 },
+    { header: "입차일시", key: "inTime", width: 20 },
+    { header: "출차일시", key: "outTime", width: 20 },
+  ];
+
+  const result = await executeQuery(
+    DISCOUNT_QUERY.SEARCH_DISCOUNT_HISTORY(obj)
+  );
+
+  result.map((item) => {
+    worksheet.addRow(item);
+  });
+
+  res.setHeader("Content-Type", "application/vnd.openxmlformats");
+  res.setHeader("Content-Disposition", "attachment; filename=sdsds.xlsx");
+
+  await workbook.xlsx.write(res);
+
+  res.end();
+};
+
 export const history = async (req, res) => {
   const {
     method,
@@ -72,6 +110,7 @@ export const history = async (req, res) => {
     const result = await executeQuery(
       DISCOUNT_QUERY.SEARCH_DISCOUNT_HISTORY(obj)
     );
+
     res.send({ result });
   } else {
     res.render("discount/history", { pageTitle: "할인 내역" });

@@ -425,6 +425,15 @@ function history() {
     .catch((error) => console.log(error));
 }
 
+function historyExcel() {
+  const startDate = document.querySelector("#startDate").value;
+  const endDate = document.querySelector("#endDate").value;
+  const inCarNo = document.querySelector("#inCarNo").value;
+
+  fetch(`/excel?startDate=${startDate}&endDate=${endDate}&inCarNo=${inCarNo}`, {
+    method: "GET",
+  }).catch((error) => console.log(error));
+}
 function dateConvert(date) {
   console.log(date);
   return `${date.substring(0, 10)} ${date.substring(11, 19)}`;
@@ -441,6 +450,9 @@ window.onload = function () {
 
   // 경로에 따라 다른 페이지로 이동
   if (window.location.pathname === "/discount/history") {
+    const historyExcelBtn = document.querySelector("#historyExcelBtn");
+    historyExcelBtn.addEventListener("click", historyExcel);
+
     const historyBtn = document.querySelector("#historyBtn");
     historyBtn.addEventListener("click", history);
     inCarNo.addEventListener("keyup", function (e) {
