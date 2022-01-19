@@ -116,7 +116,13 @@ export const mypage = async (req, res) => {
 };
 
 export const searchInCar = async (req, res) => {
-  const result = await executeQuery(LOCALS_QUERY.SEARCH_IN_CAR());
+  const level = Number(req.session.user.authLevel);
+  console.log(level);
 
-  res.send({ result });
+  if (level === 1) {
+    const result = await executeQuery(LOCALS_QUERY.SEARCH_IN_CAR());
+    res.send({ result });
+  } else {
+    res.send({ result: [] });
+  }
 };

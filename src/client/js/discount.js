@@ -122,15 +122,16 @@ function searchInCarT() {
     .then((response) => response.json())
     .then((data) => {
       const { result } = data;
+      if (result.length > 0) {
+        const testInCarNo = result[0].inCarNo;
 
-      const testInCarNo = result[0].inCarNo;
+        inCarNo.value = testInCarNo.substring(
+          testInCarNo.length - 4,
+          testInCarNo.length
+        );
 
-      inCarNo.value = testInCarNo.substring(
-        testInCarNo.length - 4,
-        testInCarNo.length
-      );
-
-      searchBtn.click();
+        searchBtn.click();
+      }
     })
     .catch((error) => console.log(error));
 }

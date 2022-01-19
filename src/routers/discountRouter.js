@@ -7,11 +7,13 @@ import {
   deleteList,
   history,
   historyExcel,
+  main2,
 } from "../controllers/discountController";
 import { protectorMiddleware } from "../middleware";
 
 const discountRouter = express.Router();
 discountRouter.route("/main").all(protectorMiddleware).get(main);
+discountRouter.route("/main2").all(protectorMiddleware).get(main2);
 discountRouter
   .route("/list")
   .all(protectorMiddleware)

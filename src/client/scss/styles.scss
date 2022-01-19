@@ -791,3 +791,35 @@ select::-ms-expand {
     }
   }
 }
+
+// 키패드 관련
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  place-items: center;
+  gap: 8px;
+
+  div {
+    width: 80px;
+    height: 80px;
+    display: grid;
+    place-items: center;
+    border: 1px solid;
+    border-radius: 50%;
+    background-color: $main;
+    color: white;
+    font-size: 2rem;
+    font-weight: 500;
+
+    &:hover {
+      transition: all 0.3s ease-in-out;
+      background-color: transparent;
+      color: $main;
+    }
+  }
+}
+
+.keypad-input {
+  margin: 100px 50px 20px 50px;
+  border-bottom: 1px solid $sub;
+}
