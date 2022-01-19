@@ -509,6 +509,13 @@ footer {
   gap: 0;
   margin-bottom: 0;
 }
+.main__form article .main__form-date p,
+.mypage__form article .main__form-date p {
+  margin: 10px;
+  color: #808080;
+  font-size: 0.8rem;
+  margin-bottom: -30px;
+}
 .main__form article h6,
 .mypage__form article h6 {
   margin-bottom: 10px;
@@ -828,4 +835,15 @@ select::-ms-expand {
 }
 .dchistory__container div span:last-child {
   font-weight: 500;
+}
+
+.views {
+  text-align: right;
+  margin: 10px 10px 0 0;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+.views span:first-child {
+  color: #012d6b;
+  font-weight: 700;
 }

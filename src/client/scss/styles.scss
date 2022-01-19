@@ -422,6 +422,13 @@ footer {
         gap: 0;
         margin-bottom: 0;
       }
+
+      p {
+        margin: 10px;
+        color: #808080;
+        font-size: 0.8rem;
+        margin-bottom: -30px;
+      }
     }
 
     h6 {
@@ -766,6 +773,21 @@ select::-ms-expand {
       &:last-child {
         font-weight: 500;
       }
+    }
+  }
+}
+
+.views {
+  // display: none;
+  text-align: right;
+  margin: 10px 10px 0 0;
+  font-weight: 500;
+  font-size: 0.9rem;
+
+  span {
+    &:first-child {
+      color: $main;
+      font-weight: 700;
     }
   }
 }

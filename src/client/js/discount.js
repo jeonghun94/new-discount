@@ -13,12 +13,24 @@ COUPON_CONTAINER.id = "couponContainer";
 const DISCOUNT_CONTAINER = document.createElement("div");
 DISCOUNT_CONTAINER.classList.add("discount__container");
 
-//숫자만 입력받기
+// 숫자만 입력받기
 function checkVal() {
   this.value = this.value.replace(/[^0-9]/g, "");
 }
 
-//차량조회 돌아가기
+// 조회 수 추가
+function addRowsCount(data) {
+  const views = document.createElement("p");
+  views.innerText = "총 ";
+  views.classList.add("views");
+
+  const cnt = document.createElement("span");
+  cnt.innerText = `${data}건`;
+  views.appendChild(cnt);
+  return views;
+}
+
+// 차량조회 돌아가기
 function backToSearch() {
   SEARCH_ARTICLE.style.display = "block";
   CRUD_ARTICLE.style.display = "none";
@@ -28,7 +40,7 @@ function backToSearch() {
   DISCOUNT_CONTAINER.innerHTML = "";
 }
 
-//조히내역 없음
+// 조회내역 없음
 function notFound(container) {
   const notFoundContainer = document.createElement("div");
   notFoundContainer.classList.add("nodata__container");
@@ -46,36 +58,33 @@ function notFound(container) {
 }
 
 //차량조회 리스트 추가
-function appendSearchList(result) {
+function appendSearchList(list) {
   LIST_DIV.innerHTML = "";
-  if (result.length !== 0) {
-    for (var i = 0; i < result.length; i++) {
+  if (list.length !== 0) {
+    list.map((x) => {
       const container = document.createElement("div");
       container.classList.add("search__container");
-      container.dataset.inseqno = result[i].inSeqNo;
+      container.dataset.inseqno = x.inSeqNo;
 
       const img = document.createElement("img");
       img.classList.add("search__img");
-      img.src = `${process.env.IMAGE_SERVER_ADDRESS}:${process.env.IMAGE_SERVER_PORT}/${result[i].inCarPicName}`;
+      img.src = `${process.env.IMAGE_SERVER_ADDRESS}:${process.env.IMAGE_SERVER_PORT}/${x.inCarPicName}`;
       img.alt = "이미지를 불러오지 못했습니다.";
 
       const info = document.createElement("div");
       info.classList.add("search__info");
 
       const inCarNo = document.createElement("p");
-      inCarNo.innerText = result[i].inCarNo;
+      inCarNo.innerText = x.inCarNo;
 
       const tkType = document.createElement("p");
-      tkType.innerText = `입차종류: ${result[i].tkType}`;
+      tkType.innerText = `입차종류: ${x.tkType}`;
 
       const unitName = document.createElement("p");
-      unitName.innerText = `입차장비: ${result[i].unitName}`;
+      unitName.innerText = `입차장비: ${x.unitName}`;
 
       const insDate = document.createElement("p");
-      insDate.innerText = `입차시간: ${result[i].insDate.substring(
-        5,
-        result[i].insDate.length - 3
-      )}`;
+      insDate.innerText = `입차시간: ${dateConvert(x.insDate)}`;
 
       info.appendChild(inCarNo);
       info.appendChild(tkType);
@@ -86,7 +95,7 @@ function appendSearchList(result) {
       container.appendChild(info);
 
       LIST_DIV.append(container);
-    }
+    });
   } else {
     notFound(LIST_DIV);
   }
@@ -233,60 +242,55 @@ function discountList(list, inSeqNo) {
 function discountHistoryList(list) {
   LIST_DIV.innerHTML = "";
   if (list.length !== 0) {
+    LIST_DIV.appendChild(addRowsCount(list.length));
     list.map((x) => {
-      const history = document.createElement("div");
-      history.classList.add("dchistory__container");
+      const container = document.createElement("div");
+      container.classList.add("search__container");
 
-      const inCarNo = document.createElement("h2");
-      inCarNo.innerText = `${x.inCarNo}`;
+      const img = document.createElement("img");
+      const imgSrc = x.totParkTime === null ? x.inCarPicName : x.outCarPicName;
+      const imgBorderColor = x.totParkTime === null ? "#f8981c" : "#012d6b";
 
-      const div1 = document.createElement("div");
-      const div2 = document.createElement("div");
-      const div3 = document.createElement("div");
-      const div4 = document.createElement("div");
+      img.classList.add("search__img");
+      img.style.width = "48%";
+      img.style.height = "100px";
+      img.style.borderColor = imgBorderColor;
+      img.src = `${process.env.IMAGE_SERVER_ADDRESS}:${process.env.IMAGE_SERVER_PORT}/${imgSrc}`;
+      img.alt = "이미지를 불러오지 못했습니다.";
 
-      const div1Title = document.createElement("span");
-      const div2Title = document.createElement("span");
-      const div3Title = document.createElement("span");
-      const div4Title = document.createElement("span");
+      const info = document.createElement("div");
+      info.classList.add("search__info");
+      info.style.fontSize = "14px";
 
-      div1Title.innerText = "할인종류";
-      div2Title.innerText = "할인일시";
-      div3Title.innerText = "입차일시";
-      div4Title.innerText = "출차일시";
+      const inCarNo = document.createElement("p");
+      inCarNo.innerText = `${x.inCarNo} ${
+        x.totParkTime === null ? "" : `(${x.totParkTime}분)`
+      }`;
 
-      const dcName = document.createElement("span");
-      dcName.innerText = `${x.dcName} 할인권`;
+      const dcName = document.createElement("p");
+      dcName.innerText = `할인종류: ${x.dcName}`;
 
-      const dcTime = document.createElement("span");
-      dcTime.innerText = dateConvert(x.dcTime);
+      const dcTime = document.createElement("p");
+      dcTime.innerText = `할인일시: ${dateConvert(x.dcTime)}`;
 
-      const inTime = document.createElement("span");
-      inTime.innerText = dateConvert(x.inTime);
+      const inTime = document.createElement("p");
+      inTime.innerText = `입차일시: ${dateConvert(x.inTime)}`;
 
-      const outTime = document.createElement("span");
-      outTime.innerText =
-        x.outTime === null ? "출차전" : dateConvert(x.outTime);
+      const outTime = document.createElement("p");
+      outTime.innerText = `출차일시: ${
+        x.outTime === null ? "출차전" : dateConvert(x.outTime)
+      }`;
 
-      div1.append(div1Title);
-      div1.append(dcName);
+      info.appendChild(inCarNo);
+      info.appendChild(dcName);
+      info.appendChild(dcTime);
+      info.appendChild(inTime);
+      info.appendChild(outTime);
 
-      div2.append(div2Title);
-      div2.append(dcTime);
+      container.appendChild(img);
+      container.appendChild(info);
 
-      div3.append(div3Title);
-      div3.append(inTime);
-
-      div4.append(div4Title);
-      div4.append(outTime);
-
-      history.append(inCarNo);
-      history.append(div1);
-      history.append(div2);
-      history.append(div3);
-      history.append(div4);
-
-      LIST_DIV.append(history);
+      LIST_DIV.append(container);
     });
   } else {
     notFound(LIST_DIV);
@@ -434,26 +438,24 @@ function history() {
 
 // 웹 할인 등록내역 엑셀 다운로드
 function historyExcel() {
-  const historyContainer = document.querySelectorAll(".dchistory__container");
+  const search__container = document.querySelectorAll(".search__container");
   const startDate = document.querySelector("#startDate").value;
   const endDate = document.querySelector("#endDate").value;
   const inCarNo = document.querySelector("#inCarNo").value;
 
-  if (historyContainer.length === 0) {
+  if (search__container.length === 0) {
     alert("내려받을 내용이 없습니다.");
   } else {
-    location.href = `/excel?startDate=${startDate}&endDate=${endDate}&inCarNo=${inCarNo}`;
+    location.href = `${window.location.pathname}/excel?startDate=${startDate}&endDate=${endDate}&inCarNo=${inCarNo}`;
   }
 }
 
 // 조회 후 날짜 가공
 function dateConvert(date) {
-  return `${date.substring(0, 10)} ${date.substring(11, 19)}`;
+  return `${date.substring(5, 10)} ${date.substring(11, 16)}`;
 }
 
 window.onload = function () {
-  // console.log(process.env.IMAGE_SERVER_ADDRESS);
-  // console.log(process.env.IMAGE_SERVER_PORT);
   inCarNo.focus();
 
   const footer = document.querySelector("footer");
@@ -467,6 +469,10 @@ window.onload = function () {
 
     const historyBtn = document.querySelector("#historyBtn");
     historyBtn.addEventListener("click", history);
+
+    preBtn.addEventListener("click", function () {
+      window.history.back();
+    });
 
     inCarNo.addEventListener("keyup", function (e) {
       if (window.event.keyCode == 13) {

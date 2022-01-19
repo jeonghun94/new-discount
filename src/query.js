@@ -110,7 +110,10 @@ export const DISCOUNT_QUERY = {
                   d.dcode_name as DcodeName,
                   CONVERT(DATETIME, c.procdate + ' ' + STUFF(STUFF(c.proctime, 3, 0, ':'), 6, 0, ':'), 120) as DcTime,
                   CONVERT(DATETIME, a.procdate + ' ' + STUFF(STUFF(a.proctime, 3, 0, ':'), 6, 0, ':'), 120) as InTime,
-                  CONVERT(DATETIME, e.procdate + ' ' + STUFF(STUFF(e.proctime, 3, 0, ':'), 6, 0, ':'), 120) as OutTime
+                  CONVERT(DATETIME, e.procdate + ' ' + STUFF(STUFF(e.proctime, 3, 0, ':'), 6, 0, ':'), 120) as OutTime,
+                  a.InCarPicName,
+                  e.OutCarPicName,
+                  e.TotParkTime
             FROM   ps500 a 
                   LEFT OUTER JOIN ps134 c  
                                 ON a.inseqno = c.inseqno  

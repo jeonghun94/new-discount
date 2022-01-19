@@ -1,13 +1,19 @@
-import { DISCOUNT_QUERY, LOCALS_QUERY } from "../query";
+import { DISCOUNT_QUERY } from "../query";
 import { executeQuery, executeUpdate } from "../server";
-import { ExcelJS, Workbook } from "exceljs";
+import { excelDownload } from "../util";
 
+export const main = async (req, res) => {
+  res.render("discount/main", { pageTitle: "할인 등록" });
+};
+
+// 차량번호 4자리 조회
 export const searchInCarNo = async (req, res) => {
   const { inCarNo } = req.body;
   const result = await executeQuery(DISCOUNT_QUERY.SEARCH_IN_CAR_NO(inCarNo));
   res.send({ result });
 };
 
+// 차량의 정보, 할인권 정보, 할인내역 조회
 export const searchInSeqNo = async (req, res) => {
   const { inSeqNo } = req.body;
 
@@ -20,6 +26,30 @@ export const searchInSeqNo = async (req, res) => {
   res.send({ result, freeCouponList, payCouponList, discountList });
 };
 
+// 할인 등록
+export const insertList = async (req, res) => {
+  const obj = {
+    ...req.session.user,
+    ...req.body,
+  };
+
+  console.log(process.env.MAX_CNT);
+  console.log(process.env.FREE_CNT);
+  console.log(process.env.PAY_CNT);
+  console.log(process.env.TIME_LIMIT_USE);
+  console.log(process.env.TIME_LIMIT_MINUTE);
+
+  await executeUpdate(DISCOUNT_QUERY.INSERT_LIST(obj));
+  console.log(`INSERT PS134 ${JSON.stringify(req.body)}`);
+
+  const discountList = await executeQuery(
+    DISCOUNT_QUERY.SEARCH_DISCOUNT_LIST(obj.inSeqNo)
+  );
+
+  res.send({ result: "success", list: discountList });
+};
+
+// 할인 삭제
 export const deleteList = async (req, res) => {
   const { idx, inSeqNo } = req.body;
 
@@ -33,110 +63,14 @@ export const deleteList = async (req, res) => {
   res.send({ result: "success", list: discountList });
 };
 
-export const insertList = async (req, res) => {
-  const { inSeqNo, couponType } = req.body;
-  const { shopCode } = req.session.user;
-  const obj = {
-    shopCode,
-    inSeqNo,
-    couponType,
-  };
-
-  await executeUpdate(DISCOUNT_QUERY.INSERT_LIST(obj));
-  console.log(`INSERT PS134 ${JSON.stringify(req.body)}`);
-
-  const discountList = await executeQuery(
-    DISCOUNT_QUERY.SEARCH_DISCOUNT_LIST(inSeqNo)
-  );
-
-  res.send({ result: "success", list: discountList });
-};
-
-export const main = async (req, res) => {
-  res.render("discount/main", { pageTitle: "할인 등록" });
-};
-
-export const historyExcel = async (req, res) => {
-  const { startDate, endDate, inCarNo } = req.query;
-
-  const obj = {
-    startDate,
-    endDate,
-    inCarNo,
-    shopCode: req.session.user.shopCode,
-  };
-
-  const style = {
-    numFmt: "yyyy-mm-dd hh:mm:ss",
-    alignment: { horizontal: "left" },
-  };
-
-  const date = new Date();
-  const year = date.getFullYear();
-  const month = ("0" + (date.getMonth() + 1)).slice(-2);
-  const day = ("0" + date.getDate()).slice(-2);
-
-  const today = `${year}.${month}.${day}`;
-
-  console.log(`${today} ${JSON.stringify(obj)}`);
-
-  const workbook = new Workbook();
-  const worksheet = workbook.addWorksheet("할인내역");
-
-  worksheet.columns = [
-    { header: "차량번호", key: "inCarNo", width: 15 },
-    { header: "할인종류", key: "dcName", width: 15 },
-    {
-      header: "할인일시",
-      key: "dcTime",
-      width: 20,
-      style,
-    },
-    {
-      header: "입차일시",
-      key: "inTime",
-      width: 20,
-      style,
-    },
-    {
-      header: "출차일시",
-      key: "outTime",
-      width: 20,
-      style,
-    },
-  ];
-
-  const result = await executeQuery(
-    DISCOUNT_QUERY.SEARCH_DISCOUNT_HISTORY(obj)
-  );
-
-  result.map((item) => {
-    worksheet.addRow(item);
-  });
-
-  res.setHeader("Content-Type", "application/vnd.openxmlformats");
-  res.setHeader(
-    "Content-Disposition",
-    `attachment; filename=${encodeURI("웹할인내역_")}${today}.xlsx`
-  );
-
-  await workbook.xlsx.write(res);
-
-  res.end();
-};
-
+// 할인 내역
 export const history = async (req, res) => {
-  const {
-    method,
-    session: {
-      user: { shopCode },
-    },
-  } = req;
+  const { method } = req;
 
   if (method === "POST") {
     const obj = {
+      ...req.session.user,
       ...req.body,
-      shopCode,
     };
 
     const result = await executeQuery(
@@ -148,4 +82,45 @@ export const history = async (req, res) => {
   } else {
     res.render("discount/history", { pageTitle: "할인 내역" });
   }
+};
+
+// 할인 내역 엑셀 다운로드
+export const historyExcel = async (req, res) => {
+  const obj = {
+    ...req.query,
+    shopCode: req.session.user.shopCode,
+    header: (style) => [
+      { header: "차량번호", key: "inCarNo", width: 15 },
+      {
+        header: "주차시간",
+        key: "totParkTime",
+        width: 15,
+        style: { alignment: { horizontal: "left" } },
+      },
+      { header: "할인종류", key: "dcName", width: 15 },
+      {
+        header: "할인일시",
+        key: "dcTime",
+        width: 20,
+        style,
+      },
+      {
+        header: "입차일시",
+        key: "inTime",
+        width: 20,
+        style,
+      },
+      {
+        header: "출차일시",
+        key: "outTime",
+        width: 20,
+        style,
+      },
+    ],
+    fileName: "웹할인내역",
+  };
+
+  const data = await executeQuery(DISCOUNT_QUERY.SEARCH_DISCOUNT_HISTORY(obj));
+  await excelDownload(res, obj, data);
+  console.log(`HISTORY EXCEL PS134 ${JSON.stringify(req.query)}`);
 };
