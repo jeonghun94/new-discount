@@ -1,5 +1,4 @@
 import express from "express";
-import { excel } from "../controllers/discountController";
 import {
   login,
   logout,
@@ -11,7 +10,6 @@ import { protectorMiddleware } from "../middleware";
 
 const globalRouter = express.Router();
 globalRouter.route("/").post(login).get(login);
-globalRouter.route("/excel").get(excel);
 globalRouter.route("/search-in-car").all(protectorMiddleware).post(searchInCar);
 globalRouter.route("/my-page").all(protectorMiddleware).get(mypage);
 globalRouter

@@ -56,7 +56,7 @@ export const main = async (req, res) => {
   res.render("discount/main", { pageTitle: "할인 등록" });
 };
 
-export const excel = async (req, res) => {
+export const historyExcel = async (req, res) => {
   const { startDate, endDate, inCarNo } = req.query;
 
   const obj = {
@@ -128,21 +128,22 @@ export const excel = async (req, res) => {
 export const history = async (req, res) => {
   const {
     method,
-    body: { startDate, endDate, inCarNo },
+    session: {
+      user: { shopCode },
+    },
   } = req;
 
   if (method === "POST") {
     const obj = {
-      startDate,
-      endDate,
-      inCarNo,
-      shopCode: req.session.user.shopCode,
+      ...req.body,
+      shopCode,
     };
 
     const result = await executeQuery(
       DISCOUNT_QUERY.SEARCH_DISCOUNT_HISTORY(obj)
     );
 
+    console.log(`HISTORY PS134 ${JSON.stringify(req.body)}`);
     res.send({ result });
   } else {
     res.render("discount/history", { pageTitle: "할인 내역" });

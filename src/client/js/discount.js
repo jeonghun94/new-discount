@@ -104,7 +104,7 @@ function appendSearchList(result) {
   });
 }
 
-//차량조회 테스트
+// 관리자용 테스트차량조회
 function searchInCarT() {
   fetch(`/search-in-car`, {
     method: "POST",
@@ -121,16 +121,12 @@ function searchInCarT() {
         testInCarNo.length
       );
 
-      result.map((x, idx) => {
-        console.log(`${idx + 1}.${x.inCarNo}`);
-      });
-
       searchBtn.click();
     })
     .catch((error) => console.log(error));
 }
 
-//차량조회(차량번호)
+// 차량조회(차량번호)
 function searchInCar() {
   if (inCarNo.value.length === 4) {
     fetch(`/discount/search`, {
@@ -147,7 +143,7 @@ function searchInCar() {
       })
       .catch((error) => console.log(error));
   } else {
-    alert("차량번호는 4자리이어야 합니다.");
+    alert("차량번호를 입력하세요.\nex_2258");
   }
 }
 
@@ -193,6 +189,7 @@ function discountList(list, inSeqNo) {
       const discountInfoContainer = document.createElement("div");
       discountInfoContainer.classList.add("discount__info-container");
       discountInfoContainer.dataset.idx = x.idx;
+      discountInfoContainer.dataset.dcname = x.dcName;
 
       const discountInfo = document.createElement("div");
       discountInfo.classList.add("discount__info");
@@ -219,8 +216,8 @@ function discountList(list, inSeqNo) {
       discountInfoDelete.innerHTML = "삭제";
 
       discountInfoDelete.addEventListener("click", (e) => {
-        const idx = e.currentTarget.parentNode.dataset.idx;
-        deleteList(idx, inSeqNo);
+        const { idx, dcname: dcName } = e.currentTarget.parentNode.dataset;
+        deleteList(idx, inSeqNo, dcName);
       });
 
       discountInfoContainer.appendChild(discountInfo);
@@ -327,9 +324,17 @@ function couponList(list, text) {
     select.addEventListener("change", (e) => {
       const inSeqNo =
         CRUD_ARTICLE.querySelector(".search__container").dataset.inseqno;
-      const { text: dcName, value: couponType } = e.currentTarget;
+      const {
+        options: {
+          [e.currentTarget.selectedIndex]: { text },
+        },
+        value: couponType,
+      } = e.currentTarget;
 
-      if (couponType !== "00" && confirm(`할인권을 등록하시겠습니까?`)) {
+      if (
+        couponType !== "00" &&
+        confirm(`${text} 할인권을 등록하시겠습니까?`)
+      ) {
         insertList(inSeqNo, couponType);
       } else {
         resetSelect();
@@ -350,6 +355,7 @@ function couponList(list, text) {
   }
 }
 
+// 웹 할인 등록 취소 시 opiton 초기화
 function resetSelect() {
   const select = document.querySelectorAll("select");
   select.forEach((x) => {
@@ -357,29 +363,7 @@ function resetSelect() {
   });
 }
 
-//할인권 삭제
-function deleteList(idx, inSeqNo) {
-  if (confirm("할인내역을 삭제하시겠습니까?")) {
-    fetch(`/discount/list`, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        inSeqNo,
-        idx,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.result) {
-          DISCOUNT_CONTAINER.innerHTML = "";
-          discountList(data.list, inSeqNo);
-        }
-      })
-      .catch((error) => console.log(error));
-  }
-}
-
-//할인내역 추가
+// 웹 할인 등록
 function insertList(inSeqNo, couponType) {
   if (couponType !== "00") {
     fetch(`/discount/list`, {
@@ -402,7 +386,29 @@ function insertList(inSeqNo, couponType) {
   }
 }
 
-// 웹 할인내역 추가
+// 웹 할인 삭제
+function deleteList(idx, inSeqNo, dcName) {
+  if (confirm(`${dcName} 할인을 삭제하시겠습니까?`)) {
+    fetch(`/discount/list`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        inSeqNo,
+        idx,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.result) {
+          DISCOUNT_CONTAINER.innerHTML = "";
+          discountList(data.list, inSeqNo);
+        }
+      })
+      .catch((error) => console.log(error));
+  }
+}
+
+// 웹 할인 등록내역
 function history() {
   const startDate = document.querySelector("#startDate").value;
   const endDate = document.querySelector("#endDate").value;
@@ -426,7 +432,7 @@ function history() {
     .catch((error) => console.log(error));
 }
 
-// 할인내역 엑셀 출력
+// 웹 할인 등록내역 엑셀 다운로드
 function historyExcel() {
   const historyContainer = document.querySelectorAll(".dchistory__container");
   const startDate = document.querySelector("#startDate").value;

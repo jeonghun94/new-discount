@@ -1,11 +1,12 @@
 import express from "express";
 import {
-  deleteList,
-  history,
-  insertList,
   main,
   searchInCarNo,
   searchInSeqNo,
+  insertList,
+  deleteList,
+  history,
+  historyExcel,
 } from "../controllers/discountController";
 import { protectorMiddleware } from "../middleware";
 
@@ -26,5 +27,9 @@ discountRouter
   .all(protectorMiddleware)
   .get(history)
   .post(history);
+discountRouter
+  .route("/history/excel")
+  .all(protectorMiddleware)
+  .get(historyExcel);
 
 export default discountRouter;
