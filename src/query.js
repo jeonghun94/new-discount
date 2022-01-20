@@ -131,35 +131,43 @@ export const DISCOUNT_QUERY = {
                       c.proctime DESC`;
   },
   CONDITION_CHECK: (obj) => {
-    return `DECLARE @inSeqNo INT
+    return `DECLARE @inSeqNo    INT,
+                    @couponType INT
 
+            SET @couponType = ${obj.couponType}
             SET @inSeqNo = ${obj.inSeqNo}
 
-            SELECT  (SELECT paytype from PS132 where CouponType ='${obj.couponType}') AS PayType,
+            SELECT  (SELECT paytype
+                      FROM   ps132
+                      WHERE  coupontype = @couponType) AS PayType,
+                    (SELECT Isnull (Sum(CONVERT(INT, stock)), 0)
+                      FROM   ps135
+                      WHERE  coupontype = @couponType
+                            AND shopcode = '${obj.shopCode}')    AS CouponCnt,
                     (SELECT Isnull(Sum(CONVERT(INT, b.dcval) ), 0 )
                             + (SELECT dcval
                                 FROM   ps132
-                                WHERE  coupontype = ${obj.couponType})
+                                WHERE  coupontype = @couponType)
                       FROM   ps134 a
                             LEFT OUTER JOIN ps132 b
                                           ON a.coupontype = b.coupontype
-                      WHERE  a.inseqno = @inSeqNo) AS TotalDcVal,
+                      WHERE  a.inseqno = @inSeqNo)     AS TotalDcVal,
                     (SELECT Count(*)
                       FROM   ps134 a
                             LEFT OUTER JOIN ps132 b
                                           ON a.coupontype = b.coupontype
-                      WHERE  a.inseqno = @inSeqNo) AS TotalCnt,
-                    (SELECT Count(*)
-                      FROM   ps134 a
-                            LEFT OUTER JOIN ps132 b
-                                          ON a.coupontype = b.coupontype
-                      WHERE  a.inseqno = @inSeqNo
-                            AND b.paytype = '01') AS FreeCnt,
+                      WHERE  a.inseqno = @inSeqNo)     AS TotalCnt,
                     (SELECT Count(*)
                       FROM   ps134 a
                             LEFT OUTER JOIN ps132 b
                                           ON a.coupontype = b.coupontype
                       WHERE  a.inseqno = @inSeqNo
-                            AND b.paytype = '02') AS PayCnt `;
+                            AND b.paytype = '01')     AS FreeCnt,
+                    (SELECT Count(*)
+                      FROM   ps134 a
+                            LEFT OUTER JOIN ps132 b
+                                          ON a.coupontype = b.coupontype
+                      WHERE  a.inseqno = @inSeqNo
+                            AND b.paytype = '02')     AS PayCnt `;
   },
 };

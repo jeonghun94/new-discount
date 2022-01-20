@@ -40,8 +40,6 @@ export const insertList = async (req, res) => {
     ...req.body,
   };
 
-  // 제약조건 확인
-  const result = await executeQuery(DISCOUNT_QUERY.CONDITION_CHECK(obj));
   const {
     shopDuplication,
     timeLimit,
@@ -50,13 +48,28 @@ export const insertList = async (req, res) => {
     freeCnt: shopFreeCnt,
     payCnt: shopPayCnt,
   } = req.session.user;
-  const { totalDcVal, totalCnt, freeCnt, payCnt, payType } = result[0];
+
+  if (shopDuplication === "Y") {
+  }
+
+  // #########################################제약조건#########################################
+  const result = await executeQuery(DISCOUNT_QUERY.CONDITION_CHECK(obj));
+
+  const { payType, couponCnt, totalDcVal, totalCnt, freeCnt, payCnt } =
+    result[0];
 
   console.log("설정값:", timeLimitMinutes, maxCnt, shopFreeCnt, shopPayCnt);
-  console.log("디비값", totalDcVal, totalCnt, freeCnt, payCnt, payType);
+  console.log(
+    "디비값",
+    totalDcVal,
+    totalCnt,
+    freeCnt,
+    payCnt,
+    payType,
+    couponCnt
+  );
 
-  // 각 제약조건 체크
-  // 분으로 제한
+  // 분 단위 제한 확인 및 처리
   if (timeLimit === "Y") {
     if (totalDcVal > timeLimitMinutes) {
       res.send({
@@ -65,34 +78,43 @@ export const insertList = async (req, res) => {
       });
       return;
     }
+  }
 
-    if (totalCnt >= maxCnt) {
+  if (totalCnt >= maxCnt) {
+    res.send({
+      result: "fail",
+      msg: `할인등록을 못했습니다.\n사유: 최대 가능 할인 횟수(${maxCnt}회)를 초과합니다.`,
+    });
+    return;
+  }
+
+  // 쿠폰 타입 검사
+  if (payType === "01") {
+    if (freeCnt >= shopFreeCnt) {
       res.send({
         result: "fail",
-        msg: `할인등록을 못했습니다.\n사유: 최대 가능 할인 횟수(${maxCnt}회)를 초과합니다.`,
+        msg: `할인등록을 못했습니다.\n사유: 무료 가능 할인 횟수(${shopFreeCnt}회)를 초과합니다.`,
+      });
+      return;
+    }
+  } else {
+    if (couponCnt <= 0) {
+      res.send({
+        result: "fail",
+        msg: `할인등록을 못했습니다.\n사유: 보유한 할인권 수량이 없습니다.`,
       });
       return;
     }
 
-    // 쿠폰 타입 검사
-    if (payType === "01") {
-      if (freeCnt >= shopFreeCnt) {
-        res.send({
-          result: "fail",
-          msg: `할인등록을 못했습니다.\n사유: 무료 가능 할인 횟수(${shopFreeCnt}회)를 초과합니다.`,
-        });
-        return;
-      }
-    } else {
-      if (payCnt >= shopPayCnt) {
-        res.send({
-          result: "fail",
-          msg: `할인등록을 못했습니다.\n사유: 유료 가능 할인 횟수(${shopPayCnt}회)를 초과합니다.`,
-        });
-        return;
-      }
+    if (payCnt >= shopPayCnt) {
+      res.send({
+        result: "fail",
+        msg: `할인등록을 못했습니다.\n사유: 유료 가능 할인 횟수(${shopPayCnt}회)를 초과합니다.`,
+      });
+      return;
     }
   }
+
   await executeUpdate(DISCOUNT_QUERY.INSERT_LIST(obj));
   console.log(`INSERT PS134 ${JSON.stringify(req.body)}`);
 

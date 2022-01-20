@@ -8,29 +8,15 @@ import discountRouter from "./routers/discountRouter";
 import sql from "mssql";
 import cron from "node-cron";
 import { camelizeKeys } from "./util";
+import config from "./mssqlConfig";
 
 const app = express();
 const logger = morgan("dev");
-
-const config = {
-  user: "sa",
-  password: "key0123",
-  server: "smcity.iptime.org",
-  database: "PCMS",
-  stream: true,
-  encrypt: false,
-  pool: {
-    max: 10,
-    min: 0,
-    idleTimeoutMillis: 30000,
-  },
-};
-
 const pool = new sql.ConnectionPool(config);
 const poolConnect = pool.connect();
 
 pool.on("error", (err) => {
-  console.log(err, "WTF!!!");
+  console.log(`DB Connection Error: ${err}`);
 });
 
 cron.schedule("*/10 * * * * *", function () {
@@ -72,7 +58,6 @@ app.use(express.static(process.cwd() + "/src/assets"));
 app.use(logger);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 app.use(cookieParser());
 app.use(
   session({
@@ -81,7 +66,6 @@ app.use(
     saveUninitialized: true,
   })
 );
-
 app.use(localsVariable);
 app.use("/static", express.static("assets"));
 app.use("/client", express.static("src/client"));
