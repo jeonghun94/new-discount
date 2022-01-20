@@ -130,4 +130,36 @@ export const DISCOUNT_QUERY = {
             ORDER  BY c.procdate DESC, 
                       c.proctime DESC`;
   },
+  CONDITION_CHECK: (obj) => {
+    return `DECLARE @inSeqNo INT
+
+            SET @inSeqNo = ${obj.inSeqNo}
+
+            SELECT  (SELECT paytype from PS132 where CouponType ='${obj.couponType}') AS PayType,
+                    (SELECT Isnull(Sum(CONVERT(INT, b.dcval) ), 0 )
+                            + (SELECT dcval
+                                FROM   ps132
+                                WHERE  coupontype = ${obj.couponType})
+                      FROM   ps134 a
+                            LEFT OUTER JOIN ps132 b
+                                          ON a.coupontype = b.coupontype
+                      WHERE  a.inseqno = @inSeqNo) AS TotalDcVal,
+                    (SELECT Count(*)
+                      FROM   ps134 a
+                            LEFT OUTER JOIN ps132 b
+                                          ON a.coupontype = b.coupontype
+                      WHERE  a.inseqno = @inSeqNo) AS TotalCnt,
+                    (SELECT Count(*)
+                      FROM   ps134 a
+                            LEFT OUTER JOIN ps132 b
+                                          ON a.coupontype = b.coupontype
+                      WHERE  a.inseqno = @inSeqNo
+                            AND b.paytype = '01') AS FreeCnt,
+                    (SELECT Count(*)
+                      FROM   ps134 a
+                            LEFT OUTER JOIN ps132 b
+                                          ON a.coupontype = b.coupontype
+                      WHERE  a.inseqno = @inSeqNo
+                            AND b.paytype = '02') AS PayCnt `;
+  },
 };

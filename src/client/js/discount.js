@@ -336,10 +336,7 @@ function couponList(list, text) {
         value: couponType,
       } = e.currentTarget;
 
-      if (
-        couponType !== "00" &&
-        confirm(`${text} 할인권을 등록하시겠습니까?`)
-      ) {
+      if (couponType !== "00" && confirm(`${text} 할인을 등록하시겠습니까?`)) {
         insertList(inSeqNo, couponType);
       } else {
         resetSelect();
@@ -381,11 +378,13 @@ function insertList(inSeqNo, couponType) {
     })
       .then((response) => response.json())
       .then((data) => {
-        if (data.result) {
+        if (data.result === "fail") {
+          alert(data.msg);
+        } else {
           DISCOUNT_CONTAINER.innerHTML = "";
-          resetSelect();
           discountList(data.list, inSeqNo);
         }
+        resetSelect();
       })
       .catch((error) => console.log(error));
   }

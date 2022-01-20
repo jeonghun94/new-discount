@@ -3,6 +3,8 @@ import { executeQuery, executeUpdate } from "../server";
 import { excelDownload } from "../util";
 
 export const main = async (req, res) => {
+  // const { user } = req.session;
+  // console.log(user);
   res.render("discount/main", { pageTitle: "할인 등록" });
 };
 
@@ -38,12 +40,59 @@ export const insertList = async (req, res) => {
     ...req.body,
   };
 
-  console.log(process.env.MAX_CNT);
-  console.log(process.env.FREE_CNT);
-  console.log(process.env.PAY_CNT);
-  console.log(process.env.TIME_LIMIT_USE);
-  console.log(process.env.TIME_LIMIT_MINUTE);
+  // 제약조건 확인
+  const result = await executeQuery(DISCOUNT_QUERY.CONDITION_CHECK(obj));
+  const {
+    shopDuplication,
+    timeLimit,
+    timeLimitMinutes,
+    maxCnt,
+    freeCnt: shopFreeCnt,
+    payCnt: shopPayCnt,
+  } = req.session.user;
+  const { totalDcVal, totalCnt, freeCnt, payCnt, payType } = result[0];
 
+  console.log("설정값:", timeLimitMinutes, maxCnt, shopFreeCnt, shopPayCnt);
+  console.log("디비값", totalDcVal, totalCnt, freeCnt, payCnt, payType);
+
+  // 각 제약조건 체크
+  // 분으로 제한
+  if (timeLimit === "Y") {
+    if (totalDcVal > timeLimitMinutes) {
+      res.send({
+        result: "fail",
+        msg: `할인등록을 못했습니다.\n사유: 최대 할인 시간(${timeLimitMinutes}분)을 초과합니다.`,
+      });
+      return;
+    }
+
+    if (totalCnt >= maxCnt) {
+      res.send({
+        result: "fail",
+        msg: `할인등록을 못했습니다.\n사유: 최대 가능 할인 횟수(${maxCnt}회)를 초과합니다.`,
+      });
+      return;
+    }
+
+    // 쿠폰 타입 검사
+    if (payType === "01") {
+      if (freeCnt >= shopFreeCnt) {
+        res.send({
+          result: "fail",
+          msg: `할인등록을 못했습니다.\n사유: 무료 가능 할인 횟수(${shopFreeCnt}회)를 초과합니다.`,
+        });
+        return;
+      }
+    } else {
+      if (payCnt >= shopPayCnt) {
+        res.send({
+          result: "fail",
+          msg: `할인등록을 못했습니다.\n사유: 유료 가능 할인 횟수(${shopPayCnt}회)를 초과합니다.`,
+        });
+        return;
+      }
+    }
+  }
   await executeUpdate(DISCOUNT_QUERY.INSERT_LIST(obj));
   console.log(`INSERT PS134 ${JSON.stringify(req.body)}`);
 

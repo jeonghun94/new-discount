@@ -41,8 +41,6 @@ export const login = async (req, res) => {
       LOCALS_QUERY.USER_LOGGED_IN(id, password)
     );
 
-    console.log(id, password, saveUserInfo);
-
     if (result.length === 1) {
       // 로그인 성공
       req.session.user = result[0];
@@ -58,7 +56,6 @@ export const login = async (req, res) => {
         res.clearCookie("id");
       }
 
-      console.log("Cookies: ", req.cookies);
       res.redirect("/discount/main");
     } else {
       // 로그인 실패
@@ -117,7 +114,6 @@ export const mypage = async (req, res) => {
 
 export const searchInCar = async (req, res) => {
   const level = Number(req.session.user.authLevel);
-  console.log(level);
 
   if (level === 1) {
     const result = await executeQuery(LOCALS_QUERY.SEARCH_IN_CAR());
