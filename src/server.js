@@ -7,6 +7,7 @@ import globalRouter from "./routers/globalRouter";
 import discountRouter from "./routers/discountRouter";
 import sql from "mssql";
 import cron from "node-cron";
+import Stream from "node-rtsp-stream";
 import { camelizeKeys } from "./util";
 import config from "./mssqlConfig";
 
@@ -20,15 +21,14 @@ pool.on("error", (err) => {
 });
 
 cron.schedule("*/10 * * * * *", function () {
-  for (let i = 1; i <= process.env.CCTV_CNT; i++) {
-    new Stream({
-      streamUrl: `rtsp://${process.env.CCTV_ID}:${process.env.CCTV_PW}@${process.env.CCTV_IP}:901${i}/Streaming/Channels/102/?transportmode=unicast`,
-      wsPort: 9000 + i,
-    });
-
-    console.log(`${i}번 CCTV 시작`);
-  }
-  console.log("cron 시작");
+  // for (let i = 1; i <= Number(process.env.CCTV_CNT); i++) {
+  //   new Stream({
+  //     streamUrl: `rtsp://${process.env.CCTV_ID}:${process.env.CCTV_PW}@${process.env.CCTV_IP}:901${i}/Streaming/Channels/102/?transportmode=unicast`,
+  //     wsPort: 9000 + i,
+  //   });
+  //   console.log(`${i}번 CCTV 시작`);
+  // }
+  console.log("cron 실행");
 });
 
 export const executeQuery = async (query) => {

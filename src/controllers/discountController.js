@@ -49,6 +49,7 @@ export const insertList = async (req, res) => {
     payCnt: shopPayCnt,
   } = req.session.user;
 
+  // 타 매장 중복 여부 확인
   if (shopDuplication === "Y") {
   }
 
@@ -88,7 +89,7 @@ export const insertList = async (req, res) => {
     return;
   }
 
-  // 쿠폰 타입 검사
+  // 쿠폰 타입 검사 무료시 pass 유료시 잔고 확인
   if (payType === "01") {
     if (freeCnt >= shopFreeCnt) {
       res.send({
