@@ -8,7 +8,7 @@ import {
   history,
   historyExcel,
   main2,
-  fileUpload,
+  saleCouponExcel,
 } from "../controllers/discountController";
 import { protectorMiddleware, uploadFiles } from "../middleware";
 
@@ -18,7 +18,7 @@ discountRouter
   .route("/main2")
   .all(protectorMiddleware)
   .get(main2)
-  .post(uploadFiles.single("avatar"), fileUpload);
+  .post(uploadFiles.single("saleCoupon"), saleCouponExcel);
 discountRouter
   .route("/list")
   .all(protectorMiddleware)

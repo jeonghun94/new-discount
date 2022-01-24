@@ -11,12 +11,15 @@ export const main2 = async (req, res) => {
   res.render("discount/main2", { pageTitle: "할인 등록" });
 };
 
-export const fileUpload = async (req, res) => {
-  const { file } = req;
-  console.log(file);
+export const saleCouponExcel = async (req, res) => {
+  const {
+    file,
+    session: { user },
+  } = req;
 
   try {
-    excelUpload(res, file.originalname);
+    excelUpload(file.originalname, user);
+    res.redirect("/discount/main2");
   } catch (error) {
     res.send(error.message);
   }

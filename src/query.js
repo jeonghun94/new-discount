@@ -21,6 +21,14 @@ export const LOCALS_QUERY = {
                               AND tktype = '1'
                               AND intksts = '1'
                         ORDER  BY inseqno DESC `,
+  SEARCH_SHOP_CODE_BY_NAME: (shopName) => `SELECT ShopCode
+                                            FROM   ps130
+                                            WHERE  shopname = '${shopName}'`,
+  SEARCH_COUPON_TYPE_BY_NAME: (couponType) => `SELECT CouponType, 
+                                                      SaleAmt
+                                                FROM   ps132
+                                                WHERE  dcname = '${couponType}'
+                                                        AND paytype = '02' `,
 };
 
 export const DISCOUNT_QUERY = {
@@ -170,4 +178,47 @@ export const DISCOUNT_QUERY = {
                       WHERE  a.inseqno = @inSeqNo
                             AND b.paytype = '02')     AS PayCnt `;
   },
+
+  ADD_DISCOUNT_COUPON: (obj) => `UPDATE ps135 
+                                    SET    stock = (SELECT stock 
+                                              FROM   ps135 
+                                              WHERE  coupontype = '${obj.couponType}'
+                                                      AND shopcode = '${obj.shopCode}')
+                                              + '${obj.stock}' 
+                                  WHERE  coupontype = '${obj.couponType}'
+                                  AND    shopcode = '${obj.shopCode}' `,
+  ADD_DISCOUNT_COUPON_HISTORY: (obj) => `INSERT INTO ps131
+                                                      (systemno,
+                                                      parkno,
+                                                      procdate,
+                                                      proctime,
+                                                      coupontype,
+                                                      shopcode,
+                                                      salecouponqty,
+                                                      salecouponamt,
+                                                      inspgm,
+                                                      insid,
+                                                      insdate,
+                                                      updpgm,
+                                                      updid,
+                                                      upddate,
+                                                      dctype)
+                                          VALUES      ('0001',
+                                                      '01',
+                                                      (SELECT CONVERT(VARCHAR, Getdate(), 112)),
+                                                      (SELECT Replace(CONVERT(VARCHAR, Getdate(), 8), ':', '')),
+                                                      '${obj.couponType}',
+                                                      '${obj.shopCode}',
+                                                      '${obj.stock}',
+                                                      '${
+                                                        Number(obj.stock) *
+                                                        Number(obj.saleAmt)
+                                                      }',
+                                                      'WEB',
+                                                      '${obj.shopName}',
+                                                      (SELECT CONVERT (CHAR(19), Getdate(), 120)),
+                                                      'WEB',
+                                                      '${obj.shopName}',
+                                                      (SELECT CONVERT (CHAR(19), Getdate(), 120)),
+                                                      '2' )`,
 };

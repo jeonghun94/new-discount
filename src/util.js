@@ -1,6 +1,8 @@
 import { camelCase } from "lodash";
 import { Workbook } from "exceljs";
 import path from "path";
+import { executeQuery, executeUpdate } from "./server";
+import { DISCOUNT_QUERY, LOCALS_QUERY } from "./query";
 const root = path.dirname(__dirname);
 
 export const camelizeKeys = (obj) => {
@@ -49,17 +51,38 @@ export const excelDownload = async (res, obj, data) => {
   res.end();
 };
 
-export const excelUpload = async (res, fileName) => {
+export const excelUpload = async (fileName, user) => {
   const workbook = new Workbook();
   const worksheet = await workbook.xlsx.readFile(
     `${root}\\uploads\\${fileName}`
   );
   worksheet.eachSheet((sheet) => {
-    sheet.eachRow((row) => {
-      console.log(JSON.stringify(row.values));
-      // row.eachCell((cell) => {
-      //   console.log(cell.value);
-      // });
+    sheet.eachRow(async (row) => {
+      const list = row.values;
+
+      // shopName으로 shopCode 조회
+      const shopCode = await executeQuery(
+        LOCALS_QUERY.SEARCH_SHOP_CODE_BY_NAME(list[1])
+      );
+
+      // dcName으로 couponType 조회
+      const couponInfo = await executeQuery(
+        LOCALS_QUERY.SEARCH_COUPON_TYPE_BY_NAME(list[2])
+      );
+
+      // stock 조회
+      const stock = list[3];
+
+      const obj = {
+        shopCode: shopCode[0].shopCode,
+        ...couponInfo[0],
+        stock,
+        ...user,
+      };
+
+      console.log(obj);
+      await executeUpdate(DISCOUNT_QUERY.ADD_DISCOUNT_COUPON(obj));
+      await executeUpdate(DISCOUNT_QUERY.ADD_DISCOUNT_COUPON_HISTORY(obj));
     });
   });
 };
