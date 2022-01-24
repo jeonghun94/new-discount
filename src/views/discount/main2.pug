@@ -1,22 +1,28 @@
 extends ../base
 block content 
-        section.main__form(style="padding:30px;")                                                      
-            .keypad-input
-            .keypad 
-                div 1
-                div 2
-                div 3
-                div 4
-                div 5
-                div 6
-                div 7
-                div 8
-                div 9
-                span
-                div 0
-                span 
-                span 
-                span 
-                span 취소
+    form(method="POST", enctype="multipart/form-data" action="main2")
+
+        input(type="file", name="avatar", accept="xlsx/*")
+        input(type="submit", value="엑셀 업로드" style="display:block; background-color: blue; color:white; opacity:.9; border:0;")
+        //- section.main__form(style="padding:30px;")                                                      
+        //-     .keypad-input
+        //-     .keypad 
+        //-         div 1
+        //-         div 2
+        //-         div 3
+        //-         div 4
+        //-         div 5
+        //-         div 6
+        //-         div 7
+        //-         div 8
+        //-         div 9
+        //-         span
+        //-         div 0
+        //-         span 
+        //-         span 
+        //-         span 
+        //-         span 취소
+
+
         script(src="/static/js/discount.js") 
         include ../partials/footer

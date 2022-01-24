@@ -8,12 +8,17 @@ import {
   history,
   historyExcel,
   main2,
+  fileUpload,
 } from "../controllers/discountController";
-import { protectorMiddleware } from "../middleware";
+import { protectorMiddleware, uploadFiles } from "../middleware";
 
 const discountRouter = express.Router();
 discountRouter.route("/main").all(protectorMiddleware).get(main);
-discountRouter.route("/main2").all(protectorMiddleware).get(main2);
+discountRouter
+  .route("/main2")
+  .all(protectorMiddleware)
+  .get(main2)
+  .post(uploadFiles.single("avatar"), fileUpload);
 discountRouter
   .route("/list")
   .all(protectorMiddleware)

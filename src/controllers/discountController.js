@@ -1,16 +1,25 @@
 import { DISCOUNT_QUERY } from "../query";
 import { executeQuery, executeUpdate } from "../server";
-import { excelDownload } from "../util";
+import { excelDownload, excelUpload } from "../util";
 
 export const main = async (req, res) => {
-  // const { user } = req.session;
-  // console.log(user);
   res.render("discount/main", { pageTitle: "할인 등록" });
 };
 
 // 키패드 테스트
 export const main2 = async (req, res) => {
   res.render("discount/main2", { pageTitle: "할인 등록" });
+};
+
+export const fileUpload = async (req, res) => {
+  const { file } = req;
+  console.log(file);
+
+  try {
+    excelUpload(res, file.originalname);
+  } catch (error) {
+    res.send(error.message);
+  }
 };
 
 // 차량번호 4자리 조회

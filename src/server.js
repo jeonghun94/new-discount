@@ -10,6 +10,11 @@ import cron from "node-cron";
 import Stream from "node-rtsp-stream";
 import { camelizeKeys } from "./util";
 import config from "./mssqlConfig";
+import ExcelJS from "exceljs";
+
+// var path = require("path");
+// var root = path.dirname(__dirname);
+// console.log(path.join(root, "/uploads"));
 
 const app = express();
 const logger = morgan("dev");
@@ -28,7 +33,7 @@ cron.schedule("*/10 * * * * *", function () {
   //   });
   //   console.log(`${i}번 CCTV 시작`);
   // }
-  console.log("cron 실행");
+  // console.log("cron 실행");
 });
 
 export const executeQuery = async (query) => {

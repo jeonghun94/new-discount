@@ -1,5 +1,7 @@
 import { camelCase } from "lodash";
 import { Workbook } from "exceljs";
+import path from "path";
+const root = path.dirname(__dirname);
 
 export const camelizeKeys = (obj) => {
   if (Array.isArray(obj)) {
@@ -45,4 +47,19 @@ export const excelDownload = async (res, obj, data) => {
   await workbook.xlsx.write(res);
 
   res.end();
+};
+
+export const excelUpload = async (res, fileName) => {
+  const workbook = new Workbook();
+  const worksheet = await workbook.xlsx.readFile(
+    `${root}\\uploads\\${fileName}`
+  );
+  worksheet.eachSheet((sheet) => {
+    sheet.eachRow((row) => {
+      console.log(JSON.stringify(row.values));
+      // row.eachCell((cell) => {
+      //   console.log(cell.value);
+      // });
+    });
+  });
 };
