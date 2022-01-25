@@ -10,7 +10,7 @@ import cron from "node-cron";
 import Stream from "node-rtsp-stream";
 import { camelizeKeys } from "./util";
 import config from "./mssqlConfig";
-import ExcelJS from "exceljs";
+import adminRouter from "./routers/adminRouter";
 
 // var path = require("path");
 // var root = path.dirname(__dirname);
@@ -76,5 +76,6 @@ app.use("/static", express.static("assets"));
 app.use("/client", express.static("src/client"));
 app.use("/", globalRouter);
 app.use("/discount", discountRouter);
+app.use("/admin", adminRouter);
 
 export default app;
