@@ -28,7 +28,7 @@ export const saleCouponExcel = async (req, res) => {
       "등록금액",
       "등록일시",
     ];
-    console.log(saleCouponList);
+
     res.render("admin/sale-coupon", {
       pageTitle: "관리자",
       saleCouponList,

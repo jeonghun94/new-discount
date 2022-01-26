@@ -3,7 +3,7 @@ import { saleCouponExcel } from "../controllers/adminController";
 import { protectorMiddleware, uploadFiles } from "../middleware";
 
 const adminRouter = express.Router();
-adminRouter.route("/").all(protectorMiddleware).get(saleCouponExcel);
+adminRouter.route("/sale-coupon").all(protectorMiddleware).get(saleCouponExcel);
 // masterRouter
 //   .route("/sale-coupon")
 //   .all(protectorMiddleware)

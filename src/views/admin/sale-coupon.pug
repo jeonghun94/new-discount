@@ -11,14 +11,21 @@ block content
                     input(type="text" id="endDate" class="date__input")
                 .search__content
                     .radio__container   
-                        input(type="radio" id="all")
+                        input(type="radio" id="all" name="searchType" checked="checked")
                         label(for="all") 전체
-                        input(type="radio" id="shop")
+                        input(type="radio" id="shop" name="searchType")
                         label(for="shop") 매장별
-                        input(type="radio" id="type")
-                        label(for="type") 종류
+                        input(type="radio" id="coupon" name="searchType")
+                        label(for="coupon") 종류
                     .search__container
-                        select
+                        select#searchShopList.select__arrow
+                            option 선택
+                            each x in shopList
+                                +user(x)
+                            else 
+                                option 매장이 없습니다.
+                        select#searchCouponList.display__none.select__arrow
+                            option 선택
                             each x in payCouponList
                                     +coupon(x)
                             else 
@@ -43,19 +50,20 @@ block content
                                     td #{x.insDate}
                                 else 
                                     td.not__found(colspan="100%") 조회된 데이터가 없습니다.
+                p.test 조회수
                 .main__content-right
                     .main__content-right-title 할인권 등록
                     .main__content-right-content 
                         .content__item 
                             span 매장명
-                            select 
+                            select.select__arrow 
                                 each x in shopList
                                     +user(x)
                                 else 
                                     option 매장이 없습니다.
                         .content__item 
                             span 할인권
-                            select 
+                            select.select__arrow 
                                 each x in payCouponList
                                     +coupon(x)
                                 else 
@@ -65,6 +73,7 @@ block content
                             input(type="text" placeholder="0")
                     .main__content-right__footer
                         .sub-btn 등록
+           
             script(src="/static/js/admin.js") 
             include ../partials/flatpickr
             include ../partials/footer

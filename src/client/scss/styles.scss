@@ -1151,6 +1151,33 @@ select::-ms-expand {
   background-color: white;
 }
 
+.display__none {
+  display: none;
+}
+
+.nav-active {
+  padding: 13px 0;
+  box-sizing: border-box;
+  border-bottom: 2px solid $sub;
+  color: $sub !important;
+}
+
+.select__arrow {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("../img/arrow-black.png");
+  background-repeat: no-repeat, repeat;
+  background-position: right 0.7em top 50%, 0 0;
+  background-size: 0.65em auto, 100%;
+}
+
+.test {
+  margin: 0;
+  padding: 0;
+  text-align: right;
+}
+
 @media (min-width: 1920px) {
   .admin__body {
     width: 100%;

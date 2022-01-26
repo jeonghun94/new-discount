@@ -57,7 +57,7 @@ export const login = async (req, res) => {
       }
 
       // res.redirect("/discount/main");
-      res.redirect("/admin");
+      res.redirect("/admin/sale-coupon");
     } else {
       // 로그인 실패
       res.render("login", { notValid: true });
