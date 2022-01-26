@@ -893,19 +893,15 @@ select::-ms-expand {
       .search__content {
         width: 45%;
         display: flex;
-        margin-left: 35px;
-        // justify-content: flex-end;
-
-        &:last-child {
-          border: 0;
-          margin-right: -35px;
-        }
-
-        div {
-          width: 33%;
-        }
+        align-items: center;
+        margin-left: 70px;
+        // &:last-child {
+        //   border: 0;
+        //   margin-right: -35px;
+        // }
 
         .radio__container {
+          width: 33%;
           display: flex;
           align-items: center;
           input {
@@ -914,43 +910,47 @@ select::-ms-expand {
         }
 
         .search__container {
+          width: 33%;
+          border: 0;
           input,
           select {
             width: 100%;
+            border: 1px solid #cccccc;
+            outline: none;
           }
         }
 
         .btn__container {
+          width: 33%;
           display: flex;
           justify-content: center;
           align-items: center;
-          // border: 1px solid $main;
           div {
             width: auto;
           }
         }
 
-        span {
+        .date__text {
           margin: 0 10px;
           padding: 10px 20px;
+          border: 1px solid transparent;
           background-color: $main;
-          border: 1px solid $main;
           color: white;
-          height: max-content;
           opacity: 0.9;
-
-          &:nth-child(2) {
-            padding: 0;
-            background-color: #fff !important;
-          }
+          font-size: 0.875rem;
         }
 
-        input {
+        .date__input {
           width: 200px;
+          padding: 10px 10px;
           border-radius: 0;
           border: 1px solid #cccccc;
-          box-sizing: border-box;
-          padding: 8px;
+        }
+
+        .date__tilde {
+          padding: 10px;
+          background-color: transparent;
+          color: black;
         }
       }
     }
@@ -1140,7 +1140,19 @@ select::-ms-expand {
     cursor: pointer;
   }
 
-  tbody tr:focus-within {
-    background: yellow;
+  // tbody tr:focus-within {
+  //   background: yellow;
+  // }
+}
+
+.not__found {
+  height: 510px;
+  vertical-align: middle;
+  background-color: white;
+}
+
+@media (min-width: 1920px) {
+  .admin__body {
+    width: 100%;
   }
 }

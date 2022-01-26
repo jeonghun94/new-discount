@@ -1,4 +1,7 @@
 export const LOCALS_QUERY = {
+  USER_LIST: `SELECT ShopCode,
+                            ShopName
+                    FROM   ps130 `,
   USER_LOGGED_IN: (id, pw) => `SELECT *
                                 FROM   ps130
                                 WHERE  id = '${id}'
@@ -221,4 +224,25 @@ export const DISCOUNT_QUERY = {
                                                       '${obj.shopName}',
                                                       (SELECT CONVERT (CHAR(19), Getdate(), 120)),
                                                       '2' )`,
+};
+
+export const ADMIN_QUERY = {
+  // PS131
+  SALE_COUPON_LIST: (obj) => {
+    return `SELECT b.ShopName, 
+            c.DcName, 
+            a.SaleCouponQty, 
+            a.SaleCouponAmt, 
+            a.InsId, 
+            a.InsDate 
+      FROM   ps131 a
+            LEFT OUTER JOIN ps130 b
+                          ON a.shopcode = b.shopcode
+            LEFT OUTER JOIN ps132 c
+                          ON a.coupontype = c.coupontype
+      WHERE  a.procdate + a.proctime BETWEEN 
+            (SELECT CONVERT(VARCHAR(8), Getdate(), 112)) + '000000' AND 
+            (SELECT CONVERT(VARCHAR(8), Getdate(), 112)) + '235959'
+      ORDER  BY a.insdate DESC`;
+  },
 };

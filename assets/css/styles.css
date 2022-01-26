@@ -942,27 +942,29 @@ select::-ms-expand {
 .admin__body .admin__section .admin__search-container .search__content {
   width: 45%;
   display: flex;
-  margin-left: 35px;
-}
-.admin__body .admin__section .admin__search-container .search__content:last-child {
-  border: 0;
-  margin-right: -35px;
-}
-.admin__body .admin__section .admin__search-container .search__content div {
-  width: 33%;
+  align-items: center;
+  margin-left: 70px;
 }
 .admin__body .admin__section .admin__search-container .search__content .radio__container {
+  width: 33%;
   display: flex;
   align-items: center;
 }
 .admin__body .admin__section .admin__search-container .search__content .radio__container input {
   width: 20px;
 }
+.admin__body .admin__section .admin__search-container .search__content .search__container {
+  width: 33%;
+  border: 0;
+}
 .admin__body .admin__section .admin__search-container .search__content .search__container input,
 .admin__body .admin__section .admin__search-container .search__content .search__container select {
   width: 100%;
+  border: 1px solid #cccccc;
+  outline: none;
 }
 .admin__body .admin__section .admin__search-container .search__content .btn__container {
+  width: 33%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -970,25 +972,25 @@ select::-ms-expand {
 .admin__body .admin__section .admin__search-container .search__content .btn__container div {
   width: auto;
 }
-.admin__body .admin__section .admin__search-container .search__content span {
+.admin__body .admin__section .admin__search-container .search__content .date__text {
   margin: 0 10px;
   padding: 10px 20px;
+  border: 1px solid transparent;
   background-color: #012d6b;
-  border: 1px solid #012d6b;
   color: white;
-  height: max-content;
   opacity: 0.9;
+  font-size: 0.875rem;
 }
-.admin__body .admin__section .admin__search-container .search__content span:nth-child(2) {
-  padding: 0;
-  background-color: #fff !important;
-}
-.admin__body .admin__section .admin__search-container .search__content input {
+.admin__body .admin__section .admin__search-container .search__content .date__input {
   width: 200px;
+  padding: 10px 10px;
   border-radius: 0;
   border: 1px solid #cccccc;
-  box-sizing: border-box;
-  padding: 8px;
+}
+.admin__body .admin__section .admin__search-container .search__content .date__tilde {
+  padding: 10px;
+  background-color: transparent;
+  color: black;
 }
 .admin__body .admin__main-container {
   display: flex;
@@ -1153,6 +1155,15 @@ select::-ms-expand {
 .history__table tbody tr {
   cursor: pointer;
 }
-.history__table tbody tr:focus-within {
-  background: yellow;
+
+.not__found {
+  height: 510px;
+  vertical-align: middle;
+  background-color: white;
+}
+
+@media (min-width: 1920px) {
+  .admin__body {
+    width: 100%;
+  }
 }

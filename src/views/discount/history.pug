@@ -15,23 +15,5 @@ block content
                     input(type="text" maxlength="4" name="차량번호" placeholder="ex) 차량번호 4자리(선택사항)" id="inCarNo")
                     button(type="button" id="historyBtn") 조회
                     div(id="listDiv")
-                        //- p.views 총 
-                        //-     span 2
-                        //-     span 건
-                    //- div(id="listDiv" style="overflow-x:hidden; height:40vh;")
-        script(src="/static/js/discount.js") 
-        script(src="https://cdn.jsdelivr.net/npm/flatpickr") 
-        script(src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/rangePlugin.js") 
-        script(src="https://npmcdn.com/flatpickr/dist/flatpickr.min.js") 
-        script(src="https://npmcdn.com/flatpickr/dist/l10n/ko.js") 
-        script.
-            flatpickr.localize(flatpickr.l10ns.ko);
-
-            flatpickr("#startDate", {
-                local: 'ko',
-                mode:'range',
-                defaultDate:  ['today','today'],
-                plugins: [new rangePlugin({ input: "#endDate"})],
-                static:true
-            });
+        include ../partials/flatpickr
         include ../partials/footer

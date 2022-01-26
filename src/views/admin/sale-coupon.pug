@@ -1,12 +1,14 @@
 extends ../admin-base
+include ../mixins/user
+include ../mixins/coupon
 block content 
         section.admin__section
             article.admin__search-container
                 .search__content
-                    span 조회일자
-                    input(type="text") 
-                    span ~
-                    input(type="text") 
+                    span.date__text 조회일자
+                    input(type="text" id="startDate" class="date__input")
+                    span.date__tilde ~
+                    input(type="text" id="endDate" class="date__input")
                 .search__content
                     .radio__container   
                         input(type="radio" id="all")
@@ -17,8 +19,10 @@ block content
                         label(for="type") 종류
                     .search__container
                         select
-                            option 1시간
-                            option 2시간
+                            each x in payCouponList
+                                    +coupon(x)
+                            else 
+                                option 할인권 없습니다.
                     .btn__container
                         .main-btn 조회
                         .sub-btn 업로드
@@ -27,32 +31,40 @@ block content
                     table.history__table
                         thead   
                             tr 
-                                th 매장명
-                                th 할인권종류
-                                th 등록개수
-                                th 등록일시
+                                each x in tableHead
+                                    th #{x}
                         tbody   
-                            tr  
-                                td 정훈
-                                td ee 
-                                td ee 
-                                td ee 
+                            tr
+                                each x in saleCouponList
+                                    td #{x.shopName}
+                                    td #{x.dcName}
+                                    td #{x.saleCouponQty}
+                                    td #{Number(x.saleCouponQty) * Number(x.saleCouponAmt)}
+                                    td #{x.insDate}
+                                else 
+                                    td.not__found(colspan="100%") 조회된 데이터가 없습니다.
                 .main__content-right
                     .main__content-right-title 할인권 등록
                     .main__content-right-content 
                         .content__item 
                             span 매장명
                             select 
-                                option 랄라라라
-                                option 라라라랑
+                                each x in shopList
+                                    +user(x)
+                                else 
+                                    option 매장이 없습니다.
                         .content__item 
                             span 할인권
                             select 
-                                option 1시간
-                                option 2시간
+                                each x in payCouponList
+                                    +coupon(x)
+                                else 
+                                    option 할인권 없습니다.
                         .content__item 
                             span 수량
                             input(type="text" placeholder="0")
                     .main__content-right__footer
                         .sub-btn 등록
+            script(src="/static/js/admin.js") 
+            include ../partials/flatpickr
             include ../partials/footer
