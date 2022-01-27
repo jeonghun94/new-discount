@@ -31,7 +31,7 @@ block content
                             else 
                                 option 할인권 없습니다.
                     .btn__container
-                        .main-btn 조회
+                        .main-btn#searchBtn 조회
                         .sub-btn 업로드
             article.admin__main-container                        
                 .main__content-left 
@@ -41,39 +41,37 @@ block content
                                 each x in tableHead
                                     th #{x}
                         tbody   
-                            tr
-                                each x in saleCouponList
+                            each x in saleCouponList
+                                tr
                                     td #{x.shopName}
                                     td #{x.dcName}
                                     td #{x.saleCouponQty}
-                                    td #{Number(x.saleCouponQty) * Number(x.saleCouponAmt)}
+                                    td #{x.saleCouponAmt}
                                     td #{x.insDate}
-                                else 
-                                    td.not__found(colspan="100%") 조회된 데이터가 없습니다.
-                p.test 조회수
+                            else 
+                                td.not__found(colspan="100%") 조회된 데이터가 없습니다.
                 .main__content-right
                     .main__content-right-title 할인권 등록
                     .main__content-right-content 
                         .content__item 
                             span 매장명
-                            select.select__arrow 
+                            select.select__arrow#shopCode
                                 each x in shopList
                                     +user(x)
                                 else 
                                     option 매장이 없습니다.
                         .content__item 
                             span 할인권
-                            select.select__arrow 
+                            select.select__arrow#couponType
                                 each x in payCouponList
                                     +coupon(x)
                                 else 
                                     option 할인권 없습니다.
                         .content__item 
                             span 수량
-                            input(type="text" placeholder="0")
+                            input(type="text" maxlength="5" placeholder="0" id="couponCnt" )
                     .main__content-right__footer
-                        .sub-btn 등록
-           
+                        .sub-btn#insBtn 등록
             script(src="/static/js/admin.js") 
             include ../partials/flatpickr
             include ../partials/footer

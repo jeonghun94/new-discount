@@ -1,24 +1,38 @@
 import { ADMIN_QUERY, DISCOUNT_QUERY, LOCALS_QUERY } from "../query";
-import { executeQuery } from "../server";
+import { executeQuery, executeUpdate } from "../server";
 import { excelUpload } from "../util";
 
-export const saleCouponExcel = async (req, res) => {
+export const saleCoupon = async (req, res) => {
   const { method } = req;
 
   if (method === "POST") {
     const {
       file,
       session: { user },
+      body,
     } = req;
 
-    try {
-      excelUpload(file.originalname, user);
-      res.redirect("/discount/main2");
-    } catch (error) {
-      res.send(error.message);
-    }
+    console.log({ ...user, ...body });
+
+    await executeUpdate(
+      DISCOUNT_QUERY.ADD_DISCOUNT_COUPON({ ...user, ...body })
+    );
+    // await executeUpdate(
+    //   DISCOUNT_QUERY.ADD_DISCOUNT_COUPON_HISTORY({ ...user, ...body })
+    // );
+
+    res.end();
+    // try {
+    //   excelUpload(file.originalname, user);
+    //   res.redirect("/discount/main2");
+    // } catch (error) {
+    //   res.send(error.message);
+    // }
   } else {
-    const saleCouponList = await executeQuery(ADMIN_QUERY.SALE_COUPON_LIST());
+    const { type } = req.query;
+    const saleCouponList = await executeQuery(
+      ADMIN_QUERY.SALE_COUPON_LIST({ ...req.query })
+    );
     const payCouponList = await executeQuery(DISCOUNT_QUERY.SEARCH_PAY_COUPON);
     const shopList = await executeQuery(LOCALS_QUERY.USER_LIST);
     const tableHead = [
@@ -29,12 +43,16 @@ export const saleCouponExcel = async (req, res) => {
       "등록일시",
     ];
 
-    res.render("admin/sale-coupon", {
-      pageTitle: "관리자",
-      saleCouponList,
-      payCouponList,
-      shopList,
-      tableHead,
-    });
+    if (type === undefined) {
+      res.render("admin/sale-coupon", {
+        pageTitle: "관리자",
+        saleCouponList,
+        payCouponList,
+        shopList,
+        tableHead,
+      });
+    } else {
+      res.send({ saleCouponList });
+    }
   }
 };
