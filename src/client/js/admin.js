@@ -18,6 +18,8 @@ window.onload = function () {
         radioChange(this.id);
       });
     }
+
+    console.log(payCouponList);
   }
 
   const cnt = document.querySelector("#couponCnt");
@@ -65,9 +67,15 @@ function saleCouponHistory() {
     .value.replace(/-/gi, "");
   const endDate = document.querySelector("#endDate").value.replace(/-/gi, "");
   const type = document.querySelector('input[name="searchType"]:checked').id;
+  let typeValue = "";
+  if (type === "shop") {
+    typeValue = document.querySelector("#searchShopList").value;
+  } else if (type === "coupon") {
+    typeValue = document.querySelector("#searchCouponList").value;
+  }
 
   fetch(
-    `/admin/sale-coupon?startDate=${startDate}&endDate=${endDate}&type=${type}`,
+    `/admin/sale-coupon?startDate=${startDate}&endDate=${endDate}&type=${type}&typeValue=${typeValue}`,
     {
       method: "GET",
     }

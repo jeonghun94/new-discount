@@ -236,8 +236,15 @@ export const ADMIN_QUERY = {
   SALE_COUPON_LIST: (obj) => {
     const today = "(SELECT CONVERT(VARCHAR(8), Getdate(), 112))";
     const objKeys = Object.keys(obj).length;
-
-    console.log(obj);
+    let option = "";
+    if (objKeys > 0) {
+      if (obj.type === "shop" && obj.typeValue !== "선택") {
+        option = `AND a.shopcode = ${obj.typeValue}`;
+      } else if (obj.type === "coupon" && obj.typeValue !== "선택") {
+        option = `AND a.coupontype = ${obj.typeValue}`;
+      }
+    }
+    console.log(obj, "쿼리단");
     return `SELECT b.ShopName, 
                     c.DcName, 
                     a.SaleCouponQty, 
@@ -254,6 +261,7 @@ export const ADMIN_QUERY = {
                     objKeys !== 0 ? `'${obj.startDate}'` : today
                   } + '000000' AND 
                   ${objKeys !== 0 ? `'${obj.endDate}'` : today} + '235959'
+                  ${option}
             ORDER  BY a.insdate DESC`;
   },
 };

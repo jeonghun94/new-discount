@@ -10,10 +10,9 @@ export const saleCoupon = async (req, res) => {
       file,
       session: { user },
       body,
-      query,
     } = req;
 
-    console.log({ ...user, ...body });
+    //console.log({ ...user, ...body });
     await executeUpdate(
       DISCOUNT_QUERY.ADD_DISCOUNT_COUPON({ ...user, ...body })
     );
@@ -33,8 +32,6 @@ export const saleCoupon = async (req, res) => {
     // }
   } else {
     const { type } = req.query;
-    console.log({ ...req.query });
-    console.log(getSaleCoupon(req));
     const saleCouponList = await executeQuery(
       ADMIN_QUERY.SALE_COUPON_LIST({ ...req.query })
     );
