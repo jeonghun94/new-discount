@@ -34,7 +34,7 @@ INS_BTN.addEventListener("click", function () {
   const cnt = document.querySelector("#couponCnt");
 
   if (cnt.value === "" || cnt.value === null) {
-    alert("수량을 입력해 주세요.");
+    alert("등록 수량을 입력해 주세요.");
     return;
   }
 
@@ -52,7 +52,7 @@ INS_BTN.addEventListener("click", function () {
     addSaleCouponList({
       shopCode: shopValue,
       couponType: typeValue,
-      couponCnt: cnt.value,
+      stock: cnt.value,
     });
   } else {
     alert("취소되었습니다.");
@@ -82,6 +82,18 @@ function saleCouponHistory() {
 
 function addSaleCouponList(obj) {
   console.log(JSON.stringify(obj));
+  const startDate = document
+    .querySelector("#startDate")
+    .value.replace(/-/gi, "");
+  const endDate = document.querySelector("#endDate").value.replace(/-/gi, "");
+  const type = document.querySelector('input[name="searchType"]:checked').id;
+
+  obj = {
+    ...obj,
+    startDate,
+    endDate,
+    type,
+  };
   fetch(`/admin/sale-coupon`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },

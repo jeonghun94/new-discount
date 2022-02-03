@@ -10,18 +10,21 @@ export const saleCoupon = async (req, res) => {
       file,
       session: { user },
       body,
+      query,
     } = req;
 
     console.log({ ...user, ...body });
-
     await executeUpdate(
       DISCOUNT_QUERY.ADD_DISCOUNT_COUPON({ ...user, ...body })
     );
-    // await executeUpdate(
-    //   DISCOUNT_QUERY.ADD_DISCOUNT_COUPON_HISTORY({ ...user, ...body })
-    // );
+    await executeUpdate(
+      DISCOUNT_QUERY.ADD_DISCOUNT_COUPON_HISTORY({ ...user, ...body })
+    );
+    const saleCouponList = await executeQuery(
+      ADMIN_QUERY.SALE_COUPON_LIST({ ...body })
+    );
 
-    res.end();
+    res.send({ saleCouponList });
     // try {
     //   excelUpload(file.originalname, user);
     //   res.redirect("/discount/main2");
@@ -30,6 +33,8 @@ export const saleCoupon = async (req, res) => {
     // }
   } else {
     const { type } = req.query;
+    console.log({ ...req.query });
+    console.log(getSaleCoupon(req));
     const saleCouponList = await executeQuery(
       ADMIN_QUERY.SALE_COUPON_LIST({ ...req.query })
     );
@@ -55,4 +60,8 @@ export const saleCoupon = async (req, res) => {
       res.send({ saleCouponList });
     }
   }
+};
+
+const getSaleCoupon = (req, res) => {
+  console.log(req, "함수화");
 };

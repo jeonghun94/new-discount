@@ -215,10 +215,14 @@ export const DISCOUNT_QUERY = {
                                                       '${obj.couponType}',
                                                       '${obj.shopCode}',
                                                       '${obj.stock}',
-                                                      '${
-                                                        Number(obj.stock) *
-                                                        Number(obj.saleAmt)
-                                                      }',
+                                                      ${Number(
+                                                        obj.stock
+                                                      )} * (SELECT saleamt
+                                                            FROM   ps132
+                                                            WHERE  coupontype = '${
+                                                              obj.couponType
+                                                            }'
+                                                                    AND paytype = '02') ,
                                                       'WEB',
                                                       '${obj.shopName}',
                                                       (SELECT CONVERT (CHAR(19), Getdate(), 120)),
@@ -232,6 +236,8 @@ export const ADMIN_QUERY = {
   SALE_COUPON_LIST: (obj) => {
     const today = "(SELECT CONVERT(VARCHAR(8), Getdate(), 112))";
     const objKeys = Object.keys(obj).length;
+
+    console.log(obj);
     return `SELECT b.ShopName, 
                     c.DcName, 
                     a.SaleCouponQty, 
