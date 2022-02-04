@@ -52,6 +52,7 @@ export const executeUpdate = async (query) => {
   try {
     const request = pool.request();
     await request.query(query);
+    console.log("쿼리실행");
   } catch (err) {
     console.error("SQL error", err);
   }

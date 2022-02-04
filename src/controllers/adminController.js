@@ -21,17 +21,19 @@ export const saleCoupon = async (req, res) => {
           DISCOUNT_QUERY.ADD_DISCOUNT_COUPON_HISTORY({ ...user, ...body })
         );
       } else {
+        console.log("업로드시작");
         await excelUpload(file.originalname, user);
+        console.log("업로드완료");
       }
     } catch (error) {
       res.send(error.message);
     } finally {
+      console.log("쿠폰 등록 완료");
       const saleCouponList = await executeQuery(
         ADMIN_QUERY.SALE_COUPON_LIST({ ...body })
       );
 
-      console.log(saleCouponList, "saleCouponList");
-      console.log({ ...body });
+      console.log(saleCouponList.length, "리스트개수");
       res.send({ saleCouponList });
     }
   } else if (method === "GET") {

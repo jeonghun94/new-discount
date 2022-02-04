@@ -52,11 +52,12 @@ export const excelDownload = async (res, obj, data) => {
 };
 
 export const excelUpload = async (fileName, user) => {
+  console.log("유틸시작");
   const workbook = new Workbook();
   const worksheet = await workbook.xlsx.readFile(
     `${root}\\uploads\\${fileName}`
   );
-  worksheet.eachSheet((sheet) => {
+  worksheet.eachSheet(async (sheet) => {
     sheet.eachRow(async (row) => {
       const list = row.values;
 
@@ -82,6 +83,7 @@ export const excelUpload = async (fileName, user) => {
 
       await executeUpdate(DISCOUNT_QUERY.ADD_DISCOUNT_COUPON(obj));
       await executeUpdate(DISCOUNT_QUERY.ADD_DISCOUNT_COUPON_HISTORY(obj));
+      console.log("등록댐");
     });
   });
 };

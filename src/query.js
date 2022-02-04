@@ -235,6 +235,7 @@ export const DISCOUNT_QUERY = {
 export const ADMIN_QUERY = {
   SALE_COUPON_LIST: (obj) => {
     const today = "(SELECT CONVERT(VARCHAR(8), Getdate(), 112))";
+
     const objKeys = Object.keys(obj).length;
     let option = "";
     if (objKeys > 0) {
