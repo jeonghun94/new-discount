@@ -7,11 +7,5 @@ adminRouter
   .route("/sale-coupon")
   .all(protectorMiddleware)
   .get(saleCoupon)
-  .post(saleCoupon);
-// masterRouter
-//   .route("/sale-coupon")
-//   .all(protectorMiddleware)
-//   .get(main2)
-//   .post(uploadFiles.single("saleCoupon"), saleCouponExcel);
-
+  .post(uploadFiles.single("file"), saleCoupon);
 export default adminRouter;

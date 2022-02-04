@@ -12,25 +12,29 @@ export const saleCoupon = async (req, res) => {
       body,
     } = req;
 
-    //console.log({ ...user, ...body });
-    await executeUpdate(
-      DISCOUNT_QUERY.ADD_DISCOUNT_COUPON({ ...user, ...body })
-    );
-    await executeUpdate(
-      DISCOUNT_QUERY.ADD_DISCOUNT_COUPON_HISTORY({ ...user, ...body })
-    );
-    const saleCouponList = await executeQuery(
-      ADMIN_QUERY.SALE_COUPON_LIST({ ...body })
-    );
+    try {
+      if (file === undefined) {
+        await executeUpdate(
+          DISCOUNT_QUERY.ADD_DISCOUNT_COUPON({ ...user, ...body })
+        );
+        await executeUpdate(
+          DISCOUNT_QUERY.ADD_DISCOUNT_COUPON_HISTORY({ ...user, ...body })
+        );
+      } else {
+        await excelUpload(file.originalname, user);
+      }
+    } catch (error) {
+      res.send(error.message);
+    } finally {
+      const saleCouponList = await executeQuery(
+        ADMIN_QUERY.SALE_COUPON_LIST({ ...body })
+      );
 
-    res.send({ saleCouponList });
-    // try {
-    //   excelUpload(file.originalname, user);
-    //   res.redirect("/discount/main2");
-    // } catch (error) {
-    //   res.send(error.message);
-    // }
-  } else {
+      console.log(saleCouponList, "saleCouponList");
+      console.log({ ...body });
+      res.send({ saleCouponList });
+    }
+  } else if (method === "GET") {
     const { type } = req.query;
     const saleCouponList = await executeQuery(
       ADMIN_QUERY.SALE_COUPON_LIST({ ...req.query })

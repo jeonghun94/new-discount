@@ -932,7 +932,7 @@ select::-ms-expand {
   display: flex;
   justify-content: space-between;
   width: 100%;
-  height: 80px;
+  height: 100px;
   padding: 20px;
   background-color: white;
   box-sizing: border-box;
@@ -1088,6 +1088,7 @@ select::-ms-expand {
   cursor: pointer;
   padding: 10px 20px;
   background-color: #012d6b;
+  border: 1px solid transparent;
   margin: 0 10px 0 0;
   border-radius: 2px;
   color: white;
@@ -1096,7 +1097,8 @@ select::-ms-expand {
 .sub-btn {
   cursor: pointer;
   padding: 10px 20px;
-  background-color: #f3a42d;
+  border: 1px solid transparent;
+  background-color: #f8981c;
   border-radius: 2px;
   color: white;
 }
@@ -1106,7 +1108,6 @@ select::-ms-expand {
   padding: 10px 20px;
   background-color: white;
   margin: 0 10px 0 0;
-  font-size: 15px;
   border: 1px solid #012d6b;
   border-radius: 2px;
   color: #012d6b;
@@ -1193,4 +1194,52 @@ select::-ms-expand {
   .admin__body {
     width: 100%;
   }
+}
+.file__container {
+  margin: 0px 10px;
+  width: 40% !important;
+  font-size: 0.875rem !important;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.btn__box {
+  display: flex;
+  width: 90% !important;
+  justify-content: space-between;
+}
+
+.filebox {
+  display: flex;
+  width: 90% !important;
+}
+.filebox .upload-name {
+  padding: 10px 15px;
+  box-sizing: border-box;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+  border: 1px solid #dddddd;
+  color: #999999;
+  width: 65%;
+}
+.filebox label {
+  width: 35%;
+  padding: 10px 10px;
+  box-sizing: border-box;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #999999;
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+  cursor: pointer;
+}
+.filebox input[type=file] {
+  position: absolute;
+  width: 0;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
 }

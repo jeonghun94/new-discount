@@ -30,9 +30,15 @@ block content
                                     +coupon(x)
                             else 
                                 option 할인권 없습니다.
-                    .btn__container
-                        .main-btn#searchBtn 조회
-                        .sub-btn 업로드
+                    .btn__container.file__container
+                        .filebox
+                            label(for="file") 파일찾기
+                            input(class="upload-name" id="fileName" placeholder="엑셀 업로드" readonly="readonly")
+                            input(type="file" id="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                        .btn__box 
+                            .main-btn#searchBtn 조회
+                            .third-btn#uploadBtn 등록
+                            .sub-btn 출력
             article.admin__main-container                        
                 .main__content-left 
                     table.history__table

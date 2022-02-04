@@ -244,7 +244,7 @@ export const ADMIN_QUERY = {
         option = `AND a.coupontype = ${obj.typeValue}`;
       }
     }
-    console.log(obj, "쿼리단");
+
     return `SELECT b.ShopName, 
                     c.DcName, 
                     a.SaleCouponQty, 

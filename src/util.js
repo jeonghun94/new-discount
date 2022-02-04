@@ -1,6 +1,6 @@
+import path from "path";
 import { camelCase } from "lodash";
 import { Workbook } from "exceljs";
-import path from "path";
 import { executeQuery, executeUpdate } from "./server";
 import { DISCOUNT_QUERY, LOCALS_QUERY } from "./query";
 const root = path.dirname(__dirname);
@@ -80,7 +80,6 @@ export const excelUpload = async (fileName, user) => {
         ...user,
       };
 
-      console.log(obj);
       await executeUpdate(DISCOUNT_QUERY.ADD_DISCOUNT_COUPON(obj));
       await executeUpdate(DISCOUNT_QUERY.ADD_DISCOUNT_COUPON_HISTORY(obj));
     });

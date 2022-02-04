@@ -5,6 +5,10 @@ const INS_BTN = document.querySelector("#insBtn");
 const SEARCH_BTN = document.querySelector("#searchBtn");
 const TABLE_ROWS = document.querySelector("table tbody");
 
+const UPLOAD_BTN = document.querySelector("#uploadBtn");
+const file = document.querySelector("#file");
+const fileName = document.querySelector("#fileName");
+
 window.onload = function () {
   if (window.location.pathname === "/admin/sale-coupon") {
     menuActive();
@@ -18,13 +22,49 @@ window.onload = function () {
         radioChange(this.id);
       });
     }
-
-    console.log(payCouponList);
   }
 
   const cnt = document.querySelector("#couponCnt");
   cnt.addEventListener("keyup", function () {
     format(this);
+  });
+
+  file.addEventListener("change", function () {
+    fileName.value = file.value;
+  });
+
+  UPLOAD_BTN.addEventListener("click", function () {
+    if (fileName.value === "") {
+      alert("파일을 선택해주세요.");
+      return;
+    } else {
+      const fileExtension = getFileExtension(fileName.value);
+
+      if (fileExtension !== "xlsx") {
+        alert("엑셀(.xlsx) 파일만 업로드 가능합니다.");
+        return;
+      }
+
+      const searchObj = searchValueObj();
+      const data = new FormData();
+      data.append("file", file.files[0]);
+      data.append("startDate", searchObj.startDate);
+      data.append("endDate", searchObj.endDate);
+      data.append("type", searchObj.type);
+      data.append("typeValue", searchObj.typeValue);
+
+      fetch(`/admin/sale-coupon`, {
+        method: "POST",
+        body: data,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          const { saleCouponList: result } = data;
+          rerenderRows(result);
+        })
+        .catch((error) => console.log(error));
+    }
   });
 };
 
@@ -42,7 +82,6 @@ INS_BTN.addEventListener("click", function () {
 
   const shopValue = shop.options[shop.selectedIndex].value;
   const typeValue = type.options[type.selectedIndex].value;
-
   const shopText = shop.options[shop.selectedIndex].text;
   const typeText = type.options[type.selectedIndex].text;
 
@@ -61,7 +100,17 @@ INS_BTN.addEventListener("click", function () {
   }
 });
 
-function saleCouponHistory() {
+function getFileExtension(filename) {
+  const fileLength = filename.length;
+  const lastDot = filename.lastIndexOf(".");
+  const fileExtension = filename
+    .substring(lastDot + 1, fileLength)
+    .toLowerCase();
+
+  return fileExtension;
+}
+
+function searchValueObj() {
   const startDate = document
     .querySelector("#startDate")
     .value.replace(/-/gi, "");
@@ -74,8 +123,18 @@ function saleCouponHistory() {
     typeValue = document.querySelector("#searchCouponList").value;
   }
 
+  return {
+    startDate: startDate,
+    endDate: endDate,
+    type: type,
+    typeValue: typeValue,
+  };
+}
+
+function saleCouponHistory() {
+  const searchObj = searchValueObj();
   fetch(
-    `/admin/sale-coupon?startDate=${startDate}&endDate=${endDate}&type=${type}&typeValue=${typeValue}`,
+    `/admin/sale-coupon?startDate=${searchObj.startDate}&endDate=${searchObj.endDate}&type=${searchObj.type}&typeValue=${searchObj.typeValue}`,
     {
       method: "GET",
     }
