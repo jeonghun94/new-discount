@@ -39,8 +39,11 @@ block content
                             .main-btn#searchBtn 조회
                             .third-btn#uploadBtn 등록
                             .sub-btn 출력
-            article.admin__main-container                        
-                .main__content-left 
+            p.views 조회
+                span#viewsCount &nbsp#{saleCouponList.length}
+                span 건
+            article.admin__main-container
+                .main__content-left                        
                     table.history__table
                         thead   
                             tr 
@@ -78,6 +81,8 @@ block content
                             input(type="text" maxlength="5" placeholder="0" id="couponCnt" )
                     .main__content-right__footer
                         .sub-btn#insBtn 등록
+            
             include ../partials/footer
-        script(src="/static/js/admin.js") 
+        script(src="/static/js/common.js") 
+        script(src="/static/js/sale-coupon.js") 
         include ../partials/flatpickr

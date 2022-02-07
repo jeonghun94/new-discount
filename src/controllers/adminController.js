@@ -1,6 +1,6 @@
 import { ADMIN_QUERY, DISCOUNT_QUERY, LOCALS_QUERY } from "../query";
 import { executeQuery, executeUpdate } from "../server";
-import { excelUpload } from "../util";
+import { excelSaleCoupon, excelUpload } from "../util";
 
 export const saleCoupon = async (req, res) => {
   const { method } = req;
@@ -12,30 +12,24 @@ export const saleCoupon = async (req, res) => {
       body,
     } = req;
 
-    try {
-      if (file === undefined) {
-        await executeUpdate(
-          DISCOUNT_QUERY.ADD_DISCOUNT_COUPON({ ...user, ...body })
-        );
-        await executeUpdate(
-          DISCOUNT_QUERY.ADD_DISCOUNT_COUPON_HISTORY({ ...user, ...body })
-        );
-      } else {
-        console.log("업로드시작");
-        await excelUpload(file.originalname, user);
-        console.log("업로드완료");
-      }
-    } catch (error) {
-      res.send(error.message);
-    } finally {
-      console.log("쿠폰 등록 완료");
-      const saleCouponList = await executeQuery(
-        ADMIN_QUERY.SALE_COUPON_LIST({ ...body })
+    if (file === undefined) {
+      await executeUpdate(
+        DISCOUNT_QUERY.ADD_DISCOUNT_COUPON({ ...user, ...body })
       );
-
-      console.log(saleCouponList.length, "리스트개수");
-      res.send({ saleCouponList });
+      await executeUpdate(
+        DISCOUNT_QUERY.ADD_DISCOUNT_COUPON_HISTORY({ ...user, ...body })
+      );
+    } else {
+      const list = await excelUpload(file.originalname, user);
+      await excelSaleCoupon(list, user);
     }
+
+    const saleCouponList = await executeQuery(
+      ADMIN_QUERY.SALE_COUPON_LIST({ ...body })
+    );
+
+    console.log(saleCouponList.length, "리스트개수");
+    res.send({ saleCouponList });
   } else if (method === "GET") {
     const { type } = req.query;
     const saleCouponList = await executeQuery(

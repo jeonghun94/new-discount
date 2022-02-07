@@ -52,38 +52,40 @@ export const excelDownload = async (res, obj, data) => {
 };
 
 export const excelUpload = async (fileName, user) => {
-  console.log("유틸시작");
   const workbook = new Workbook();
   const worksheet = await workbook.xlsx.readFile(
     `${root}\\uploads\\${fileName}`
   );
-  worksheet.eachSheet(async (sheet) => {
-    sheet.eachRow(async (row) => {
-      const list = row.values;
-
-      // shopName으로 shopCode 조회
-      const shopCode = await executeQuery(
-        LOCALS_QUERY.SEARCH_SHOP_CODE_BY_NAME(list[1])
-      );
-
-      // dcName으로 couponType 조회
-      const couponInfo = await executeQuery(
-        LOCALS_QUERY.SEARCH_COUPON_TYPE_BY_NAME(list[2])
-      );
-
-      // stock 조회
-      const stock = list[3];
-
-      const obj = {
-        shopCode: shopCode[0].shopCode,
-        ...couponInfo[0],
-        stock,
-        ...user,
-      };
-
-      await executeUpdate(DISCOUNT_QUERY.ADD_DISCOUNT_COUPON(obj));
-      await executeUpdate(DISCOUNT_QUERY.ADD_DISCOUNT_COUPON_HISTORY(obj));
-      console.log("등록댐");
+  const rows = [];
+  worksheet.eachSheet((sheet) => {
+    sheet.eachRow((row) => {
+      rows.push(row.values);
     });
   });
+  console.log(`Excel Data Return: ${rows}`);
+  return rows;
+};
+
+export const excelSaleCoupon = async (list, user) => {
+  for (let item of list) {
+    const shopCode = await executeQuery(
+      LOCALS_QUERY.SEARCH_SHOP_CODE_BY_NAME(item[1])
+    );
+
+    const couponInfo = await executeQuery(
+      LOCALS_QUERY.SEARCH_COUPON_TYPE_BY_NAME(item[2])
+    );
+
+    const stock = item[3];
+
+    const obj = {
+      shopCode: shopCode[0].shopCode,
+      ...couponInfo[0],
+      ...user,
+      stock,
+    };
+
+    await executeUpdate(DISCOUNT_QUERY.ADD_DISCOUNT_COUPON(obj));
+    await executeUpdate(DISCOUNT_QUERY.ADD_DISCOUNT_COUPON_HISTORY(obj));
+  }
 };

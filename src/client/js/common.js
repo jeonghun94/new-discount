@@ -1,11 +1,25 @@
-window.onload = function () {
-  if (window.location.pathname === "/password") {
-    const updBtn = document.querySelector("#updBtn");
-    document.querySelector("#oldPassword").focus();
-    updBtn.addEventListener("click", userPasswordUpdate);
-  }
-};
+const SUB_MENU = document.querySelector("nav");
 
+// window.onload = function () {
+//   if (window.location.pathname === "/password") {
+//     const updBtn = document.querySelector("#updBtn");
+//     document.querySelector("#oldPassword").focus();
+//     updBtn.addEventListener("click", userPasswordUpdate);
+//   }
+// };
+
+// 관리자 페이지 메뉴 활성화
+function menuActive() {
+  const pathName = document.location.pathname.split(".")[0];
+  for (let i = 0; i < SUB_MENU.children.length; i++) {
+    const menu = SUB_MENU.children[i];
+    if (pathName === menu.dataset.path) {
+      menu.classList.add("nav-active");
+    }
+  }
+}
+
+// 조회 결과 없음 표시
 function nodata(container) {
   const noDataContainer = document.createElement("div");
   noDataContainer.classList.add("nodata__container");

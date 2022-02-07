@@ -838,10 +838,12 @@ select::-ms-expand {
 }
 
 .views {
+  padding: 0px 5px;
+  box-sizing: border-box;
+  width: 70%;
   text-align: right;
-  margin: 10px 10px 0 0;
-  font-weight: 500;
-  font-size: 0.9rem;
+  margin: 10px -20px -25px 0px;
+  font-size: 0.875rem;
 }
 .views span:first-child {
   color: #012d6b;
@@ -1006,7 +1008,7 @@ select::-ms-expand {
   width: 70%;
   height: auto;
   overflow: auto;
-  border-radius: px;
+  border-radius: 2px;
   background-color: white;
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
 }

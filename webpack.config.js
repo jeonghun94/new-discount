@@ -9,7 +9,7 @@ module.exports = {
     main: BASE_JS + "main.js",
     cctv: BASE_JS + "cctv.js",
     common: BASE_JS + "common.js",
-    admin: BASE_JS + "admin.js",
+    "sale-coupon": BASE_JS + "sale-coupon.js",
     gate: BASE_JS + "gateControl.js",
     jsmpeg: BASE_JS + "jsmpeg.min.js",
     discount: BASE_JS + "discount.js",
