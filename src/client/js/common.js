@@ -6,12 +6,10 @@ window.onload = function () {
     document.querySelector("#oldPassword").focus();
     updBtn.addEventListener("click", userPasswordUpdate);
   }
-
-  menuActive();
 };
 
 // 관리자 페이지 메뉴 활성화
-function menuActive() {
+export const menuActive = () => {
   const pathName = document.location.pathname.split(".")[0];
   for (let i = 0; i < SUB_MENU.children.length; i++) {
     const menu = SUB_MENU.children[i];
@@ -19,7 +17,7 @@ function menuActive() {
       menu.classList.add("nav-active");
     }
   }
-}
+};
 
 // 조회 결과 없음 표시
 function nodata(container) {

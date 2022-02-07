@@ -1,6 +1,6 @@
+import { menuActive } from "./common";
 const coupon = document.querySelector("#searchCouponList");
 const shop = document.querySelector("#searchShopList");
-const SUB_MENU = document.querySelector("nav");
 const INS_BTN = document.querySelector("#insBtn");
 const SEARCH_BTN = document.querySelector("#searchBtn");
 const TABLE_ROWS = document.querySelector("table tbody");
@@ -9,8 +9,8 @@ let VIEWS_COUNT = document.querySelector("#viewsCount");
 const UPLOAD_BTN = document.querySelector("#uploadBtn");
 const file = document.querySelector("#file");
 const fileName = document.querySelector("#fileName");
-
 window.onload = function () {
+  menuActive();
   coupon.disabled = true;
   shop.disabled = true;
   const radio = document.querySelectorAll("input[type=radio]");
