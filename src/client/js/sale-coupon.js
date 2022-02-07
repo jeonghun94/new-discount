@@ -211,16 +211,16 @@ function comma(str) {
   const minus = str.substring(0, 1);
 
   str = str.replace(/[^\d]+/g, "");
-  str = str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, "$1,");
-
+  //str = str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, "$1,");
+  str = str.replace(/\B(?=(\d{3})+(?!\d))/g, "$1,");
   if (minus == "-") str = "-" + str;
 
   return str;
 }
 
-function commaToString(price) {
-  return price.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-}
+// function commaToString(price) {
+//   return price.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+// }
 
 function uncomma(str) {
   str = String(str);
