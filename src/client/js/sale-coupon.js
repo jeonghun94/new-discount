@@ -10,7 +10,6 @@ const UPLOAD_BTN = document.querySelector("#uploadBtn");
 const file = document.querySelector("#file");
 const fileName = document.querySelector("#fileName");
 
-menuActive();
 window.onload = function () {
   coupon.disabled = true;
   shop.disabled = true;

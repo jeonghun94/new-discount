@@ -1,12 +1,14 @@
 const SUB_MENU = document.querySelector("nav");
 
-// window.onload = function () {
-//   if (window.location.pathname === "/password") {
-//     const updBtn = document.querySelector("#updBtn");
-//     document.querySelector("#oldPassword").focus();
-//     updBtn.addEventListener("click", userPasswordUpdate);
-//   }
-// };
+window.onload = function () {
+  if (window.location.pathname === "/password") {
+    const updBtn = document.querySelector("#updBtn");
+    document.querySelector("#oldPassword").focus();
+    updBtn.addEventListener("click", userPasswordUpdate);
+  }
+
+  menuActive();
+};
 
 // 관리자 페이지 메뉴 활성화
 function menuActive() {
