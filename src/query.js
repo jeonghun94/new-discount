@@ -75,11 +75,25 @@ export const DISCOUNT_QUERY = {
     return `SELECT * FROM PS500 WHERE inseqno = ${inSeqNo}`;
   },
   SEARCH_FREE_COUPON: `SELECT * FROM PS132 WHERE paytype = '01'`,
-  SEARCH_PAY_COUPON: `SELECT * FROM PS132 WHERE paytype = '02'`,
+  SEARCH_PAY_COUPON: (obj) => {
+    const opiton = obj ? `AND b.shopCode = '${obj.shopCode}'` : "";
+    const user = `SELECT a.dcName,
+                          a.couponType,
+                          Replace(CONVERT(VARCHAR, CONVERT(MONEY, b.stock), 1), '.00', '') AS stock
+                  FROM   ps132 a
+                        LEFT OUTER JOIN ps135 b
+                                      ON a.coupontype = b.coupontype
+                  WHERE  a.paytype = '02'
+                          ${opiton}`;
+
+    const admin = `SELECT * FROM PS132 WHERE paytype = '02'`;
+    return obj ? user : admin;
+  },
   SEARCH_DISCOUNT_LIST: (inSeqNo) => {
     return `SELECT CONVERT(DATETIME, a.ProcDate + ' ' + STUFF(STUFF(a.proctime, 3, 0, ':'), 6, 0, ':'), 120) as InTime,
                 b.InCarNo,
                 a.Idx,
+                a.CouponType,
                 c.DcName,
                 d.ShopName
             FROM   ps134 a
@@ -113,6 +127,12 @@ export const DISCOUNT_QUERY = {
                     '0')
       `;
   },
+  UPDATE_COUPON_CNT: (obj) => {
+    return `UPDATE ps135
+            SET    stock = stock ${obj.payCnt !== undefined ? "-" : "+"} 1
+            WHERE  shopcode = '${obj.shopCode}'
+                  AND coupontype = '${obj.couponType}' `;
+  },
   SEARCH_DISCOUNT_HISTORY: (obj) => {
     obj.startDate = obj.startDate.replace(/-/g, "");
     obj.endDate = obj.endDate.replace(/-/g, "");
@@ -144,11 +164,16 @@ export const DISCOUNT_QUERY = {
                       c.proctime DESC`;
   },
   CONDITION_CHECK: (obj) => {
+    const option =
+      obj.shopDuplication === "Y" ? `AND a.shopcode = '${obj.shopCode}'` : "";
+    console.log(option);
     return `DECLARE @inSeqNo    INT,
-                    @couponType INT
+                    @couponType INT,
+                    @shopCode   VARCHAR(4)
 
             SET @couponType = ${obj.couponType}
             SET @inSeqNo = ${obj.inSeqNo}
+            SET @shopCode = '${obj.shopCode}'
 
             SELECT  (SELECT paytype
                       FROM   ps132
@@ -156,7 +181,7 @@ export const DISCOUNT_QUERY = {
                     (SELECT Isnull (Sum(CONVERT(INT, stock)), 0)
                       FROM   ps135
                       WHERE  coupontype = @couponType
-                            AND shopcode = '${obj.shopCode}')    AS CouponCnt,
+                            AND shopcode = @shopCode)    AS CouponCnt,
                     (SELECT Isnull(Sum(CONVERT(INT, b.dcval) ), 0 )
                             + (SELECT dcval
                                 FROM   ps132
@@ -164,23 +189,23 @@ export const DISCOUNT_QUERY = {
                       FROM   ps134 a
                             LEFT OUTER JOIN ps132 b
                                           ON a.coupontype = b.coupontype
-                      WHERE  a.inseqno = @inSeqNo)     AS TotalDcVal,
+                      WHERE  a.inseqno = @inSeqNo ${option})     AS TotalDcVal,
                     (SELECT Count(*)
                       FROM   ps134 a
                             LEFT OUTER JOIN ps132 b
                                           ON a.coupontype = b.coupontype
-                      WHERE  a.inseqno = @inSeqNo)     AS TotalCnt,
+                      WHERE  a.inseqno = @inSeqNo ${option})     AS TotalCnt,
                     (SELECT Count(*)
                       FROM   ps134 a
                             LEFT OUTER JOIN ps132 b
                                           ON a.coupontype = b.coupontype
-                      WHERE  a.inseqno = @inSeqNo
+                      WHERE  a.inseqno = @inSeqNo ${option}
                             AND b.paytype = '01')     AS FreeCnt,
                     (SELECT Count(*)
                       FROM   ps134 a
                             LEFT OUTER JOIN ps132 b
                                           ON a.coupontype = b.coupontype
-                      WHERE  a.inseqno = @inSeqNo
+                      WHERE  a.inseqno = @inSeqNo ${option}
                             AND b.paytype = '02')     AS PayCnt `;
   },
 

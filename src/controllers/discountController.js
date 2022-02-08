@@ -2,6 +2,8 @@ import { DISCOUNT_QUERY } from "../query";
 import { executeQuery, executeUpdate } from "../server";
 import { excelDownload, excelUpload } from "../util";
 
+const PAY_AFTER = process.env.PAY_AFTER;
+
 export const main = async (req, res) => {
   res.render("discount/main", { pageTitle: "할인 등록" });
 };
@@ -38,7 +40,9 @@ export const searchInSeqNo = async (req, res) => {
 
   const result = await executeQuery(DISCOUNT_QUERY.SEARCH_IN_SEQ_NO(inSeqNo));
   const freeCouponList = await executeQuery(DISCOUNT_QUERY.SEARCH_FREE_COUPON);
-  const payCouponList = await executeQuery(DISCOUNT_QUERY.SEARCH_PAY_COUPON);
+  const payCouponList = await executeQuery(
+    DISCOUNT_QUERY.SEARCH_PAY_COUPON({ ...req.session.user })
+  );
   const discountList = await executeQuery(
     DISCOUNT_QUERY.SEARCH_DISCOUNT_LIST(inSeqNo)
   );
@@ -65,22 +69,13 @@ export const insertList = async (req, res) => {
   if (shopDuplication === "Y") {
   }
 
-  // #########################################제약조건#########################################
+  // 현재 할인을 등록할 차량에 등록된 할인 정보
   const result = await executeQuery(DISCOUNT_QUERY.CONDITION_CHECK(obj));
-
   const { payType, couponCnt, totalDcVal, totalCnt, freeCnt, payCnt } =
     result[0];
 
-  console.log("설정값:", timeLimitMinutes, maxCnt, shopFreeCnt, shopPayCnt);
-  console.log(
-    "디비값",
-    totalDcVal,
-    totalCnt,
-    freeCnt,
-    payCnt,
-    payType,
-    couponCnt
-  );
+  console.log("130설정값:", timeLimitMinutes, maxCnt, shopFreeCnt, shopPayCnt);
+  console.log("134조회값:", { ...result[0] });
 
   // 분 단위 제한 확인 및 처리
   if (timeLimit === "Y") {
@@ -111,6 +106,7 @@ export const insertList = async (req, res) => {
       return;
     }
   } else {
+    // 유료권 타입일 경우
     if (couponCnt <= 0) {
       res.send({
         result: "fail",
@@ -126,6 +122,10 @@ export const insertList = async (req, res) => {
       });
       return;
     }
+
+    if (PAY_AFTER === "N") {
+      await executeUpdate(DISCOUNT_QUERY.UPDATE_COUPON_CNT(obj));
+    }
   }
 
   await executeUpdate(DISCOUNT_QUERY.INSERT_LIST(obj));
@@ -135,15 +135,33 @@ export const insertList = async (req, res) => {
     DISCOUNT_QUERY.SEARCH_DISCOUNT_LIST(obj.inSeqNo)
   );
 
-  res.send({ result: "success", list: discountList });
+  const payCouponList = await executeQuery(
+    DISCOUNT_QUERY.SEARCH_PAY_COUPON({ ...req.session.user })
+  );
+
+  res.send({ result: "success", list: discountList, payCouponList });
 };
 
 // 할인 삭제
 export const deleteList = async (req, res) => {
-  const { idx, inSeqNo } = req.body;
+  const {
+    body: { idx, inSeqNo },
+    session: {
+      user: { shopCode },
+    },
+  } = req;
 
   await executeUpdate(DISCOUNT_QUERY.DELETE_LIST(idx));
   console.log(`DELETE PS134 ${JSON.stringify(req.body)}`);
+
+  if (PAY_AFTER === "N") {
+    await executeUpdate(
+      DISCOUNT_QUERY.UPDATE_COUPON_CNT({
+        ...req.body,
+        shopCode,
+      })
+    );
+  }
 
   const discountList = await executeQuery(
     DISCOUNT_QUERY.SEARCH_DISCOUNT_LIST(inSeqNo)

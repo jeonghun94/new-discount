@@ -200,6 +200,7 @@ function discountList(list, inSeqNo) {
       discountInfoContainer.classList.add("discount__info-container");
       discountInfoContainer.dataset.idx = x.idx;
       discountInfoContainer.dataset.dcname = x.dcName;
+      discountInfoContainer.dataset.coupontype = x.couponType;
 
       const discountInfo = document.createElement("div");
       discountInfo.classList.add("discount__info");
@@ -226,8 +227,12 @@ function discountList(list, inSeqNo) {
       discountInfoDelete.innerHTML = "삭제";
 
       discountInfoDelete.addEventListener("click", (e) => {
-        const { idx, dcname: dcName } = e.currentTarget.parentNode.dataset;
-        deleteList(idx, inSeqNo, dcName);
+        const {
+          idx,
+          dcname: dcName,
+          coupontype: couponType,
+        } = e.currentTarget.parentNode.dataset;
+        deleteList(idx, inSeqNo, dcName, couponType);
       });
 
       discountInfoContainer.appendChild(discountInfo);
@@ -336,7 +341,14 @@ function couponList(list, text) {
         value: couponType,
       } = e.currentTarget;
 
-      if (couponType !== "00" && confirm(`${text} 할인을 등록하시겠습니까?`)) {
+      if (
+        couponType !== "00" &&
+        confirm(
+          `${
+            text.indexOf("잔여") === -1 ? text : text.split("(")[0]
+          } 할인을 등록하시겠습니까?`
+        )
+      ) {
         insertList(inSeqNo, couponType);
       } else {
         resetSelect();
@@ -345,7 +357,9 @@ function couponList(list, text) {
 
     list.map((x) => {
       const option = document.createElement("option");
-      option.innerText = `${x.dcName}`;
+      option.innerText = `${x.dcName}${
+        text === "유료" ? `(잔여:${x.stock}매)` : ""
+      }`;
       option.value = `${x.couponType}`;
       select.append(option);
     });
@@ -383,6 +397,7 @@ function insertList(inSeqNo, couponType) {
         } else {
           DISCOUNT_CONTAINER.innerHTML = "";
           discountList(data.list, inSeqNo);
+          // couponList(data.payCouponList, "유료");
         }
         resetSelect();
       })
@@ -391,14 +406,15 @@ function insertList(inSeqNo, couponType) {
 }
 
 // 웹 할인 삭제
-function deleteList(idx, inSeqNo, dcName) {
+function deleteList(idx, inSeqNo, dcName, couponType) {
   if (confirm(`${dcName} 할인을 삭제하시겠습니까?`)) {
     fetch(`/discount/list`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        inSeqNo,
         idx,
+        inSeqNo,
+        couponType,
       }),
     })
       .then((response) => response.json())

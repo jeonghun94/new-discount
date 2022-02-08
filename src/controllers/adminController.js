@@ -35,7 +35,9 @@ export const saleCoupon = async (req, res) => {
     const saleCouponList = await executeQuery(
       ADMIN_QUERY.SALE_COUPON_LIST({ ...req.query })
     );
-    const payCouponList = await executeQuery(DISCOUNT_QUERY.SEARCH_PAY_COUPON);
+    const payCouponList = await executeQuery(
+      DISCOUNT_QUERY.SEARCH_PAY_COUPON()
+    );
     const shopList = await executeQuery(LOCALS_QUERY.USER_LIST);
     const tableHead = [
       "매장명",
