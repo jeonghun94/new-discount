@@ -1,6 +1,6 @@
 import { ADMIN_QUERY, DISCOUNT_QUERY, LOCALS_QUERY } from "../query";
 import { executeQuery, executeUpdate } from "../server";
-import { excelSaleCoupon, excelUpload } from "../util";
+import { excelDownload, excelSaleCoupon, excelUpload } from "../util";
 
 export const saleCoupon = async (req, res) => {
   const { method } = req;
@@ -57,6 +57,42 @@ export const saleCoupon = async (req, res) => {
       res.send({ saleCouponList });
     }
   }
+};
+
+// 할인 내역 엑셀 다운로드
+export const saleCouponExcel = async (req, res) => {
+  const obj = {
+    ...req.query,
+    shopCode: req.session.user.shopCode,
+    header: (style) => [
+      { header: "매장명", key: "shopName", width: 20 },
+      {
+        header: "할인권명",
+        key: "dcName",
+        width: 15,
+        style: { alignment: { horizontal: "left" } },
+      },
+      { header: "등록개수", key: "saleCouponQty", width: 15 },
+      {
+        header: "등록금액",
+        key: "saleCouponAmt",
+        width: 20,
+        style,
+      },
+      {
+        header: "출차일시",
+        key: "insDate",
+        width: 20,
+        style,
+      },
+    ],
+    fileName: "할인권판매내역",
+  };
+  const data = await executeQuery(
+    ADMIN_QUERY.SALE_COUPON_LIST({ ...req.query })
+  );
+  await excelDownload(res, obj, data);
+  console.log(`HISTORY EXCEL PS131 ${JSON.stringify(req.query)}`);
 };
 
 const getSaleCoupon = (req, res) => {

@@ -1,78 +1,84 @@
-import { menuActive } from "./common";
+import { menuActive, getFileExtension, format, radioInit } from "./common";
+const SEARCH_BTN = document.querySelector("#searchBtn");
+const UPLOAD_BTN = document.querySelector("#uploadBtn");
+const DOWNLOAD_BTN = document.querySelector("#downloadBtn");
+const INS_BTN = document.querySelector("#insBtn");
+
 const coupon = document.querySelector("#searchCouponList");
 const shop = document.querySelector("#searchShopList");
-const INS_BTN = document.querySelector("#insBtn");
-const SEARCH_BTN = document.querySelector("#searchBtn");
-const TABLE_ROWS = document.querySelector("table tbody");
 
+const TABLE_ROWS = document.querySelector("table tbody");
 let VIEWS_COUNT = document.querySelector("#viewsCount");
-const UPLOAD_BTN = document.querySelector("#uploadBtn");
+
 const file = document.querySelector("#file");
 const fileName = document.querySelector("#fileName");
+const cnt = document.querySelector("#couponCnt");
+
 window.onload = function () {
   menuActive();
-  coupon.disabled = true;
-  shop.disabled = true;
-  const radio = document.querySelectorAll("input[type=radio]");
-  const radioLength = radio.length;
-
-  for (let i = 0; i < radioLength; i++) {
-    radio[i].addEventListener("change", function () {
-      radioChange(this.id);
-    });
-  }
-
-  const cnt = document.querySelector("#couponCnt");
-  cnt.addEventListener("keyup", function () {
-    format(this);
-  });
-
-  file.addEventListener("change", function () {
-    fileName.value = file.value;
-  });
-
-  UPLOAD_BTN.addEventListener("click", function () {
-    if (fileName.value === "") {
-      alert("파일을 선택해주세요.");
-      return;
-    } else {
-      const fileExtension = getFileExtension(fileName.value);
-
-      if (fileExtension !== "xlsx") {
-        alert("엑셀(.xlsx) 파일만 업로드 가능합니다.");
-        return;
-      }
-
-      const searchObj = searchValueObj();
-      const data = new FormData();
-      data.append("file", file.files[0]);
-      data.append("startDate", searchObj.startDate);
-      data.append("endDate", searchObj.endDate);
-      data.append("type", searchObj.type);
-      data.append("typeValue", searchObj.typeValue);
-
-      fetch(`/admin/sale-coupon`, {
-        method: "POST",
-        body: data,
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-          const { saleCouponList: result } = data;
-          rerenderRows(result);
-          fileName.value = "";
-          alert("엑셀 등록 완료");
-        })
-        .catch((error) => console.log(error));
-    }
-  });
+  radioInit(radioChange);
 };
+
+cnt.addEventListener("keyup", function () {
+  format(this);
+});
+
+file.addEventListener("change", function () {
+  fileName.value = file.value;
+});
 
 SEARCH_BTN.addEventListener("click", saleCouponHistory);
 
+UPLOAD_BTN.addEventListener("click", function () {
+  if (fileName.value === "") {
+    alert("파일을 선택해주세요.");
+    return;
+  } else {
+    const fileExtension = getFileExtension(fileName.value);
+
+    if (fileExtension !== "xlsx") {
+      alert("엑셀(.xlsx) 파일만 업로드 가능합니다.");
+      return;
+    }
+
+    const searchObj = searchValueObj();
+    const data = new FormData();
+    data.append("file", file.files[0]);
+    data.append("startDate", searchObj.startDate);
+    data.append("endDate", searchObj.endDate);
+    data.append("type", searchObj.type);
+    data.append("typeValue", searchObj.typeValue);
+
+    fetch(`/admin/sale-coupon`, {
+      method: "POST",
+      body: data,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        const { saleCouponList: result } = data;
+        rerenderRows(result);
+        fileName.value = "";
+        alert("엑셀 등록 완료");
+      })
+      .catch((error) => console.log(error));
+  }
+});
+
+DOWNLOAD_BTN.addEventListener("click", function () {
+  const views = Number(VIEWS_COUNT.innerText);
+  const searchObj = searchValueObj();
+
+  if (views === 0) {
+    alert("내려받을 내용이 없습니다.");
+  } else {
+    location.href = `${window.location.pathname}/excel?startDate=${searchObj.startDate}&endDate=${searchObj.endDate}&type=${searchObj.type}&typeValue=${searchObj.typeValue}`;
+  }
+});
+
 INS_BTN.addEventListener("click", function () {
-  const shop = document.querySelector("#shopCode");
   const type = document.querySelector("#couponType");
+  const shop = document.querySelector("#shopCode");
   const cnt = document.querySelector("#couponCnt");
 
   if (cnt.value === "" || cnt.value === null) {
@@ -93,22 +99,12 @@ INS_BTN.addEventListener("click", function () {
     addSaleCouponList({
       shopCode: shopValue,
       couponType: typeValue,
-      stock: cnt.value,
+      stock: cnt.value.replace(/,/gi, ""),
     });
   } else {
     alert("취소되었습니다.");
   }
 });
-
-function getFileExtension(filename) {
-  const fileLength = filename.length;
-  const lastDot = filename.lastIndexOf(".");
-  const fileExtension = filename
-    .substring(lastDot + 1, fileLength)
-    .toLowerCase();
-
-  return fileExtension;
-}
 
 function searchValueObj() {
   const startDate = document
@@ -124,10 +120,10 @@ function searchValueObj() {
   }
 
   return {
-    startDate: startDate,
-    endDate: endDate,
-    type: type,
-    typeValue: typeValue,
+    startDate,
+    endDate,
+    type,
+    typeValue,
   };
 }
 
@@ -200,35 +196,6 @@ function rerenderRows(data) {
     tr.appendChild(td);
     TABLE_ROWS.appendChild(tr);
   }
-}
-
-function format(obj) {
-  obj.value = comma(uncomma(obj.value));
-}
-
-function comma(str) {
-  str = String(str);
-  const minus = str.substring(0, 1);
-
-  str = str.replace(/[^\d]+/g, "");
-  //str = str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, "$1,");
-  str = str.replace(/\B(?=(\d{3})+(?!\d))/g, "$1,");
-  if (minus == "-") str = "-" + str;
-
-  return str;
-}
-
-// function commaToString(price) {
-//   return price.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-// }
-
-function uncomma(str) {
-  str = String(str);
-  const minus = str.substring(0, 1);
-  str = str.replace(/[^\d]+/g, "");
-
-  if (minus == "-") str = "-" + str;
-  return str;
 }
 
 function radioChange(val) {

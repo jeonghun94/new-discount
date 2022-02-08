@@ -850,6 +850,16 @@ select::-ms-expand {
   font-weight: 700;
 }
 
+.views__discount {
+  text-align: right;
+  margin: 10px 10px 0 0;
+  font-size: 0.875rem;
+}
+.views__discount span:first-child {
+  color: #012d6b;
+  font-weight: 700;
+}
+
 .keypad {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -881,7 +891,7 @@ select::-ms-expand {
 
 .admin__body {
   background-color: #f0f0f0;
-  width: auto;
+  width: 1920px;
   display: flex;
   justify-content: flex-start;
   flex-direction: column;

@@ -248,7 +248,7 @@ export const ADMIN_QUERY = {
 
     return `SELECT b.ShopName, 
                     c.DcName, 
-                    a.SaleCouponQty, 
+                    Replace(CONVERT(VARCHAR, CONVERT(MONEY, a.SaleCouponQty), 1), '.00', '') AS SaleCouponQty,
                     Replace(CONVERT(VARCHAR, CONVERT(MONEY, a.salecouponamt), 1), '.00', '') AS SaleCouponAmt,
                     a.InsId, 
                     a.InsDate 

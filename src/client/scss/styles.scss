@@ -793,6 +793,19 @@ select::-ms-expand {
   }
 }
 
+.views__discount {
+  text-align: right;
+  margin: 10px 10px 0 0;
+  font-size: 0.875rem;
+
+  span {
+    &:first-child {
+      color: $main;
+      font-weight: 700;
+    }
+  }
+}
+
 // 키패드 관련
 .keypad {
   display: grid;
@@ -827,7 +840,8 @@ select::-ms-expand {
 
 .admin__body {
   background-color: #f0f0f0;
-  width: auto;
+  // width: auto;
+  width: 1920px;
   display: flex;
   justify-content: flex-start;
   flex-direction: column;

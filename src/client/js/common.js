@@ -19,6 +19,55 @@ export const menuActive = () => {
   }
 };
 
+export const radioInit = (radioChange) => {
+  const radio = document.querySelectorAll("input[type=radio]");
+  const radioLength = radio.length;
+  for (let i = 0; i < radioLength; i++) {
+    radio[i].addEventListener("change", function () {
+      radioChange(this.id);
+    });
+  }
+};
+
+// 파일 업로드시 확장자 체크
+export const getFileExtension = (fileName) => {
+  const fileLength = fileName.length;
+  const lastDot = fileName.lastIndexOf(".");
+  const fileExtension = fileName
+    .substring(lastDot + 1, fileLength)
+    .toLowerCase();
+
+  return fileExtension;
+};
+
+export const format = (obj) => {
+  obj.value = comma(uncomma(obj.value));
+};
+
+function comma(str) {
+  str = String(str);
+  const minus = str.substring(0, 1);
+
+  str = str.replace(/[^\d]+/g, "");
+  str = str.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  if (minus == "-") str = "-" + str;
+
+  return str;
+}
+
+function uncomma(str) {
+  str = String(str);
+  const minus = str.substring(0, 1);
+  str = str.replace(/[^\d]+/g, "");
+
+  if (minus == "-") str = "-" + str;
+  return str;
+}
+
+// function commaToString(price) {
+//   return price.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+// }
+
 // 조회 결과 없음 표시
 function nodata(container) {
   const noDataContainer = document.createElement("div");

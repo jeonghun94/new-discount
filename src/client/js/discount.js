@@ -21,8 +21,8 @@ function checkVal() {
 // 조회 수 추가
 function addRowsCount(data) {
   const views = document.createElement("p");
-  views.innerText = "총 ";
-  views.classList.add("views");
+  views.innerText = "조회 ";
+  views.classList.add("views__discount");
 
   const cnt = document.createElement("span");
   cnt.innerText = `${data}건`;
