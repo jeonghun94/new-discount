@@ -56,10 +56,10 @@ UPLOAD_BTN.addEventListener("click", function () {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        const { saleCouponList: result } = data;
+        const { saleCouponList: result, resultMessage } = data;
         rerenderRows(result);
         fileName.value = "";
-        alert("엑셀 등록 완료");
+        alert(resultMessage);
       })
       .catch((error) => console.log(error));
   }

@@ -43,7 +43,8 @@ export const executeQuery = async (query) => {
     const result = await request.query(query);
     return camelizeKeys(result.recordset);
   } catch (err) {
-    console.error("SQL error", err);
+    console.error("SQL_QUERY_ERROR", err);
+    return err;
   }
 };
 
@@ -53,7 +54,8 @@ export const executeUpdate = async (query) => {
     const request = pool.request();
     await request.query(query);
   } catch (err) {
-    console.error("SQL error", err);
+    console.error("SQL_UPDATE_ERROR", err.message);
+    return err;
   }
 };
 

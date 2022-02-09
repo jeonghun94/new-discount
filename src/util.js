@@ -59,7 +59,9 @@ export const excelUpload = async (fileName, user) => {
   const rows = [];
   worksheet.eachSheet((sheet) => {
     sheet.eachRow((row) => {
-      rows.push(row.values);
+      if (row.number > 1) {
+        rows.push(row.values);
+      }
     });
   });
   console.log(`Excel Data Return: ${rows}`);
@@ -67,25 +69,64 @@ export const excelUpload = async (fileName, user) => {
 };
 
 export const excelSaleCoupon = async (list, user) => {
-  for (let item of list) {
-    const shopCode = await executeQuery(
-      LOCALS_QUERY.SEARCH_SHOP_CODE_BY_NAME(item[1])
-    );
+  const erroList = [];
+  for (const item of list) {
+    try {
+      const shopCode = await executeQuery(
+        LOCALS_QUERY.SEARCH_SHOP_CODE_BY_NAME(item[1])
+      );
 
-    const couponInfo = await executeQuery(
-      LOCALS_QUERY.SEARCH_COUPON_TYPE_BY_NAME(item[2])
-    );
+      const couponInfo = await executeQuery(
+        LOCALS_QUERY.SEARCH_COUPON_TYPE_BY_NAME(item[2])
+      );
 
-    const stock = item[3];
+      if (shopCode.length === 0) {
+        throw new SaleCouponException(1, "매장명 오류");
+      }
 
-    const obj = {
-      shopCode: shopCode[0].shopCode,
-      ...couponInfo[0],
-      ...user,
-      stock,
-    };
+      if (couponInfo.length === 0) {
+        throw new SaleCouponException(2, `할인권명 오류`);
+      }
 
-    await executeUpdate(DISCOUNT_QUERY.ADD_DISCOUNT_COUPON(obj));
-    await executeUpdate(DISCOUNT_QUERY.ADD_DISCOUNT_COUPON_HISTORY(obj));
+      if (typeof item[3] !== "number") {
+        throw new SaleCouponException(3, `수량 오류`);
+      }
+
+      const stock = item[3];
+
+      const obj = {
+        shopCode: shopCode[0].shopCode,
+        ...couponInfo[0],
+        ...user,
+        stock,
+      };
+
+      await executeUpdate(DISCOUNT_QUERY.ADD_DISCOUNT_COUPON(obj));
+      await executeUpdate(DISCOUNT_QUERY.ADD_DISCOUNT_COUPON_HISTORY(obj));
+    } catch (error) {
+      erroList.push(error.message);
+    }
   }
+
+  let failList = "";
+  const result = erroList.reduce((accu, curr) => {
+    accu.set(curr, (accu.get(curr) || 0) + 1);
+    return accu;
+  }, new Map());
+
+  for (let [key, value] of result.entries()) {
+    failList += `${key} ${value}건, `;
+  }
+
+  const failMessage =
+    failList.length > 0 ? `사유: ${failList.slice(0, -2)}` : "";
+
+  return `${list.length}건중 ${list.length - erroList.length}건 등록, ${
+    erroList.length
+  }건 실패\n${failMessage}`;
 };
+
+function SaleCouponException(code, message) {
+  this.code = code;
+  this.message = message;
+}

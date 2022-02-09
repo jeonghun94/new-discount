@@ -474,6 +474,8 @@ function dateConvert(date) {
 window.onload = function () {
   inCarNo.focus();
 
+  console.log(process.env.IMAGE_SERVER_ADDRESS);
+
   const footer = document.querySelector("footer");
   footer.addEventListener("click", searchInCarT);
   inCarNo.addEventListener("input", checkVal);

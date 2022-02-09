@@ -1,8 +1,8 @@
 const config = {
-  user: "sa",
-  password: "key0123",
-  server: "smcity.iptime.org",
-  database: "PCMS",
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  server: process.env.DB_ADRESS,
+  database: process.env.DB_NAME,
   stream: true,
   encrypt: false,
   pool: {

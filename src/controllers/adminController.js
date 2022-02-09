@@ -4,6 +4,7 @@ import { excelDownload, excelSaleCoupon, excelUpload } from "../util";
 
 export const saleCoupon = async (req, res) => {
   const { method } = req;
+  let resultMessage;
 
   if (method === "POST") {
     const {
@@ -21,15 +22,14 @@ export const saleCoupon = async (req, res) => {
       );
     } else {
       const list = await excelUpload(file.originalname, user);
-      await excelSaleCoupon(list, user);
+      resultMessage = await excelSaleCoupon(list, user);
     }
 
     const saleCouponList = await executeQuery(
       ADMIN_QUERY.SALE_COUPON_LIST({ ...body })
     );
 
-    console.log(saleCouponList.length, "리스트개수");
-    res.send({ saleCouponList });
+    res.send({ saleCouponList, resultMessage });
   } else if (method === "GET") {
     const { type } = req.query;
     const saleCouponList = await executeQuery(
