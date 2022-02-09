@@ -1,8 +1,12 @@
 module.exports = {
-  apps: [{
-  name: 'app',
-  script: '.src/server.js',
-  instances: 0,
-  exec_mode: 'cluster'
-  }]
-}
+  apps: [
+    {
+      name: "discount",
+      script: "./build/init.js",
+      env: {
+        NODE_ENV: "production",
+      },
+      exec_mode: "fork",
+    },
+  ],
+};
