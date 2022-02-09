@@ -59,6 +59,7 @@ UPLOAD_BTN.addEventListener("click", function () {
         const { saleCouponList: result, resultMessage } = data;
         rerenderRows(result);
         fileName.value = "";
+        file.value = "";
         alert(resultMessage);
       })
       .catch((error) => console.log(error));
