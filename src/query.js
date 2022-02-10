@@ -74,7 +74,18 @@ export const DISCOUNT_QUERY = {
   SEARCH_IN_SEQ_NO: (inSeqNo) => {
     return `SELECT * FROM PS500 WHERE inseqno = ${inSeqNo}`;
   },
-  SEARCH_FREE_COUPON: `SELECT * FROM PS132 WHERE paytype = '01'`,
+  SEARCH_FREE_COUPON: (obj) => {
+    const opiton = obj ? `AND b.shopCode = '${obj.shopCode}'` : "";
+    return `SELECT a.dcName,
+                    a.couponType,
+                    Replace(CONVERT(VARCHAR, CONVERT(MONEY, b.stock), 1), '.00', '') AS stock
+            FROM   ps132 a
+                  LEFT OUTER JOIN ps135 b
+                                ON a.coupontype = b.coupontype
+            WHERE  a.paytype = '01'
+                    AND b.used = 'Y'
+                    ${opiton}`;
+  },
   SEARCH_PAY_COUPON: (obj) => {
     const opiton = obj ? `AND b.shopCode = '${obj.shopCode}'` : "";
     const user = `SELECT a.dcName,
@@ -84,6 +95,7 @@ export const DISCOUNT_QUERY = {
                         LEFT OUTER JOIN ps135 b
                                       ON a.coupontype = b.coupontype
                   WHERE  a.paytype = '02'
+                          AND b.used = 'Y'
                           ${opiton}`;
 
     const admin = `SELECT * FROM PS132 WHERE paytype = '02'`;

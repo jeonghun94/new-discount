@@ -39,13 +39,16 @@ export const searchInSeqNo = async (req, res) => {
   const { inSeqNo } = req.body;
 
   const result = await executeQuery(DISCOUNT_QUERY.SEARCH_IN_SEQ_NO(inSeqNo));
-  const freeCouponList = await executeQuery(DISCOUNT_QUERY.SEARCH_FREE_COUPON);
+  const freeCouponList = await executeQuery(
+    DISCOUNT_QUERY.SEARCH_FREE_COUPON({ ...req.session.user })
+  );
   const payCouponList = await executeQuery(
     DISCOUNT_QUERY.SEARCH_PAY_COUPON({ ...req.session.user })
   );
   const discountList = await executeQuery(
     DISCOUNT_QUERY.SEARCH_DISCOUNT_LIST(inSeqNo)
   );
+
   res.send({ result, freeCouponList, payCouponList, discountList });
 };
 
@@ -167,7 +170,11 @@ export const deleteList = async (req, res) => {
     DISCOUNT_QUERY.SEARCH_DISCOUNT_LIST(inSeqNo)
   );
 
-  res.send({ result: "success", list: discountList });
+  const payCouponList = await executeQuery(
+    DISCOUNT_QUERY.SEARCH_PAY_COUPON({ ...req.session.user })
+  );
+
+  res.send({ result: "success", list: discountList, payCouponList });
 };
 
 // 할인 내역

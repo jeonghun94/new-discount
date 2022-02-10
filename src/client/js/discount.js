@@ -175,11 +175,9 @@ function searchInSeqNo(inSeqNo, cloneNode) {
       CRUD_ARTICLE.querySelector(".search__container").style.border = "none";
       CRUD_ARTICLE.append(COUPON_CONTAINER);
       CRUD_ARTICLE.append(DISCOUNT_CONTAINER);
-
       //할인권 리스트 추가
       couponList(freeCouponList, "무료");
       couponList(payCouponList, "유료");
-      couponInvalid();
 
       //할인내역 리스트 추가
       discountList(dList, inSeqNo);
@@ -306,9 +304,11 @@ function discountHistoryList(list) {
 //무료권 혹 유료권 2개가 아닐시 명칭 변경
 function couponInvalid() {
   const coupon = document.querySelectorAll(".coupon__container-type");
-
   if (coupon.length === 1) {
     coupon[0].querySelector("h6").innerText = "할인권";
+  } else if (coupon.length === 2) {
+    coupon[0].querySelector("h6").innerText = "무료권";
+    coupon[1].querySelector("h6").innerText = "유료권";
   }
 }
 
@@ -349,7 +349,7 @@ function couponList(list, text) {
           } 할인을 등록하시겠습니까?`
         )
       ) {
-        insertList(inSeqNo, couponType);
+        insertList(inSeqNo, couponType, type);
       } else {
         resetSelect();
       }
@@ -357,9 +357,14 @@ function couponList(list, text) {
 
     list.map((x) => {
       const option = document.createElement("option");
-      option.innerText = `${x.dcName}${
-        text === "유료" ? `(잔여:${x.stock}매)` : ""
-      }`;
+      if (process.env.PAY_AFTER === "N") {
+        option.innerText = `${x.dcName}${
+          text === "유료" ? `(잔여:${x.stock}매)` : ""
+        }`;
+      } else {
+        option.innerText = `${x.dcName}`;
+      }
+
       option.value = `${x.couponType}`;
       select.append(option);
     });
@@ -369,6 +374,7 @@ function couponList(list, text) {
 
     COUPON_CONTAINER.append(type);
   }
+  couponInvalid();
 }
 
 // 웹 할인 등록 취소 시 opiton 초기화
@@ -380,7 +386,7 @@ function resetSelect() {
 }
 
 // 웹 할인 등록
-function insertList(inSeqNo, couponType) {
+function insertList(inSeqNo, couponType, select) {
   if (couponType !== "00") {
     fetch(`/discount/list`, {
       method: "POST",
@@ -396,16 +402,22 @@ function insertList(inSeqNo, couponType) {
           alert(data.msg);
         } else {
           DISCOUNT_CONTAINER.innerHTML = "";
+
+          // 할인 내역 그리기
           discountList(data.list, inSeqNo);
-          // couponList(data.payCouponList, "유료");
+
+          // 유료 할인권 잔여 수량 업데이트
+          select.remove();
+          couponList(data.payCouponList, "유료");
         }
+        // 선택 초기화
         resetSelect();
       })
       .catch((error) => console.log(error));
   }
 }
 
-// 웹 할인 삭제
+// 웹 할인 내역 삭제
 function deleteList(idx, inSeqNo, dcName, couponType) {
   if (confirm(`${dcName} 할인을 삭제하시겠습니까?`)) {
     fetch(`/discount/list`, {
@@ -422,10 +434,20 @@ function deleteList(idx, inSeqNo, dcName, couponType) {
         if (data.result) {
           DISCOUNT_CONTAINER.innerHTML = "";
           discountList(data.list, inSeqNo);
+          deleteListUpdatStock(data.payCouponList);
         }
       })
       .catch((error) => console.log(error));
   }
+}
+
+// 웹 할인 내역 삭제, 잔여 수량 업데이트
+function deleteListUpdatStock(list) {
+  const couponContainer = document.querySelectorAll(".coupon__container-type");
+  couponContainer.length === 1
+    ? couponContainer[0].remove()
+    : couponContainer[1].remove();
+  couponList(list, "유료");
 }
 
 // 웹 할인 등록내역
@@ -473,9 +495,6 @@ function dateConvert(date) {
 
 window.onload = function () {
   inCarNo.focus();
-
-  console.log(process.env.IMAGE_SERVER_ADDRESS);
-
   const footer = document.querySelector("footer");
   footer.addEventListener("click", searchInCarT);
   inCarNo.addEventListener("input", checkVal);

@@ -56,8 +56,10 @@ export const login = async (req, res) => {
         res.clearCookie("id");
       }
 
-      // res.redirect("/discount/main");
-      res.redirect("/admin/sale-coupon");
+      res.redirect("/discount/main");
+      // res.redirect("/admin/sale-coupon");
+
+      console.log(req.session.user);
     } else {
       // 로그인 실패
       res.render("login", { notValid: true });
