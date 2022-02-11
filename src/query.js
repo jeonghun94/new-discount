@@ -9,11 +9,12 @@ export const LOCALS_QUERY = {
                                 WHERE  id = '${id}'
                                     AND pwd = '${pw}'`,
   USER_COUPON_STOCK_INFO: (shopCode) => `SELECT a.DcName,
-                                        b.Stock
+                                        Replace(CONVERT(VARCHAR, CONVERT(MONEY, b.Stock), 1), '.00', '') AS Stock
                                 FROM   ps132 a
                                       LEFT OUTER JOIN ps135 b
                                                     ON a.coupontype = b.coupontype
                                 WHERE  b.shopcode = '${shopCode}'
+                                      AND b.used = 'Y'
                                       AND a.paytype = '02' `,
   USER_PASSWORD_UPDATE: (shopCode, newPassword) => `UPDATE ps130
                                                     SET pwd = '${newPassword}',

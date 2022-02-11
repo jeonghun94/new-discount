@@ -760,22 +760,47 @@ select::-ms-expand {
   grid-template-columns: 20% 80%;
   margin-bottom: 10px;
 }
-.mypage__form .userStockInfo {
+.mypage__form .userStockInfo,
+.mypage__form .userSettingInfo {
   padding: 20px;
   border-bottom: 1px solid #eee;
 }
-.mypage__form .userStockInfo h2 {
+.mypage__form .userStockInfo h2,
+.mypage__form .userSettingInfo h2 {
   font-size: 1rem;
   font-weight: 600;
   margin-bottom: 15px;
 }
-.mypage__form .userStockInfo div {
+.mypage__form .userStockInfo .stock,
+.mypage__form .userSettingInfo .stock {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   font-size: 0.9rem;
 }
-.mypage__form .userStockInfo div span {
+.mypage__form .userStockInfo .stock span,
+.mypage__form .userSettingInfo .stock span {
   padding: 5px 0;
+}
+.mypage__form .userStockInfo .setting,
+.mypage__form .userSettingInfo .setting {
+  margin: 0;
+  padding: 0;
+}
+.mypage__form .userStockInfo .setting input#d:checked + label:before,
+.mypage__form .userSettingInfo .setting input#d:checked + label:before {
+  content: "";
+  /*폰트어썸 유니코드*/
+  font-family: "Font Awesome 5 free";
+  /*폰트어썸 아이콘 사용*/
+  font-weight: 900;
+  /*폰트어썸 설정*/
+  color: #fff;
+  background-color: #012d6b;
+  border-color: transparent;
+  border-radius: 4px;
+  font-size: 13px;
+  text-align: center;
+  margin: 5px 5px 5px 0;
 }
 .mypage__form .userMenuInfo {
   display: grid;

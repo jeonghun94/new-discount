@@ -14,9 +14,18 @@ block content
                 span #{userInfo.telNo}
         article.userStockInfo 
             h2 할인권 정보 
-            div 
+            .stock 
                 each x in result 
                     span #{x.dcName} - #{x.stock}개
+        article.userSettingInfo 
+            h2 기타 설정
+            .setting
+                if userInfo.notification === "Y"
+                    label(for="d" style="") 알림 사용
+                    input(type="checkbox", checked)
+                else
+                    label(for="d" style="") 알림 사용
+                    input(type="checkbox" id="d")
         article.userMenuInfo 
             a(href="/discount/history") 할인내역
             a(href="/password") 암호변경

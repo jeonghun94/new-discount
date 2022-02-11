@@ -386,9 +386,9 @@ function resetSelect() {
 }
 
 // 웹 할인 등록
-function insertList(inSeqNo, couponType, select) {
+async function insertList(inSeqNo, couponType, select) {
   if (couponType !== "00") {
-    fetch(`/discount/list`, {
+    await fetch(`/discount/list`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -409,6 +409,7 @@ function insertList(inSeqNo, couponType, select) {
           // 유료 할인권 잔여 수량 업데이트
           select.remove();
           couponList(data.payCouponList, "유료");
+          alert("할인 등록 완료");
         }
         // 선택 초기화
         resetSelect();
@@ -435,6 +436,7 @@ function deleteList(idx, inSeqNo, dcName, couponType) {
           DISCOUNT_CONTAINER.innerHTML = "";
           discountList(data.list, inSeqNo);
           deleteListUpdatStock(data.payCouponList);
+          alert("할인 삭제 완료");
         }
       })
       .catch((error) => console.log(error));

@@ -684,7 +684,8 @@ select::-ms-expand {
     }
   }
 
-  .userStockInfo {
+  .userStockInfo,
+  .userSettingInfo {
     padding: 20px;
     border-bottom: 1px solid #eee;
     h2 {
@@ -693,12 +694,32 @@ select::-ms-expand {
       margin-bottom: 15px;
     }
 
-    div {
+    .stock {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       font-size: 0.9rem;
       span {
         padding: 5px 0;
+      }
+    }
+
+    .setting {
+      margin: 0;
+      padding: 0;
+      label {
+      }
+
+      input#d:checked + label:before {
+        content: "\f00c"; /*폰트어썸 유니코드*/
+        font-family: "Font Awesome 5 free"; /*폰트어썸 아이콘 사용*/
+        font-weight: 900; /*폰트어썸 설정*/
+        color: #fff;
+        background-color: $main;
+        border-color: transparent;
+        border-radius: 4px;
+        font-size: 13px;
+        text-align: center;
+        margin: 5px 5px 5px 0;
       }
     }
   }
