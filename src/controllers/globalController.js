@@ -79,9 +79,9 @@ export const password = async (req, res) => {
       user: { shopCode, pwd },
     },
   } = req;
-
+  const userInfo = req.session.user;
   if (method === "GET") {
-    res.render("user/password", { pageTitle: "암호 변경" });
+    res.render("user/password", { pageTitle: "암호 변경", userInfo });
   } else if (method === "PUT") {
     if (oldPassword !== pwd) {
       res.status(400);

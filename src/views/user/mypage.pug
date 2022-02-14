@@ -12,11 +12,12 @@ block content
             div
                 span 전화번호
                 span #{userInfo.telNo}
-        article.userStockInfo 
-            h2 할인권 정보 
-            .stock 
-                each x in result 
-                    span #{x.dcName} - #{x.stock}개
+        if result.length > 0
+            article.userStockInfo 
+                h2 할인권 정보 
+                .stock 
+                    each x in result 
+                        span #{x.dcName} - #{x.stock}개
         //- article.userSettingInfo 
         //-     h2 기타 설정
         //-     .setting

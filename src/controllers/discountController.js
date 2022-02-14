@@ -5,7 +5,8 @@ import { excelDownload, excelUpload } from "../util";
 const PAY_AFTER = process.env.PAY_AFTER;
 
 export const main = async (req, res) => {
-  res.render("discount/main", { pageTitle: "할인 등록" });
+  const userInfo = req.session.user;
+  res.render("discount/main", { pageTitle: "할인 등록", userInfo });
 };
 
 // 키패드 테스트
@@ -189,7 +190,7 @@ export const deleteList = async (req, res) => {
 // 할인 내역
 export const history = async (req, res) => {
   const { method } = req;
-
+  const userInfo = req.session.user;
   if (method === "POST") {
     const obj = {
       ...req.session.user,
@@ -203,7 +204,7 @@ export const history = async (req, res) => {
     console.log(`HISTORY PS134 ${JSON.stringify(req.body)}`);
     res.send({ result });
   } else {
-    res.render("discount/history", { pageTitle: "할인 내역" });
+    res.render("discount/history", { pageTitle: "할인 내역", userInfo });
   }
 };
 

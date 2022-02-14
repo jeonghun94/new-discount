@@ -1,3 +1,4 @@
+import moment from "moment";
 const SEARCH_ARTICLE = document.querySelector("#searchArticle");
 const CRUD_ARTICLE = document.querySelector("#crudArticle");
 const LIST_DIV = document.querySelector("#listDiv");
@@ -62,6 +63,12 @@ function appendSearchList(list) {
   LIST_DIV.innerHTML = "";
   if (list.length !== 0) {
     list.map((x) => {
+      const nowTime = moment().format("YYYY-MM-DD HH:mm:ss");
+      const insTime = moment().format(x.insDate);
+      const duration = moment.duration(moment(nowTime).diff(moment(insTime)));
+      const asMinutes = Math.floor(duration.asMinutes());
+      console.log(asMinutes);
+
       const container = document.createElement("div");
       container.classList.add("search__container");
       container.dataset.inseqno = x.inSeqNo;
@@ -75,7 +82,7 @@ function appendSearchList(list) {
       info.classList.add("search__info");
 
       const inCarNo = document.createElement("p");
-      inCarNo.innerText = x.inCarNo;
+      inCarNo.innerText = `${x.inCarNo}(${asMinutes}분)`;
 
       const tkType = document.createElement("p");
       tkType.innerText = `입차종류: ${x.tkType}`;

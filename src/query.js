@@ -227,14 +227,12 @@ export const DISCOUNT_QUERY = {
   },
 
   ADD_DISCOUNT_COUPON: (obj) => `UPDATE ps135 
-                                    SET    stock = (SELECT stock 
-                                              FROM   ps135 
-                                              WHERE  coupontype = '${obj.couponType}'
-                                                      AND shopcode = '${obj.shopCode}')
-                                              + '${obj.stock}' 
+                                  SET    stock = '${obj.stock}' 
                                   WHERE  coupontype = '${obj.couponType}'
-                                  AND    shopcode = '${obj.shopCode}' `,
-  ADD_DISCOUNT_COUPON_HISTORY: (obj) => `INSERT INTO ps131
+                                  AND    shopcode = '${obj.shopCodeIn}' `,
+  ADD_DISCOUNT_COUPON_HISTORY: (obj) => {
+    console.log(obj);
+    return `INSERT INTO ps131
                                                       (systemno,
                                                       parkno,
                                                       procdate,
@@ -255,7 +253,7 @@ export const DISCOUNT_QUERY = {
                                                       (SELECT CONVERT(VARCHAR, Getdate(), 112)),
                                                       (SELECT Replace(CONVERT(VARCHAR, Getdate(), 8), ':', '')),
                                                       '${obj.couponType}',
-                                                      '${obj.shopCode}',
+                                                      '${obj.shopCodeIn}',
                                                       '${obj.stock}',
                                                       ${Number(
                                                         obj.stock
@@ -271,7 +269,8 @@ export const DISCOUNT_QUERY = {
                                                       'WEB',
                                                       '${obj.shopName}',
                                                       (SELECT CONVERT (CHAR(19), Getdate(), 120)),
-                                                      '2' )`,
+                                                      '2' )`;
+  },
 };
 
 export const ADMIN_QUERY = {

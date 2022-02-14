@@ -96,7 +96,3 @@ export const saleCouponExcel = async (req, res) => {
   await excelDownload(res, obj, data);
   console.log(`HISTORY EXCEL PS131 ${JSON.stringify(req.query)}`);
 };
-
-const getSaleCoupon = (req, res) => {
-  console.log(req, "함수화");
-};

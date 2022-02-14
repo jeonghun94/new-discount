@@ -95,10 +95,10 @@ export const excelSaleCoupon = async (list, user) => {
       const stock = item[3];
 
       const obj = {
-        shopCode: shopCode[0].shopCode,
         ...couponInfo[0],
         ...user,
         stock,
+        shopCodeIn: shopCode[0].shopCode,
       };
 
       await executeUpdate(DISCOUNT_QUERY.ADD_DISCOUNT_COUPON(obj));
