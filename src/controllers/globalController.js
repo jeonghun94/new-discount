@@ -58,8 +58,7 @@ export const login = async (req, res) => {
 
       res.redirect("/discount/main");
       // res.redirect("/admin/sale-coupon");
-
-      console.log(req.session.user);
+      console.log(`USER LOGIN ${req.session.user.shopName}`);
     } else {
       // 로그인 실패
       res.render("login", { notValid: true });

@@ -77,9 +77,6 @@ export const insertList = async (req, res) => {
   const { payType, couponCnt, totalDcVal, totalCnt, freeCnt, payCnt } =
     result[0];
 
-  console.log("130설정값:", timeLimitMinutes, maxCnt, shopFreeCnt, shopPayCnt);
-  console.log("134조회값:", { ...result[0] });
-
   // 분 단위 제한 확인 및 처리
   if (timeLimit === "Y") {
     if (totalDcVal > timeLimitMinutes) {
@@ -126,7 +123,7 @@ export const insertList = async (req, res) => {
       return;
     }
 
-    if (PAY_AFTER === "N") {
+    if (PAY_AFTER === "N" && payType === "02") {
       await executeUpdate(DISCOUNT_QUERY.UPDATE_COUPON_CNT(obj));
     }
   }
@@ -146,7 +143,7 @@ export const insertList = async (req, res) => {
           DISCOUNT_QUERY.SEARCH_PAY_COUPON({ ...req.session.user })
         );
 
-  res.send({ result: "success", list: discountList, payCouponList });
+  res.send({ result: "success", list: discountList, payCouponList, payType });
 };
 
 // 할인 삭제
@@ -161,12 +158,10 @@ export const deleteList = async (req, res) => {
   const result = await executeQuery(LOCALS_QUERY.SEARCH_PAY_TYPE(couponType));
   const { payType } = result[0];
 
-  console.log("삭제전:", payType);
-
   await executeUpdate(DISCOUNT_QUERY.DELETE_LIST(idx));
   console.log(`DELETE PS134 ${JSON.stringify(req.body)}`);
 
-  if (PAY_AFTER === "N") {
+  if (PAY_AFTER === "N" && payType === "02") {
     await executeUpdate(
       DISCOUNT_QUERY.UPDATE_COUPON_CNT({
         ...req.body,
@@ -188,7 +183,7 @@ export const deleteList = async (req, res) => {
           DISCOUNT_QUERY.SEARCH_PAY_COUPON({ ...req.session.user })
         );
 
-  res.send({ result: "success", list: discountList, payCouponList });
+  res.send({ result: "success", list: discountList, payCouponList, payType });
 };
 
 // 할인 내역
