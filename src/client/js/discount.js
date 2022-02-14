@@ -443,11 +443,13 @@ function deleteList(idx, inSeqNo, dcName, couponType) {
     })
       .then((response) => response.json())
       .then((data) => {
-        if (data.result) {
+        if (data.result === "success") {
           DISCOUNT_CONTAINER.innerHTML = "";
           discountList(data.list, inSeqNo);
           deleteListUpdatStock(data.payCouponList, data.payType);
           alert("할인 삭제 완료");
+        } else {
+          alert(`할인 삭제 실패\n사유: ${data.msg}`);
         }
       })
       .catch((error) => console.log(error));

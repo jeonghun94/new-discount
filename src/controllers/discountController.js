@@ -156,35 +156,48 @@ export const deleteList = async (req, res) => {
     },
   } = req;
 
-  const result = await executeQuery(LOCALS_QUERY.SEARCH_PAY_TYPE(couponType));
-  const { payType } = result[0];
-
-  await executeUpdate(DISCOUNT_QUERY.DELETE_LIST(idx));
-  console.log(`DELETE PS134 ${JSON.stringify(req.body)}`);
-
-  if (PAY_AFTER === "N" && payType === "02") {
-    await executeUpdate(
-      DISCOUNT_QUERY.UPDATE_COUPON_CNT({
-        ...req.body,
-        shopCode,
-      })
-    );
-  }
-
-  const discountList = await executeQuery(
-    DISCOUNT_QUERY.SEARCH_DISCOUNT_LIST(inSeqNo)
+  const [{ payType }] = await executeQuery(
+    LOCALS_QUERY.SEARCH_PAY_TYPE(couponType)
   );
 
-  const payCouponList =
-    payType === "01"
-      ? await executeQuery(
-          DISCOUNT_QUERY.SEARCH_FREE_COUPON({ ...req.session.user })
-        )
-      : await executeQuery(
-          DISCOUNT_QUERY.SEARCH_PAY_COUPON({ ...req.session.user })
-        );
+  const [{ registerCode }] = await executeQuery(
+    DISCOUNT_QUERY.SEARCH_DISCOUNT_REGISTER_CODE(idx)
+  );
 
-  res.send({ result: "success", list: discountList, payCouponList, payType });
+  console.log(`{ registerCode: ${registerCode}, shopCode: ${shopCode} }`);
+
+  if (shopCode !== registerCode) {
+    res.send({
+      result: "fail",
+      msg: "다른 사용자의 할인은 삭제할 수 없습니다.",
+    });
+  } else {
+    await executeUpdate(DISCOUNT_QUERY.DELETE_LIST(idx));
+    console.log(`DELETE PS134 ${JSON.stringify(req.body)}`);
+    if (PAY_AFTER === "N" && payType === "02") {
+      await executeUpdate(
+        DISCOUNT_QUERY.UPDATE_COUPON_CNT({
+          ...req.body,
+          shopCode,
+        })
+      );
+    }
+
+    const discountList = await executeQuery(
+      DISCOUNT_QUERY.SEARCH_DISCOUNT_LIST(inSeqNo)
+    );
+
+    const payCouponList =
+      payType === "01"
+        ? await executeQuery(
+            DISCOUNT_QUERY.SEARCH_FREE_COUPON({ ...req.session.user })
+          )
+        : await executeQuery(
+            DISCOUNT_QUERY.SEARCH_PAY_COUPON({ ...req.session.user })
+          );
+
+    res.send({ result: "success", list: discountList, payCouponList, payType });
+  }
 };
 
 // 할인 내역

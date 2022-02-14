@@ -79,7 +79,6 @@ export const DISCOUNT_QUERY = {
     return `SELECT * FROM PS500 WHERE inseqno = ${inSeqNo}`;
   },
   SEARCH_FREE_COUPON: (obj) => {
-    console.log(obj);
     const opiton = obj ? `AND b.shopCode = '${obj.shopCode}'` : "";
     return `SELECT a.dcName,
                     a.couponType,
@@ -183,7 +182,6 @@ export const DISCOUNT_QUERY = {
   CONDITION_CHECK: (obj) => {
     const option =
       obj.shopDuplication === "Y" ? `AND a.shopcode = '${obj.shopCode}'` : "";
-    console.log(option);
     return `DECLARE @inSeqNo    INT,
                     @couponType INT,
                     @shopCode   VARCHAR(4)
@@ -225,13 +223,14 @@ export const DISCOUNT_QUERY = {
                       WHERE  a.inseqno = @inSeqNo ${option}
                             AND b.paytype = '02')     AS PayCnt `;
   },
-
+  SEARCH_DISCOUNT_REGISTER_CODE: (shopCode) => {
+    return `select ShopCode as RegisterCode from PS134 where Idx = ${shopCode}`;
+  },
   ADD_DISCOUNT_COUPON: (obj) => `UPDATE ps135 
                                   SET    stock = '${obj.stock}' 
                                   WHERE  coupontype = '${obj.couponType}'
                                   AND    shopcode = '${obj.shopCodeIn}' `,
   ADD_DISCOUNT_COUPON_HISTORY: (obj) => {
-    console.log(obj);
     return `INSERT INTO ps131
                                                       (systemno,
                                                       parkno,
