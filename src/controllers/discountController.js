@@ -1,4 +1,4 @@
-import { DISCOUNT_QUERY } from "../query";
+import { DISCOUNT_QUERY, LOCALS_QUERY } from "../query";
 import { executeQuery, executeUpdate } from "../server";
 import { excelDownload, excelUpload } from "../util";
 
@@ -132,15 +132,19 @@ export const insertList = async (req, res) => {
   }
 
   await executeUpdate(DISCOUNT_QUERY.INSERT_LIST(obj));
-  console.log(`INSERT PS134 ${JSON.stringify(req.body)}`);
 
   const discountList = await executeQuery(
     DISCOUNT_QUERY.SEARCH_DISCOUNT_LIST(obj.inSeqNo)
   );
 
-  const payCouponList = await executeQuery(
-    DISCOUNT_QUERY.SEARCH_PAY_COUPON({ ...req.session.user })
-  );
+  const payCouponList =
+    payType === "01"
+      ? await executeQuery(
+          DISCOUNT_QUERY.SEARCH_FREE_COUPON({ ...req.session.user })
+        )
+      : await executeQuery(
+          DISCOUNT_QUERY.SEARCH_PAY_COUPON({ ...req.session.user })
+        );
 
   res.send({ result: "success", list: discountList, payCouponList });
 };
@@ -148,11 +152,16 @@ export const insertList = async (req, res) => {
 // 할인 삭제
 export const deleteList = async (req, res) => {
   const {
-    body: { idx, inSeqNo },
+    body: { idx, inSeqNo, couponType },
     session: {
       user: { shopCode },
     },
   } = req;
+
+  const result = await executeQuery(LOCALS_QUERY.SEARCH_PAY_TYPE(couponType));
+  const { payType } = result[0];
+
+  console.log("삭제전:", payType);
 
   await executeUpdate(DISCOUNT_QUERY.DELETE_LIST(idx));
   console.log(`DELETE PS134 ${JSON.stringify(req.body)}`);
@@ -170,9 +179,14 @@ export const deleteList = async (req, res) => {
     DISCOUNT_QUERY.SEARCH_DISCOUNT_LIST(inSeqNo)
   );
 
-  const payCouponList = await executeQuery(
-    DISCOUNT_QUERY.SEARCH_PAY_COUPON({ ...req.session.user })
-  );
+  const payCouponList =
+    payType === "01"
+      ? await executeQuery(
+          DISCOUNT_QUERY.SEARCH_FREE_COUPON({ ...req.session.user })
+        )
+      : await executeQuery(
+          DISCOUNT_QUERY.SEARCH_PAY_COUPON({ ...req.session.user })
+        );
 
   res.send({ result: "success", list: discountList, payCouponList });
 };

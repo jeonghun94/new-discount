@@ -1,9 +1,11 @@
 import express from "express";
 import {
+  getRenderHome,
   login,
   logout,
   mypage,
   password,
+  postRenderHome,
   searchInCar,
 } from "../controllers/globalController";
 import { protectorMiddleware } from "../middleware";

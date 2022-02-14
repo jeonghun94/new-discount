@@ -706,8 +706,6 @@ select::-ms-expand {
     .setting {
       margin: 0;
       padding: 0;
-      label {
-      }
 
       input#d:checked + label:before {
         content: "\f00c"; /*폰트어썸 유니코드*/

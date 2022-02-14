@@ -35,6 +35,9 @@ export const LOCALS_QUERY = {
                                                 FROM   ps132
                                                 WHERE  dcname = '${couponType}'
                                                         AND paytype = '02' `,
+  SEARCH_PAY_TYPE: (couponType) => `SELECT PayType
+                                            FROM   ps132
+                                            WHERE  coupontype = '${couponType}'`,
 };
 
 export const DISCOUNT_QUERY = {
@@ -76,6 +79,7 @@ export const DISCOUNT_QUERY = {
     return `SELECT * FROM PS500 WHERE inseqno = ${inSeqNo}`;
   },
   SEARCH_FREE_COUPON: (obj) => {
+    console.log(obj);
     const opiton = obj ? `AND b.shopCode = '${obj.shopCode}'` : "";
     return `SELECT a.dcName,
                     a.couponType,

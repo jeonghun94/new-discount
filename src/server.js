@@ -79,5 +79,8 @@ app.use("/client", express.static("src/client"));
 app.use("/", globalRouter);
 app.use("/discount", discountRouter);
 app.use("/admin", adminRouter);
+app.use((req, res, next) => {
+  res.status(404).render("permission");
+});
 
 export default app;
