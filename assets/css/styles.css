@@ -634,11 +634,13 @@ footer {
 .discount__container {
   width: 100%;
   height: auto;
+  margin-top: -10px;
 }
 .discount__container .discount__header {
   display: flex;
   justify-content: center;
   padding: 10px;
+  margin-top: 10px;
   box-sizing: border-box;
   background-color: #012d6b;
   color: white;

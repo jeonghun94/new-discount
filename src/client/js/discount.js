@@ -195,6 +195,7 @@ function searchInSeqNo(inSeqNo, cloneNode) {
 //할인내역 추가
 function discountList(list, inSeqNo) {
   if (list.length !== 0) {
+    DISCOUNT_CONTAINER.appendChild(addRowsCount(list.length));
     const discountHeader = document.createElement("div");
     discountHeader.classList.add("discount__header");
     discountHeader.innerHTML = "할인내역";
