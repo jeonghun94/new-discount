@@ -1,4 +1,3 @@
-import { escapeRegExp } from "lodash";
 import { LOCALS_QUERY, QUERY } from "../query";
 import { executeQuery, executeUpdate } from "../server";
 
@@ -56,8 +55,8 @@ export const login = async (req, res) => {
         res.clearCookie("id");
       }
 
-      res.redirect("/discount/main");
-      // res.redirect("/admin/sale-coupon");
+      // res.redirect("/discount/main");
+      res.redirect("/admin/setting-account");
       console.log(`USER LOGIN ${req.session.user.shopName}`);
     } else {
       // 로그인 실패
@@ -79,9 +78,8 @@ export const password = async (req, res) => {
       user: { shopCode, pwd },
     },
   } = req;
-  const userInfo = req.session.user;
   if (method === "GET") {
-    res.render("user/password", { pageTitle: "암호 변경", userInfo });
+    res.render("user/password", { pageTitle: "암호 변경" });
   } else if (method === "PUT") {
     if (oldPassword !== pwd) {
       res.status(400);
@@ -107,17 +105,16 @@ export const password = async (req, res) => {
 
 export const mypage = async (req, res) => {
   const { shopCode } = req.session.user;
-  const userInfo = req.session.user;
   const result = await executeQuery(
     LOCALS_QUERY.USER_COUPON_STOCK_INFO(shopCode)
   );
-  res.render("user/mypage", { pageTitle: "마이 페이지", result, userInfo });
+  res.render("user/mypage", { pageTitle: "마이 페이지", result });
 };
 
 export const searchInCar = async (req, res) => {
   const level = Number(req.session.user.authLevel);
 
-  if (level === 1) {
+  if (level === 0 || level === 1) {
     const result = await executeQuery(LOCALS_QUERY.SEARCH_IN_CAR());
     res.send({ result });
   } else {

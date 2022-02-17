@@ -2,16 +2,16 @@ extends ../base
 block content 
     section.mypage__form
         article.userInfo 
-            h2 #{userInfo.shopName}
+            h2 #{user.shopName}
             div
                 span 아이디
-                sapn #{userInfo.id}
+                sapn #{user.id}
             div
                 span 관리자명
-                span #{userInfo.chiefName}
+                span #{user.chiefName}
             div
                 span 전화번호
-                span #{userInfo.telNo}
+                span #{user.telNo}
         if result.length > 0
             article.userStockInfo 
                 h2 할인권 정보 

@@ -1,0 +1,39 @@
+extends ../admin-base
+block content 
+    section.admin__section
+            article.admin__search-container
+                .search__content
+                    span.date__text 조회일자
+                    input(type="text" id="startDate" class="date__input")
+                    span.date__tilde ~
+                    input(type="text" id="endDate" class="date__input")
+                .search__content
+                    .radio__container   
+                        input(type="radio" id="all" name="searchType" checked="checked")
+                        label(for="all") 전체
+                        input(type="radio" id="shop" name="searchType")
+                        label(for="shop") 매장별
+                        input(type="radio" id="coupon" name="searchType")
+                        label(for="coupon") 종류
+                    .search__container
+                        select#searchShopList.select__arrow(disabled)
+                        select#searchCouponList.display__none.select__arrow
+                    .btn__container.file__container
+                        .filebox
+                            label(for="file") 파일찾기
+                            input(class="upload-name" id="fileName" placeholder="엑셀 업로드" readonly="readonly")
+                            input(type="file" id="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                        .btn__box 
+                            .main-btn#searchBtn 조회
+                            .third-btn#uploadBtn 등록
+                            .sub-btn#downloadBtn 출력
+            p.views 조회
+                span#viewsCount &nbsp
+                span 1건
+            span #{user.authLevel}
+            span #{user.id}
+            span #{user.pwd}
+            span #{user.shopName}
+    script(src="/static/js/common.js") 
+    script(src="/static/js/sale-coupon.js") 
+    include ../partials/flatpickr
