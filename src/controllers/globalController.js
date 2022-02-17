@@ -1,4 +1,4 @@
-import { LOCALS_QUERY, QUERY } from "../query";
+import { LOCALS_QUERY } from "../query";
 import { executeQuery, executeUpdate } from "../server";
 
 const cookieConfig = {
@@ -7,6 +7,7 @@ const cookieConfig = {
   // signed: true,
 };
 
+// 정보 없을시 접근 제한
 const renderPage = (level, res) => {
   if (level === "1") {
     res.render("home");
@@ -25,6 +26,7 @@ export const getRenderHome = async (req, res) => {
   renderPage(level, res);
 };
 
+// 로그인 처리
 export const login = async (req, res) => {
   const { method } = req;
 
@@ -54,7 +56,6 @@ export const login = async (req, res) => {
         res.clearCookie("password");
         res.clearCookie("id");
       }
-
       // res.redirect("/discount/main");
       res.redirect("/admin/setting-account");
       console.log(`USER LOGIN ${req.session.user.shopName}`);
@@ -65,11 +66,16 @@ export const login = async (req, res) => {
   }
 };
 
-export const logout = (req, res) => {
-  req.session.destroy();
-  res.redirect("/");
+// 마이페이지
+export const mypage = async (req, res) => {
+  const { shopCode } = req.session.user;
+  const result = await executeQuery(
+    LOCALS_QUERY.USER_COUPON_STOCK_INFO(shopCode)
+  );
+  res.render("user/mypage", { pageTitle: "마이 페이지", result });
 };
 
+// 암호변경
 export const password = async (req, res) => {
   const {
     method,
@@ -103,14 +109,13 @@ export const password = async (req, res) => {
   }
 };
 
-export const mypage = async (req, res) => {
-  const { shopCode } = req.session.user;
-  const result = await executeQuery(
-    LOCALS_QUERY.USER_COUPON_STOCK_INFO(shopCode)
-  );
-  res.render("user/mypage", { pageTitle: "마이 페이지", result });
+// 로그아웃
+export const logout = (req, res) => {
+  req.session.destroy();
+  res.redirect("/");
 };
 
+// 관리자 계정일시 테스트 차량 검색
 export const searchInCar = async (req, res) => {
   const level = Number(req.session.user.authLevel);
 
@@ -122,6 +127,7 @@ export const searchInCar = async (req, res) => {
   }
 };
 
+// 익스플로러 접속 차단
 export const notSupport = (req, res) => {
   res.render("not-support");
 };
