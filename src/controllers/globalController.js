@@ -124,3 +124,7 @@ export const searchInCar = async (req, res) => {
     res.send({ result: [] });
   }
 };
+
+export const notSupport = (req, res) => {
+  res.render("not-support");
+};

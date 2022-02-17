@@ -4,6 +4,7 @@ import {
   login,
   logout,
   mypage,
+  notSupport,
   password,
   postRenderHome,
   searchInCar,
@@ -19,6 +20,7 @@ globalRouter
   .all(protectorMiddleware)
   .get(password)
   .put(password);
+globalRouter.route("/not-support").get(notSupport);
 globalRouter.route("/logout").all(protectorMiddleware).get(logout);
 
 export default globalRouter;

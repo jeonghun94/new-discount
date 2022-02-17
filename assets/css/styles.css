@@ -349,6 +349,15 @@ footer {
   text-align: center;
   font-size: 16px;
 }
+.permisson__container .img__box {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+}
+.permisson__container .img__box img {
+  width: 30px;
+  margin: 10px 5px;
+}
 .permisson__container .redirect__box {
   cursor: pointer;
   padding: 10px 15px;

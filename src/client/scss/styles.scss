@@ -250,6 +250,16 @@ footer {
     }
   }
 
+  .img__box {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    img {
+      width: 30px;
+      margin: 10px 5px;
+    }
+  }
+
   .redirect__box {
     cursor: pointer;
     padding: 10px 15px;
