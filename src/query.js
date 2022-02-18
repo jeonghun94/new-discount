@@ -273,6 +273,7 @@ export const DISCOUNT_QUERY = {
 };
 
 export const ADMIN_QUERY = {
+  USER_LIST: () => `SELECT * FROM PS130`,
   SALE_COUPON_LIST: (obj) => {
     const today = "(SELECT CONVERT(VARCHAR(8), Getdate(), 112))";
 

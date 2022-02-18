@@ -97,6 +97,16 @@ export const saleCouponExcel = async (req, res) => {
   console.log(`HISTORY EXCEL PS131 ${JSON.stringify(req.query)}`);
 };
 
-export const settingAccount = (req, res) => {
-  res.render("admin/setting-account");
+export const settingAccount = async (req, res) => {
+  const tableHead = [
+    "사용자",
+    "전화번호",
+    "아이디",
+    "비밀번호",
+    "등록일시",
+    "수정일시",
+  ];
+  const userList = await executeQuery(ADMIN_QUERY.USER_LIST());
+
+  res.render("admin/setting-account", { tableHead, userList });
 };
