@@ -56,6 +56,9 @@ export const login = async (req, res) => {
         res.clearCookie("password");
         res.clearCookie("id");
       }
+
+      console.log(req.session.user);
+
       // res.redirect("/discount/main");
       res.redirect("/admin/setting-account");
       console.log(`USER LOGIN ${req.session.user.shopName}`);
