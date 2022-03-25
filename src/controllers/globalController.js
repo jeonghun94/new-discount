@@ -59,8 +59,8 @@ export const login = async (req, res) => {
 
       console.log(req.session.user);
 
-      // res.redirect("/discount/main");
-      res.redirect("/admin/setting-account");
+      // res.redirect("/admin/setting-account");
+      res.redirect("/discount/main");
       console.log(`USER LOGIN ${req.session.user.shopName}`);
     } else {
       // 로그인 실패

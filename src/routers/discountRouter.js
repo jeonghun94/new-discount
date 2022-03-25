@@ -7,6 +7,7 @@ import {
   deleteList,
   history,
   historyExcel,
+  exchange,
 } from "../controllers/discountController";
 
 const discountRouter = express.Router();
@@ -16,5 +17,6 @@ discountRouter.route("/search").post(searchInCarNo);
 discountRouter.route("/search/inseqno").post(searchInSeqNo);
 discountRouter.route("/history").get(history).post(history);
 discountRouter.route("/history/excel").get(historyExcel);
+discountRouter.route("/exchange").get(exchange);
 
 export default discountRouter;

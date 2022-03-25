@@ -1,3 +1,4 @@
+import { async } from "regenerator-runtime";
 import { DISCOUNT_QUERY, LOCALS_QUERY } from "../query";
 import { executeQuery, executeUpdate } from "../server";
 import { excelDownload, excelUpload } from "../util";
@@ -258,4 +259,14 @@ export const historyExcel = async (req, res) => {
   const data = await executeQuery(DISCOUNT_QUERY.SEARCH_DISCOUNT_HISTORY(obj));
   await excelDownload(res, obj, data);
   console.log(`HISTORY EXCEL PS134 ${JSON.stringify(req.query)}`);
+};
+
+export const exchange = async (req, res) => {
+  const coupons = await executeQuery(
+    DISCOUNT_QUERY.SEARCH_PAY_COUPON(req.session.user)
+  );
+
+  console.log(coupons);
+
+  res.render("discount/exchange", { pageTitle: "할인권 교환", coupons });
 };
