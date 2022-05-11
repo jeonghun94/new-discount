@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 extends base
 block content
     header.login__logo
@@ -25,32 +24,4 @@ block content
         ) {
             location.href = '/not-support'
         }
-=======
-extends base
-block content
-    header.login__logo
-        h1 CMCNI
-    section.login__form
-        form(action="/", method="post") 
-            article
-                input(type="text" placeholder="아이디" name="id" value=`${COOKIES.id || ''}` required)
-                input(type="password" placeholder="비밀번호" name="password" value=`${COOKIES.password || ''}` required)
-                div
-                    if COOKIES.saveUserInfo
-                        input(type="checkbox", name="saveUserInfo" id="saveUserInfo" checked)
-                    else
-                        input(type="checkbox", name="saveUserInfo" id="saveUserInfo")
-                    label(for="saveUserInfo") 정보 저장
-                    if notValid
-                        p &nbsp; 아이디와 비밀번호를 정확히 입력해주세요.
-                button(type="submit") 로그인
-                img(src="http://59.15.58.146/dist/img/image.jpg", alt="이미지 로드 실패", srcset="")    
-    script. 
-        var agent = navigator.userAgent.toLowerCase();
-        if (navigator.userAgent.search("Trident") != -1 ||
-            agent.indexOf("msie") != -1
-        ) {
-            location.href = '/not-support'
-        }
->>>>>>> c9d84b091ea547458fa74f9e2f81790c122b25bd
         console.log(1);
