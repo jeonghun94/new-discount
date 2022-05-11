@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 extends ../base
 block content 
         section.main__form                            
@@ -18,4 +19,26 @@ block content
                     button(type="button" id="historyBtn") 교환
                     div(id="listDiv")
         script(src="/static/js/discount.js") 
+=======
+extends ../base
+block content 
+        section.main__form                            
+            article#searchArticle
+                    .main__form-title 
+                        span 할인권 교환
+                        .main__form-btn__container
+                            a(href="javascript:;" id="preBtn" ) 이전
+                            a(href="javascript:;" id="historyExcelBtn") 엑셀
+                    .main__form-container 
+                        input(type="text" id="startDate")
+                        input(type="text" id="endDate")
+                        p 교환 가능 할인권만 표출 됩니다.
+                        select 
+                            for coupon in coupons
+                                option #{coupon.dcName}
+                    input(type="text" maxlength="4" name="차량번호" placeholder="ex) 차량번호 4자리(선택사항)" id="inCarNo")
+                    button(type="button" id="historyBtn") 교환
+                    div(id="listDiv")
+        script(src="/static/js/discount.js") 
+>>>>>>> c9d84b091ea547458fa74f9e2f81790c122b25bd
         include ../partials/footer

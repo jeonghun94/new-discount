@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 header.admin__header
     a(href="/" class="admin__header-logo") CMCNI
     .dropdown
@@ -17,3 +18,24 @@ header.admin__header
 nav.admin__sub-menu
     //- a(href="/admin/setting-account" data-path="/admin/setting-account") 사용자 관리
     a(href="/admin/sale-coupon" data-path="/admin/sale-coupon") 할인권 판매
+=======
+header.admin__header
+    a(href="/" class="admin__header-logo") CMCNI
+    .dropdown
+        button(class="dropbtn")
+            i.fas.fa-bars.dropbtn
+        .dropdown-content
+            a(href="/my-page")
+                i.fas.fa-user  &nbsp 마이페이지
+            a(href="/password")
+                i.fas.fa-lock &nbsp 암호변경
+            a(href="/discount/history")
+                i.fas.fa-chart-bar &nbsp 할인내역
+            a(href="/admin/sale-coupon")
+                i.fas.fa-cog &nbsp 기타설정
+            a(href="/logout")
+                i.fas.fa-sign-out-alt &nbsp 로그아웃
+nav.admin__sub-menu
+    //- a(href="/admin/setting-account" data-path="/admin/setting-account") 사용자 관리
+    a(href="/admin/sale-coupon" data-path="/admin/sale-coupon") 할인권 판매
+>>>>>>> c9d84b091ea547458fa74f9e2f81790c122b25bd

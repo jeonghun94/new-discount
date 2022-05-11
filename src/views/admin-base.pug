@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 doctype html
 html(lang="ko")
     head
@@ -13,3 +14,20 @@ html(lang="ko")
     body.admin__body
         include ./partials/admin-header       
         block content
+=======
+doctype html
+html(lang="ko")
+    head
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=yes")
+        title 웹 할인#{pageTitle !== undefined ? `::${pageTitle}` : ''}
+        //- link(rel="stylesheet" type="text/css" href="/client/fontawesome-free-5.15.4-web/css/fontawesome.min.css")
+        script(src="https://kit.fontawesome.com/e07b3cc652.js" crossorigin="anonymous")
+        link(rel="stylesheet", href="/static/css/styles.css")
+        link(rel="stylesheet", href="/client/flatpickr/flatpickr.min.css")
+        script(src="/static/js/main.js") 
+        script(src="/client/js/table-sort.js") 
+    body.admin__body
+        include ./partials/admin-header       
+        block content
+>>>>>>> c9d84b091ea547458fa74f9e2f81790c122b25bd

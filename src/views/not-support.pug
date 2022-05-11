@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 extends base
 block content 
     body                        
@@ -19,4 +20,27 @@ block content
                 img(src="client/img/browser/brave.png", alt="Brave", title="브레이브(Brave)")
             .redirect__box(onclick="location.href='http://www.naver.com'") 
                 i.fas.fa-undo 
+=======
+extends base
+block content 
+    body                        
+        .permisson__container 
+            .icon__box 
+                span !
+            .text__box 
+                h1 페이지에 접근할 수 없습니다.
+                h3 사유: 지원하지 않는 브라우저 입니다.
+            .text__box 
+                br
+                h2 아래의 브라우저를 이용해주세요.
+            .img__box 
+                img(src="client/img/browser/chrome.png", alt="Chrome", title="크롬(Chrome)")
+                img(src="client/img/browser/edge.png", alt="Edge", title="엣지(Edge)")
+                img(src="client/img/browser/safari.png", alt="Safari", title="사파리(Safari)")
+                img(src="client/img/browser/firefox.png", alt="Firefox", title="파이어폭스(Firefox)")
+                img(src="client/img/browser/opera.png", alt="Opera", title="오페라(Opera)")
+                img(src="client/img/browser/brave.png", alt="Brave", title="브레이브(Brave)")
+            .redirect__box(onclick="location.href='http://www.naver.com'") 
+                i.fas.fa-undo 
+>>>>>>> c9d84b091ea547458fa74f9e2f81790c122b25bd
                     span 돌아가기
