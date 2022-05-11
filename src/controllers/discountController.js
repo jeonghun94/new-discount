@@ -1,4 +1,5 @@
-import { DISCOUNT_QUERY } from "../query";
+import { async } from "regenerator-runtime";
+import { DISCOUNT_QUERY, LOCALS_QUERY } from "../query";
 import { executeQuery, executeUpdate } from "../server";
 import { excelDownload, excelUpload } from "../util";
 
@@ -77,9 +78,6 @@ export const insertList = async (req, res) => {
   const { payType, couponCnt, totalDcVal, totalCnt, freeCnt, payCnt } =
     result[0];
 
-  console.log("130설정값:", timeLimitMinutes, maxCnt, shopFreeCnt, shopPayCnt);
-  console.log("134조회값:", { ...result[0] });
-
   // 분 단위 제한 확인 및 처리
   if (timeLimit === "Y") {
     if (totalDcVal > timeLimitMinutes) {
@@ -126,61 +124,85 @@ export const insertList = async (req, res) => {
       return;
     }
 
-    if (PAY_AFTER === "N") {
+    if (PAY_AFTER === "N" && payType === "02") {
       await executeUpdate(DISCOUNT_QUERY.UPDATE_COUPON_CNT(obj));
     }
   }
 
   await executeUpdate(DISCOUNT_QUERY.INSERT_LIST(obj));
-  console.log(`INSERT PS134 ${JSON.stringify(req.body)}`);
 
   const discountList = await executeQuery(
     DISCOUNT_QUERY.SEARCH_DISCOUNT_LIST(obj.inSeqNo)
   );
 
-  const payCouponList = await executeQuery(
-    DISCOUNT_QUERY.SEARCH_PAY_COUPON({ ...req.session.user })
-  );
+  const payCouponList =
+    payType === "01"
+      ? await executeQuery(
+          DISCOUNT_QUERY.SEARCH_FREE_COUPON({ ...req.session.user })
+        )
+      : await executeQuery(
+          DISCOUNT_QUERY.SEARCH_PAY_COUPON({ ...req.session.user })
+        );
 
-  res.send({ result: "success", list: discountList, payCouponList });
+  res.send({ result: "success", list: discountList, payCouponList, payType });
 };
 
 // 할인 삭제
 export const deleteList = async (req, res) => {
   const {
-    body: { idx, inSeqNo },
+    body: { idx, inSeqNo, couponType },
     session: {
       user: { shopCode },
     },
   } = req;
 
-  await executeUpdate(DISCOUNT_QUERY.DELETE_LIST(idx));
-  console.log(`DELETE PS134 ${JSON.stringify(req.body)}`);
+  const [{ payType }] = await executeQuery(
+    LOCALS_QUERY.SEARCH_PAY_TYPE(couponType)
+  );
 
-  if (PAY_AFTER === "N") {
-    await executeUpdate(
-      DISCOUNT_QUERY.UPDATE_COUPON_CNT({
-        ...req.body,
-        shopCode,
-      })
+  const [{ registerCode }] = await executeQuery(
+    DISCOUNT_QUERY.SEARCH_DISCOUNT_REGISTER_CODE(idx)
+  );
+
+  console.log(`{ registerCode: ${registerCode}, shopCode: ${shopCode} }`);
+
+  if (shopCode !== registerCode) {
+    res.send({
+      result: "fail",
+      msg: "다른 사용자의 할인은 삭제할 수 없습니다.",
+    });
+  } else {
+    await executeUpdate(DISCOUNT_QUERY.DELETE_LIST(idx));
+    console.log(`DELETE PS134 ${JSON.stringify(req.body)}`);
+    if (PAY_AFTER === "N" && payType === "02") {
+      await executeUpdate(
+        DISCOUNT_QUERY.UPDATE_COUPON_CNT({
+          ...req.body,
+          shopCode,
+        })
+      );
+    }
+
+    const discountList = await executeQuery(
+      DISCOUNT_QUERY.SEARCH_DISCOUNT_LIST(inSeqNo)
     );
+
+    const payCouponList =
+      payType === "01"
+        ? await executeQuery(
+            DISCOUNT_QUERY.SEARCH_FREE_COUPON({ ...req.session.user })
+          )
+        : await executeQuery(
+            DISCOUNT_QUERY.SEARCH_PAY_COUPON({ ...req.session.user })
+          );
+
+    res.send({ result: "success", list: discountList, payCouponList, payType });
   }
-
-  const discountList = await executeQuery(
-    DISCOUNT_QUERY.SEARCH_DISCOUNT_LIST(inSeqNo)
-  );
-
-  const payCouponList = await executeQuery(
-    DISCOUNT_QUERY.SEARCH_PAY_COUPON({ ...req.session.user })
-  );
-
-  res.send({ result: "success", list: discountList, payCouponList });
 };
 
 // 할인 내역
 export const history = async (req, res) => {
   const { method } = req;
-
   if (method === "POST") {
     const obj = {
       ...req.session.user,
@@ -237,4 +259,14 @@ export const historyExcel = async (req, res) => {
   const data = await executeQuery(DISCOUNT_QUERY.SEARCH_DISCOUNT_HISTORY(obj));
   await excelDownload(res, obj, data);
   console.log(`HISTORY EXCEL PS134 ${JSON.stringify(req.query)}`);
+};
+
+export const exchange = async (req, res) => {
+  const coupons = await executeQuery(
+    DISCOUNT_QUERY.SEARCH_PAY_COUPON(req.session.user)
+  );
+
+  console.log(coupons);
+
+  res.render("discount/exchange", { pageTitle: "할인권 교환", coupons });
 };

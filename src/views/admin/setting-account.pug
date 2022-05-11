@@ -1,0 +1,90 @@
+extends ../admin-base
+include ../mixins/user
+block content 
+    section.admin__section
+            article.admin__search-container
+                .search__content
+                    //- span.date__text 조회일자
+                    //- input(type="text" id="startDate" class="date__input")
+                    //- span.date__tilde ~
+                    //- input(type="text" id="endDate" class="date__input")
+                .search__content
+                    .radio__container   
+                        input(type="radio" id="all" name="searchType" checked="checked")
+                        label(for="all") 전체
+                        input(type="radio" id="shop" name="searchType")
+                        label(for="shop") 매장별
+                        //- input(type="radio" id="coupon" name="searchType")
+                        //- label(for="coupon") 종류
+                    .search__container
+                        select#searchShopList.select__arrow(disabled)
+                            option 선택
+                            each x in userList
+                                +user(x)
+                            else 
+                                option 매장이 없습니다.
+                        select#searchCouponList.display__none.select__arrow
+                    .btn__container.file__container
+                        //- .filebox
+                        //-     label(for="file") 파일찾기
+                        //-     input(class="upload-name" id="fileName" placeholder="엑셀 업로드" readonly="readonly")
+                        //-     input(type="file" id="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                        .btn__box 
+                            .main-btn#searchBtn 조회
+                            .third-btn#uploadBtn 수정
+                            .sub-btn#downloadBtn 출력
+            p.views 조회
+                span#viewsCount &nbsp#{userList.length}
+                span 건
+            article.admin__main-container
+                .main__content-left                        
+                    table.history__table.table-sort
+                        thead   
+                            tr 
+                                each th in tableHead
+                                    th #{th}
+                        tbody   
+                            each user in userList
+                                tr
+                                    td #{user.shopName}
+                                    td #{user.telNo}
+                                    td #{user.id}
+                                    td #{user.pwd}
+                                    td #{user.insDate}
+                                    td #{user.updDate}
+                            else 
+                                td.not__found(colspan="100%") 조회된 데이터가 없습니다.
+                .fuck
+                    .main__content-right
+                        .main__content-right-title 할인 등록 권한
+                        .main__content-right-content 
+                            .content__item 
+                                span 매장명
+                                select.select__arrow#shopCode
+                            .content__item 
+                                span 할인권
+                                select.select__arrow#couponType
+                            .content__item 
+                                span 수량
+                                input(type="text" maxlength="5" placeholder="0" id="couponCnt" )
+                        .main__content-right__footer
+                            .sub-btn#insBtn 수정
+                    .main__content-right
+                        .main__content-right-title 사용자 정보
+                        .main__content-right-content 
+                            .content__item 
+                                span 매장명
+                                select.select__arrow#shopCode
+                            .content__item 
+                                span 할인권
+                                select.select__arrow#couponType
+                            .content__item 
+                                span 수량
+                                input(type="text" maxlength="5" placeholder="0" id="couponCnt" )
+                        .main__content-right__footer
+                            .sub-btn#insBtn 수정
+            //- span #{user.shopName}
+            include ../partials/footer            
+    script(src="/static/js/common.js") 
+    script(src="/static/js/sale-coupon.js") 
+    include ../partials/flatpickr

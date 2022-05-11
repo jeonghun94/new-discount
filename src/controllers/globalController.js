@@ -1,5 +1,4 @@
-import { escapeRegExp } from "lodash";
-import { LOCALS_QUERY, QUERY } from "../query";
+import { LOCALS_QUERY } from "../query";
 import { executeQuery, executeUpdate } from "../server";
 
 const cookieConfig = {
@@ -8,6 +7,7 @@ const cookieConfig = {
   // signed: true,
 };
 
+// 정보 없을시 접근 제한
 const renderPage = (level, res) => {
   if (level === "1") {
     res.render("home");
@@ -26,6 +26,7 @@ export const getRenderHome = async (req, res) => {
   renderPage(level, res);
 };
 
+// 로그인 처리
 export const login = async (req, res) => {
   const { method } = req;
 
@@ -56,10 +57,11 @@ export const login = async (req, res) => {
         res.clearCookie("id");
       }
 
-      res.redirect("/discount/main");
-      // res.redirect("/admin/sale-coupon");
-
       console.log(req.session.user);
+
+      // res.redirect("/admin/setting-account");
+      res.redirect("/discount/main");
+      console.log(`USER LOGIN ${req.session.user.shopName}`);
     } else {
       // 로그인 실패
       res.render("login", { notValid: true });
@@ -67,11 +69,16 @@ export const login = async (req, res) => {
   }
 };
 
-export const logout = (req, res) => {
-  req.session.destroy();
-  res.redirect("/");
+// 마이페이지
+export const mypage = async (req, res) => {
+  const { shopCode } = req.session.user;
+  const result = await executeQuery(
+    LOCALS_QUERY.USER_COUPON_STOCK_INFO(shopCode)
+  );
+  res.render("user/mypage", { pageTitle: "마이 페이지", result });
 };
 
+// 암호변경
 export const password = async (req, res) => {
   const {
     method,
@@ -80,7 +87,6 @@ export const password = async (req, res) => {
       user: { shopCode, pwd },
     },
   } = req;
-
   if (method === "GET") {
     res.render("user/password", { pageTitle: "암호 변경" });
   } else if (method === "PUT") {
@@ -106,22 +112,25 @@ export const password = async (req, res) => {
   }
 };
 
-export const mypage = async (req, res) => {
-  const { shopCode } = req.session.user;
-  const userInfo = req.session.user;
-  const result = await executeQuery(
-    LOCALS_QUERY.USER_COUPON_STOCK_INFO(shopCode)
-  );
-  res.render("user/mypage", { pageTitle: "마이 페이지", result, userInfo });
+// 로그아웃
+export const logout = (req, res) => {
+  req.session.destroy();
+  res.redirect("/");
 };
 
+// 관리자 계정일시 테스트 차량 검색
 export const searchInCar = async (req, res) => {
   const level = Number(req.session.user.authLevel);
 
-  if (level === 1) {
+  if (level === 0 || level === 1) {
     const result = await executeQuery(LOCALS_QUERY.SEARCH_IN_CAR());
     res.send({ result });
   } else {
     res.send({ result: [] });
   }
+};
+
+// 익스플로러 접속 차단
+export const notSupport = (req, res) => {
+  res.render("not-support");
 };

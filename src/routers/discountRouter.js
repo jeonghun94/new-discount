@@ -7,36 +7,16 @@ import {
   deleteList,
   history,
   historyExcel,
-  main2,
-  saleCouponExcel,
+  exchange,
 } from "../controllers/discountController";
-import { protectorMiddleware, uploadFiles } from "../middleware";
 
 const discountRouter = express.Router();
-discountRouter.route("/main").all(protectorMiddleware).get(main);
-discountRouter
-  .route("/main2")
-  .all(protectorMiddleware)
-  .get(main2)
-  .post(uploadFiles.single("saleCoupon"), saleCouponExcel);
-discountRouter
-  .route("/list")
-  .all(protectorMiddleware)
-  .post(insertList)
-  .delete(deleteList);
-discountRouter.route("/search").all(protectorMiddleware).post(searchInCarNo);
-discountRouter
-  .route("/search/inseqno")
-  .all(protectorMiddleware)
-  .post(searchInSeqNo);
-discountRouter
-  .route("/history")
-  .all(protectorMiddleware)
-  .get(history)
-  .post(history);
-discountRouter
-  .route("/history/excel")
-  .all(protectorMiddleware)
-  .get(historyExcel);
+discountRouter.route("/main").get(main);
+discountRouter.route("/list").post(insertList).delete(deleteList);
+discountRouter.route("/search").post(searchInCarNo);
+discountRouter.route("/search/inseqno").post(searchInSeqNo);
+discountRouter.route("/history").get(history).post(history);
+discountRouter.route("/history/excel").get(historyExcel);
+discountRouter.route("/exchange").get(exchange);
 
 export default discountRouter;

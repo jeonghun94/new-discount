@@ -9,11 +9,12 @@ export const LOCALS_QUERY = {
                                 WHERE  id = '${id}'
                                     AND pwd = '${pw}'`,
   USER_COUPON_STOCK_INFO: (shopCode) => `SELECT a.DcName,
-                                        b.Stock
+                                        Replace(CONVERT(VARCHAR, CONVERT(MONEY, b.Stock), 1), '.00', '') AS Stock
                                 FROM   ps132 a
                                       LEFT OUTER JOIN ps135 b
                                                     ON a.coupontype = b.coupontype
                                 WHERE  b.shopcode = '${shopCode}'
+                                      AND b.used = 'Y'
                                       AND a.paytype = '02' `,
   USER_PASSWORD_UPDATE: (shopCode, newPassword) => `UPDATE ps130
                                                     SET pwd = '${newPassword}',
@@ -34,6 +35,9 @@ export const LOCALS_QUERY = {
                                                 FROM   ps132
                                                 WHERE  dcname = '${couponType}'
                                                         AND paytype = '02' `,
+  SEARCH_PAY_TYPE: (couponType) => `SELECT PayType
+                                            FROM   ps132
+                                            WHERE  coupontype = '${couponType}'`,
 };
 
 export const DISCOUNT_QUERY = {
@@ -178,7 +182,6 @@ export const DISCOUNT_QUERY = {
   CONDITION_CHECK: (obj) => {
     const option =
       obj.shopDuplication === "Y" ? `AND a.shopcode = '${obj.shopCode}'` : "";
-    console.log(option);
     return `DECLARE @inSeqNo    INT,
                     @couponType INT,
                     @shopCode   VARCHAR(4)
@@ -220,16 +223,15 @@ export const DISCOUNT_QUERY = {
                       WHERE  a.inseqno = @inSeqNo ${option}
                             AND b.paytype = '02')     AS PayCnt `;
   },
-
+  SEARCH_DISCOUNT_REGISTER_CODE: (shopCode) => {
+    return `select ShopCode as RegisterCode from PS134 where Idx = ${shopCode}`;
+  },
   ADD_DISCOUNT_COUPON: (obj) => `UPDATE ps135 
-                                    SET    stock = (SELECT stock 
-                                              FROM   ps135 
-                                              WHERE  coupontype = '${obj.couponType}'
-                                                      AND shopcode = '${obj.shopCode}')
-                                              + '${obj.stock}' 
+                                  SET    stock = '${obj.stock}' 
                                   WHERE  coupontype = '${obj.couponType}'
-                                  AND    shopcode = '${obj.shopCode}' `,
-  ADD_DISCOUNT_COUPON_HISTORY: (obj) => `INSERT INTO ps131
+                                  AND    shopcode = '${obj.shopCodeIn}' `,
+  ADD_DISCOUNT_COUPON_HISTORY: (obj) => {
+    return `INSERT INTO ps131
                                                       (systemno,
                                                       parkno,
                                                       procdate,
@@ -250,7 +252,7 @@ export const DISCOUNT_QUERY = {
                                                       (SELECT CONVERT(VARCHAR, Getdate(), 112)),
                                                       (SELECT Replace(CONVERT(VARCHAR, Getdate(), 8), ':', '')),
                                                       '${obj.couponType}',
-                                                      '${obj.shopCode}',
+                                                      '${obj.shopCodeIn}',
                                                       '${obj.stock}',
                                                       ${Number(
                                                         obj.stock
@@ -266,10 +268,12 @@ export const DISCOUNT_QUERY = {
                                                       'WEB',
                                                       '${obj.shopName}',
                                                       (SELECT CONVERT (CHAR(19), Getdate(), 120)),
-                                                      '2' )`,
+                                                      '2' )`;
+  },
 };
 
 export const ADMIN_QUERY = {
+  USER_LIST: () => `SELECT * FROM PS130`,
   SALE_COUPON_LIST: (obj) => {
     const today = "(SELECT CONVERT(VARCHAR(8), Getdate(), 112))";
 

@@ -17,3 +17,11 @@ block content
                         p &nbsp; 아이디와 비밀번호를 정확히 입력해주세요.
                 button(type="submit") 로그인
                 img(src="http://59.15.58.146/dist/img/image.jpg", alt="이미지 로드 실패", srcset="")    
+    script. 
+        var agent = navigator.userAgent.toLowerCase();
+        if (navigator.userAgent.search("Trident") != -1 ||
+            agent.indexOf("msie") != -1
+        ) {
+            location.href = '/not-support'
+        }
+        console.log(1);

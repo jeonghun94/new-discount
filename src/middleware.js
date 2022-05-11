@@ -2,7 +2,7 @@ import multer from "multer";
 
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads/");
+    cb(null, "uploads/sale-coupon");
   },
 
   filename: (req, file, cb) => {
@@ -18,9 +18,10 @@ export const localsVariable = (req, res, next) => {
 
 export const protectorMiddleware = (req, res, next) => {
   if (req.session.loggedIn) {
+    res.locals.user = req.session.user;
     return next();
   } else {
-    return res.redirect("/");
+    res.redirect("/permission");
   }
 };
 

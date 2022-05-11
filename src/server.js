@@ -2,19 +2,15 @@ import express from "express";
 import morgan from "morgan";
 import session from "express-session";
 import cookieParser from "cookie-parser";
-import { localsVariable } from "./middleware";
-import globalRouter from "./routers/globalRouter";
-import discountRouter from "./routers/discountRouter";
+import { localsVariable, protectorMiddleware } from "./middleware";
 import sql from "mssql";
 import cron from "node-cron";
 import Stream from "node-rtsp-stream";
 import { camelizeKeys } from "./util";
 import config from "./mssqlConfig";
+import discountRouter from "./routers/discountRouter";
+import globalRouter from "./routers/globalRouter";
 import adminRouter from "./routers/adminRouter";
-
-// var path = require("path");
-// var root = path.dirname(__dirname);
-// console.log(path.join(root, "/uploads"));
 
 const app = express();
 const logger = morgan("dev");
@@ -73,11 +69,14 @@ app.use(
     saveUninitialized: true,
   })
 );
-app.use(localsVariable);
 app.use("/static", express.static("assets"));
 app.use("/client", express.static("src/client"));
+app.use(localsVariable);
 app.use("/", globalRouter);
-app.use("/discount", discountRouter);
-app.use("/admin", adminRouter);
+app.use("/discount", protectorMiddleware, discountRouter);
+app.use("/admin", protectorMiddleware, adminRouter);
+app.use((req, res) => {
+  res.status(404).render("permission");
+});
 
 export default app;

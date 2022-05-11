@@ -1,3 +1,4 @@
+import moment from "moment";
 const SEARCH_ARTICLE = document.querySelector("#searchArticle");
 const CRUD_ARTICLE = document.querySelector("#crudArticle");
 const LIST_DIV = document.querySelector("#listDiv");
@@ -62,6 +63,12 @@ function appendSearchList(list) {
   LIST_DIV.innerHTML = "";
   if (list.length !== 0) {
     list.map((x) => {
+      const nowTime = moment().format("YYYY-MM-DD HH:mm:ss");
+      const insTime = moment().format(x.insDate);
+      const duration = moment.duration(moment(nowTime).diff(moment(insTime)));
+      const asMinutes = Math.floor(duration.asMinutes());
+      console.log(asMinutes);
+
       const container = document.createElement("div");
       container.classList.add("search__container");
       container.dataset.inseqno = x.inSeqNo;
@@ -75,7 +82,7 @@ function appendSearchList(list) {
       info.classList.add("search__info");
 
       const inCarNo = document.createElement("p");
-      inCarNo.innerText = x.inCarNo;
+      inCarNo.innerText = `${x.inCarNo}(${asMinutes}분)`;
 
       const tkType = document.createElement("p");
       tkType.innerText = `입차종류: ${x.tkType}`;
@@ -176,8 +183,8 @@ function searchInSeqNo(inSeqNo, cloneNode) {
       CRUD_ARTICLE.append(COUPON_CONTAINER);
       CRUD_ARTICLE.append(DISCOUNT_CONTAINER);
       //할인권 리스트 추가
-      couponList(freeCouponList, "무료");
-      couponList(payCouponList, "유료");
+      couponList(freeCouponList, "무료", "01");
+      couponList(payCouponList, "유료", "02");
 
       //할인내역 리스트 추가
       discountList(dList, inSeqNo);
@@ -188,6 +195,7 @@ function searchInSeqNo(inSeqNo, cloneNode) {
 //할인내역 추가
 function discountList(list, inSeqNo) {
   if (list.length !== 0) {
+    DISCOUNT_CONTAINER.appendChild(addRowsCount(list.length));
     const discountHeader = document.createElement("div");
     discountHeader.classList.add("discount__header");
     discountHeader.innerHTML = "할인내역";
@@ -313,7 +321,7 @@ function couponInvalid() {
 }
 
 //할인권 SELECT 추가
-function couponList(list, text) {
+function couponList(list, text, payType) {
   if (list.length !== 0) {
     const type = document.createElement("div");
     type.classList.add("coupon__container-type");
@@ -358,9 +366,13 @@ function couponList(list, text) {
     list.map((x) => {
       const option = document.createElement("option");
       if (process.env.PAY_AFTER === "N") {
-        option.innerText = `${x.dcName}${
-          text === "유료" ? `(잔여:${x.stock}매)` : ""
-        }`;
+        if (payType === "02") {
+          option.innerText = `${x.dcName}${
+            text === "유료" ? `(잔여:${x.stock}매)` : ""
+          }`;
+        } else {
+          option.innerText = `${x.dcName}`;
+        }
       } else {
         option.innerText = `${x.dcName}`;
       }
@@ -386,9 +398,9 @@ function resetSelect() {
 }
 
 // 웹 할인 등록
-function insertList(inSeqNo, couponType, select) {
+async function insertList(inSeqNo, couponType, select) {
   if (couponType !== "00") {
-    fetch(`/discount/list`, {
+    await fetch(`/discount/list`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -408,7 +420,8 @@ function insertList(inSeqNo, couponType, select) {
 
           // 유료 할인권 잔여 수량 업데이트
           select.remove();
-          couponList(data.payCouponList, "유료");
+          couponList(data.payCouponList, "유료", data.payType);
+          alert("할인 등록 완료");
         }
         // 선택 초기화
         resetSelect();
@@ -431,10 +444,13 @@ function deleteList(idx, inSeqNo, dcName, couponType) {
     })
       .then((response) => response.json())
       .then((data) => {
-        if (data.result) {
+        if (data.result === "success") {
           DISCOUNT_CONTAINER.innerHTML = "";
           discountList(data.list, inSeqNo);
-          deleteListUpdatStock(data.payCouponList);
+          deleteListUpdatStock(data.payCouponList, data.payType);
+          alert("할인 삭제 완료");
+        } else {
+          alert(`할인 삭제 실패\n사유: ${data.msg}`);
         }
       })
       .catch((error) => console.log(error));
@@ -442,12 +458,12 @@ function deleteList(idx, inSeqNo, dcName, couponType) {
 }
 
 // 웹 할인 내역 삭제, 잔여 수량 업데이트
-function deleteListUpdatStock(list) {
+function deleteListUpdatStock(list, payType) {
   const couponContainer = document.querySelectorAll(".coupon__container-type");
   couponContainer.length === 1
     ? couponContainer[0].remove()
     : couponContainer[1].remove();
-  couponList(list, "유료");
+  couponList(list, "유료", payType);
 }
 
 // 웹 할인 등록내역
