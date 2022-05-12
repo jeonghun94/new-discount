@@ -6,7 +6,55 @@ window.onload = function () {
     document.querySelector("#oldPassword").focus();
     updBtn.addEventListener("click", userPasswordUpdate);
   }
+
+  const table = document.querySelector("#historyTable tbody");
+  const rows = table.querySelectorAll("tr");
+  const tableRows = [];
+
+  const formShopDuplication = document.querySelector("#formShopDuplication");
+  const formTimeLimit = document.querySelector("#formTimeLimit");
+  const formTimeLimitMinutes = document.querySelector("#formTimeLimitMinutes");
+  const formMaxCnt = document.querySelector("#formMaxCnt");
+  const formFreeCnt = document.querySelector("#formFreeCnt");
+  const formPayCnt = document.querySelector("#formPayCnt");
+
+  for (let i = 0; i < rows.length; i++) {
+    tableRows.push(rows[i]);
+
+    rows[i].addEventListener("click", (e) => {
+      const row = rows[i];
+      row.style.backgroundColor = "#f8981c";
+      row.style.color = "white";
+
+      // const shopCode = rows[i].querySelector("td:nth-child(1) > input").value;
+      // const shopName = row.querySelector("td:nth-child(2)").innerText;
+      const shopDuplication = row.querySelector("td:nth-child(3)").innerText;
+      const timeLimit = row.querySelector("td:nth-child(4)").innerText;
+      const timeLimitMinutes = row.querySelector("td:nth-child(5)").innerText;
+      const maxCnt = row.querySelector("td:nth-child(6)").innerText;
+      const freeCnt = row.querySelector("td:nth-child(7)").innerText;
+      const payCnt = row.querySelector("td:nth-child(8)").innerText;
+
+      formShopDuplication.value =
+        shopDuplication === "" ? "N" : shopDuplication;
+      formTimeLimit.value = timeLimit === "" ? "N" : timeLimit;
+      formTimeLimitMinutes.value =
+        timeLimitMinutes === "" ? "0" : timeLimitMinutes;
+      formMaxCnt.value = maxCnt === "" ? "2" : maxCnt;
+      formFreeCnt.value = freeCnt === "" ? "1" : freeCnt;
+      formPayCnt.value = payCnt === "" ? "1" : payCnt;
+    });
+  }
 };
+const checkbox1 = document.querySelector("#selectAll");
+document.getElementById("selectAll").onchange = selectAll;
+
+function selectAll() {
+  const checkboxes = document.getElementsByName("user");
+  checkboxes.forEach((checkbox) => {
+    checkbox.checked = checkbox1.checked;
+  });
+}
 
 // 관리자 페이지 메뉴 활성화
 export const menuActive = () => {

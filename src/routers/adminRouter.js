@@ -3,6 +3,7 @@ import {
   saleCoupon,
   saleCouponExcel,
   settingAccount,
+  userAuth,
 } from "../controllers/adminController";
 import { uploadFiles } from "../middleware";
 
@@ -13,4 +14,5 @@ adminRouter
   .post(uploadFiles.single("file"), saleCoupon);
 adminRouter.route("/sale-coupon/excel").get(saleCouponExcel);
 adminRouter.route("/setting-account").get(settingAccount);
+adminRouter.route("/discount/user-auth").get(userAuth);
 export default adminRouter;

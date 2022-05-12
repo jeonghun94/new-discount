@@ -1,5 +1,3 @@
-import moment from "moment";
-
 export const LOCALS_QUERY = {
   USER_LIST: `SELECT ShopCode,
                             ShopName
@@ -8,14 +6,17 @@ export const LOCALS_QUERY = {
                                 FROM   ps130
                                 WHERE  id = '${id}'
                                     AND pwd = '${pw}'`,
-  USER_COUPON_STOCK_INFO: (shopCode) => `SELECT a.DcName,
-                                        Replace(CONVERT(VARCHAR, CONVERT(MONEY, b.Stock), 1), '.00', '') AS Stock
-                                FROM   ps132 a
-                                      LEFT OUTER JOIN ps135 b
-                                                    ON a.coupontype = b.coupontype
-                                WHERE  b.shopcode = '${shopCode}'
-                                      AND b.used = 'Y'
-                                      AND a.paytype = '02' `,
+  USER_COUPON_STOCK_INFO: (obj) => {
+    const nullCheck = obj.nullCheck ? "AND b.used IS NULL" : "AND b.used = 'Y'";
+    return `SELECT a.DcName,
+                    Replace(CONVERT(VARCHAR, CONVERT(MONEY, b.Stock), 1), '.00', '') AS Stock
+            FROM   ps132 a
+                  LEFT OUTER JOIN ps135 b
+                                ON a.coupontype = b.coupontype
+            WHERE  b.shopcode = '${obj.shopCode}'
+                 ${nullCheck}
+                  AND a.paytype = '02'`;
+  },
   USER_PASSWORD_UPDATE: (shopCode, newPassword) => `UPDATE ps130
                                                     SET pwd = '${newPassword}',
                                                         updpgm = 'WEB',
@@ -80,6 +81,7 @@ export const DISCOUNT_QUERY = {
   },
   SEARCH_FREE_COUPON: (obj) => {
     const opiton = obj ? `AND b.shopCode = '${obj.shopCode}'` : "";
+    const nullCheck = obj.nullCheck ? "AND b.used IS NULL" : "AND b.used = 'Y'";
     return `SELECT a.dcName,
                     a.couponType,
                     Replace(CONVERT(VARCHAR, CONVERT(MONEY, b.stock), 1), '.00', '') AS stock
@@ -87,11 +89,12 @@ export const DISCOUNT_QUERY = {
                   LEFT OUTER JOIN ps135 b
                                 ON a.coupontype = b.coupontype
             WHERE  a.paytype = '01'
-                    AND b.used = 'Y'
+                    ${nullCheck}
                     ${opiton}`;
   },
   SEARCH_PAY_COUPON: (obj) => {
     const opiton = obj ? `AND b.shopCode = '${obj.shopCode}'` : "";
+    const nullCheck = obj.nullCheck ? "AND b.used IS NULL" : "AND b.used = 'Y'";
     const user = `SELECT a.dcName,
                           a.couponType,
                           Replace(CONVERT(VARCHAR, CONVERT(MONEY, b.stock), 1), '.00', '') AS stock
@@ -99,7 +102,7 @@ export const DISCOUNT_QUERY = {
                         LEFT OUTER JOIN ps135 b
                                       ON a.coupontype = b.coupontype
                   WHERE  a.paytype = '02'
-                          AND b.used = 'Y'
+                          ${nullCheck}
                           ${opiton}`;
 
     const admin = `SELECT * FROM PS132 WHERE paytype = '02'`;
@@ -172,7 +175,7 @@ export const DISCOUNT_QUERY = {
                                 ON b.paytype = '0' + d.dcode_seq  
                                   AND d.mcode = 'z01' 
                   LEFT OUTER JOIN ps510 e 
-                                ON a.inseqno = e.inseqno  
+                                ON a.inseqno = e.inseqno and e.TKPrtSts in ('2', '10', '11')
             WHERE c.procdate+c.ProcTime BETWEEN '${obj.startDate}'+'000000' AND '${obj.endDate}'+'235959'
                   AND c.shopcode = '${obj.shopCode}' 
                   ${obj.inCarNo}
@@ -305,5 +308,25 @@ export const ADMIN_QUERY = {
                   ${objKeys !== 0 ? `'${obj.endDate}'` : today} + '235959'
                   ${option}
             ORDER  BY a.insdate DESC`;
+  },
+  USERS_AUTH: () => {
+    return `SELECT ShopCode,
+                  ShopName,
+                  MainPage,
+                  AuthLevel,
+                  ApprovalSts,
+                  KeyPad,
+                  Notification,
+                  ShopDuplication,
+                  TimeLimit,
+                  TimeLimitMinutes,
+                  MaxCnt,
+                  FreeCnt,
+                  PayCnt,
+                  UpdId,
+                  UpdDate
+            FROM   ps130
+            WHERE ShopName  != '' and ShopName is not null
+          `;
   },
 };

@@ -40,15 +40,33 @@ export const searchInSeqNo = async (req, res) => {
   const { inSeqNo } = req.body;
 
   const result = await executeQuery(DISCOUNT_QUERY.SEARCH_IN_SEQ_NO(inSeqNo));
-  const freeCouponList = await executeQuery(
+  let freeCouponList = await executeQuery(
     DISCOUNT_QUERY.SEARCH_FREE_COUPON({ ...req.session.user })
   );
-  const payCouponList = await executeQuery(
+  let payCouponList = await executeQuery(
     DISCOUNT_QUERY.SEARCH_PAY_COUPON({ ...req.session.user })
   );
   const discountList = await executeQuery(
     DISCOUNT_QUERY.SEARCH_DISCOUNT_LIST(inSeqNo)
   );
+
+  if (freeCouponList.length === 0) {
+    freeCouponList = await executeQuery(
+      DISCOUNT_QUERY.SEARCH_FREE_COUPON({
+        ...req.session.user,
+        nullCheck: true,
+      })
+    );
+  }
+
+  if (payCouponList.length === 0) {
+    payCouponList = await executeQuery(
+      DISCOUNT_QUERY.SEARCH_PAY_COUPON({
+        ...req.session.user,
+        nullCheck: true,
+      })
+    );
+  }
 
   res.send({ result, freeCouponList, payCouponList, discountList });
 };
@@ -135,7 +153,7 @@ export const insertList = async (req, res) => {
     DISCOUNT_QUERY.SEARCH_DISCOUNT_LIST(obj.inSeqNo)
   );
 
-  const payCouponList =
+  let payCouponList =
     payType === "01"
       ? await executeQuery(
           DISCOUNT_QUERY.SEARCH_FREE_COUPON({ ...req.session.user })
@@ -143,6 +161,23 @@ export const insertList = async (req, res) => {
       : await executeQuery(
           DISCOUNT_QUERY.SEARCH_PAY_COUPON({ ...req.session.user })
         );
+
+  if (payCouponList.length === 0) {
+    payCouponList =
+      payType === "01"
+        ? await executeQuery(
+            DISCOUNT_QUERY.SEARCH_FREE_COUPON({
+              ...req.session.user,
+              nullCheck: true,
+            })
+          )
+        : await executeQuery(
+            DISCOUNT_QUERY.SEARCH_PAY_COUPON({
+              ...req.session.user,
+              nullCheck: true,
+            })
+          );
+  }
 
   res.send({ result: "success", list: discountList, payCouponList, payType });
 };
@@ -187,7 +222,7 @@ export const deleteList = async (req, res) => {
       DISCOUNT_QUERY.SEARCH_DISCOUNT_LIST(inSeqNo)
     );
 
-    const payCouponList =
+    let payCouponList =
       payType === "01"
         ? await executeQuery(
             DISCOUNT_QUERY.SEARCH_FREE_COUPON({ ...req.session.user })
@@ -195,6 +230,22 @@ export const deleteList = async (req, res) => {
         : await executeQuery(
             DISCOUNT_QUERY.SEARCH_PAY_COUPON({ ...req.session.user })
           );
+    if (payCouponList.length === 0) {
+      payCouponList =
+        payType === "01"
+          ? await executeQuery(
+              DISCOUNT_QUERY.SEARCH_FREE_COUPON({
+                ...req.session.user,
+                nullCheck: true,
+              })
+            )
+          : await executeQuery(
+              DISCOUNT_QUERY.SEARCH_PAY_COUPON({
+                ...req.session.user,
+                nullCheck: true,
+              })
+            );
+    }
 
     res.send({ result: "success", list: discountList, payCouponList, payType });
   }

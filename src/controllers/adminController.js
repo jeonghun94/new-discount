@@ -110,3 +110,32 @@ export const settingAccount = async (req, res) => {
 
   res.render("admin/setting-account", { tableHead, userList });
 };
+
+export const userAuth = async (req, res) => {
+  const { method } = req;
+
+  if (method === "GET") {
+    const shopList = await executeQuery(LOCALS_QUERY.USER_LIST);
+    const usersAuth = await executeQuery(ADMIN_QUERY.USERS_AUTH());
+
+    const tableHead = [
+      "매장 명",
+      "타 매장 중복",
+      "시간 제한",
+      "시간 제한 분",
+      "총 할인 수",
+      "무료 할인 수",
+      "유료 할인 수",
+      "수정일시",
+    ];
+
+    console.log(usersAuth);
+
+    res.render("admin/discount/user-auth", {
+      pageTitle: "관리자",
+      shopList,
+      tableHead,
+      usersAuth,
+    });
+  }
+};

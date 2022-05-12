@@ -44,8 +44,37 @@ export const login = async (req, res) => {
 
     if (result.length === 1) {
       // 로그인 성공
+      // PCMS 동기화 안되어 임의값 설정
+      result[0].shopDuplication =
+        result[0].shopDuplication === null
+          ? process.env.DEFAULT_SHOP_DUPLICATION
+          : result[0].shopDuplication;
+
+      result[0].timeLimitMinutes =
+        result[0].timeLimitMinutes === null
+          ? process.env.DEFAULT_TIME_LIMIT_MINUTES
+          : result[0].timeLimitMinutes;
+      result[0].timeLimit =
+        result[0].timeLimit === null
+          ? process.env.DEFAULT_TIME_LIMIT
+          : result[0].timeLimit;
+
+      result[0].freeCnt =
+        result[0].freeCnt === null
+          ? process.env.DEFAULT_FREE_CNT
+          : result[0].freeCnt;
+      result[0].maxCnt =
+        result[0].maxCnt === null
+          ? process.env.DEFAULT_MAX_CNT
+          : result[0].maxCnt;
+      result[0].payCnt =
+        result[0].payCnt === null
+          ? process.env.DEFAULT_PAY_CNT
+          : result[0].payCnt;
       req.session.user = result[0];
       req.session.loggedIn = true;
+
+      console.log(req.session.user);
 
       if (saveUserInfo === "on") {
         res.cookie("saveUserInfo", "checked", cookieConfig);
@@ -59,8 +88,9 @@ export const login = async (req, res) => {
 
       console.log(req.session.user);
 
+      res.redirect("/admin/discount/user-auth");
       // res.redirect("/admin/setting-account");
-      res.redirect("/discount/main");
+      // res.redirect("/discount/main");
       console.log(`USER LOGIN ${req.session.user.shopName}`);
     } else {
       // 로그인 실패
@@ -72,9 +102,18 @@ export const login = async (req, res) => {
 // 마이페이지
 export const mypage = async (req, res) => {
   const { shopCode } = req.session.user;
-  const result = await executeQuery(
-    LOCALS_QUERY.USER_COUPON_STOCK_INFO(shopCode)
+  let result = await executeQuery(
+    LOCALS_QUERY.USER_COUPON_STOCK_INFO({ shopCode })
   );
+
+  if (result.length === 0) {
+    const obj = {
+      shopCode,
+      nullCheck: true,
+    };
+    result = await executeQuery(LOCALS_QUERY.USER_COUPON_STOCK_INFO(obj));
+  }
+
   res.render("user/mypage", { pageTitle: "마이 페이지", result });
 };
 
