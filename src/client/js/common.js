@@ -23,8 +23,9 @@ window.onload = function () {
 
     rows[i].addEventListener("click", (e) => {
       const row = rows[i];
-      row.style.backgroundColor = "#f8981c";
-      row.style.color = "white";
+
+      // row.style.backgroundColor = "#f8981c";
+      // row.style.color = "white";
 
       // const shopCode = rows[i].querySelector("td:nth-child(1) > input").value;
       // const shopName = row.querySelector("td:nth-child(2)").innerText;
@@ -46,14 +47,40 @@ window.onload = function () {
     });
   }
 };
-const checkbox1 = document.querySelector("#selectAll");
-document.getElementById("selectAll").onchange = selectAll;
+
+let USERS = [];
+const selectAllBox = document.querySelector("#selectAllBox");
+const checkboxes = document.getElementsByName("user");
+
+selectAllBox.addEventListener("change", selectAll);
+
+checkboxes.forEach((checkbox) => {
+  checkbox.addEventListener("change", checkOne);
+});
 
 function selectAll() {
-  const checkboxes = document.getElementsByName("user");
+  USERS = [];
   checkboxes.forEach((checkbox) => {
-    checkbox.checked = checkbox1.checked;
+    checkbox.checked = selectAllBox.checked;
+    selectAllBox.checked ? USERS.push(checkbox.value) : (USERS = []);
+    checkbox.addEventListener("change", checkOne);
   });
+
+  console.log(USERS.length);
+}
+
+function checkOne() {
+  if (this.checked) {
+    USERS.push(this.value);
+  } else {
+    for (let i = 0; i < USERS.length; i++) {
+      if (USERS[i] === this.value) {
+        USERS.splice(i, 1);
+        i--;
+      }
+    }
+  }
+  console.log(USERS.length);
 }
 
 // 관리자 페이지 메뉴 활성화

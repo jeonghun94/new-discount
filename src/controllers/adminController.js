@@ -115,9 +115,8 @@ export const userAuth = async (req, res) => {
   const { method } = req;
 
   if (method === "GET") {
-    const shopList = await executeQuery(LOCALS_QUERY.USER_LIST);
+    const users = await executeQuery(LOCALS_QUERY.USER_LIST);
     const usersAuth = await executeQuery(ADMIN_QUERY.USERS_AUTH());
-
     const tableHead = [
       "매장 명",
       "타 매장 중복",
@@ -129,13 +128,11 @@ export const userAuth = async (req, res) => {
       "수정일시",
     ];
 
-    console.log(usersAuth);
-
     res.render("admin/discount/user-auth", {
       pageTitle: "관리자",
-      shopList,
       tableHead,
       usersAuth,
+      users,
     });
   }
 };

@@ -74,8 +74,6 @@ export const login = async (req, res) => {
       req.session.user = result[0];
       req.session.loggedIn = true;
 
-      console.log(req.session.user);
-
       if (saveUserInfo === "on") {
         res.cookie("saveUserInfo", "checked", cookieConfig);
         res.cookie("password", password, cookieConfig);
@@ -85,8 +83,6 @@ export const login = async (req, res) => {
         res.clearCookie("password");
         res.clearCookie("id");
       }
-
-      console.log(req.session.user);
 
       res.redirect("/admin/discount/user-auth");
       // res.redirect("/admin/setting-account");
