@@ -7,6 +7,9 @@ window.onload = function () {
     updBtn.addEventListener("click", userPasswordUpdate);
   }
 
+  if (window.location.pathname === "/admin/discount/user-auth") {
+    radioInit(radioChange);
+  }
   const table = document.querySelector("#historyTable tbody");
   const rows = table.querySelectorAll("tr");
   const tableRows = [];
@@ -81,6 +84,20 @@ function checkOne() {
     }
   }
   console.log(USERS.length);
+}
+
+function radioChange(val) {
+  const shop = document.querySelector("#searchShopList");
+  switch (val) {
+    case "all":
+      shop.disabled = true;
+      break;
+    case "shop":
+      shop.disabled = false;
+      break;
+    default:
+      break;
+  }
 }
 
 // 관리자 페이지 메뉴 활성화
