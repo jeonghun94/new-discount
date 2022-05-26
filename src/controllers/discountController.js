@@ -1,7 +1,8 @@
+import moment from "moment";
 import { async } from "regenerator-runtime";
 import { DISCOUNT_QUERY, LOCALS_QUERY } from "../query";
 import { executeQuery, executeUpdate } from "../server";
-import { excelDownload, excelUpload } from "../util";
+import { checkHoliday, excelDownload, excelUpload } from "../util";
 
 const PAY_AFTER = process.env.PAY_AFTER;
 
@@ -38,13 +39,16 @@ export const searchInCarNo = async (req, res) => {
 // 차량의 정보, 할인권 정보, 할인내역 조회
 export const searchInSeqNo = async (req, res) => {
   const { inSeqNo } = req.body;
-
   const result = await executeQuery(DISCOUNT_QUERY.SEARCH_IN_SEQ_NO(inSeqNo));
+  const holidayCoupons = checkHoliday(
+    moment(result[0].procDate).format("YYYY-MM-DD")
+  );
+
   let freeCouponList = await executeQuery(
-    DISCOUNT_QUERY.SEARCH_FREE_COUPON({ ...req.session.user })
+    DISCOUNT_QUERY.SEARCH_FREE_COUPON({ ...req.session.user, holidayCoupons })
   );
   let payCouponList = await executeQuery(
-    DISCOUNT_QUERY.SEARCH_PAY_COUPON({ ...req.session.user })
+    DISCOUNT_QUERY.SEARCH_PAY_COUPON({ ...req.session.user, holidayCoupons })
   );
   const discountList = await executeQuery(
     DISCOUNT_QUERY.SEARCH_DISCOUNT_LIST(inSeqNo)
@@ -55,6 +59,7 @@ export const searchInSeqNo = async (req, res) => {
       DISCOUNT_QUERY.SEARCH_FREE_COUPON({
         ...req.session.user,
         nullCheck: true,
+        holidayCoupons,
       })
     );
   }
@@ -64,6 +69,7 @@ export const searchInSeqNo = async (req, res) => {
       DISCOUNT_QUERY.SEARCH_PAY_COUPON({
         ...req.session.user,
         nullCheck: true,
+        holidayCoupons,
       })
     );
   }

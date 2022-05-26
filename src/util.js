@@ -5,6 +5,16 @@ import { executeQuery, executeUpdate } from "./server";
 import { DISCOUNT_QUERY, LOCALS_QUERY } from "./query";
 const root = path.dirname(__dirname);
 
+export const checkHoliday = (procDate) => {
+  const holiday = process.env.DAYS.split(",").map(Number);
+  const inCarDate = new Date(procDate).getDay();
+  const today = new Date().getDay();
+
+  return holiday.includes(today) && holiday.includes(inCarDate)
+    ? process.env.KEYS
+    : null;
+};
+
 export const camelizeKeys = (obj) => {
   if (Array.isArray(obj)) {
     return obj.map((v) => camelizeKeys(v));
