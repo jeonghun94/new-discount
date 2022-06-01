@@ -332,4 +332,22 @@ export const ADMIN_QUERY = {
             WHERE ShopName  != '' and ShopName is not null
           `;
   },
+  USERS_AUTH_UPDATE: ({
+    shopCode,
+    shopDuplication,
+    timeLimit,
+    timeLimitMinutes,
+    maxCnt,
+    freeCnt,
+    payCnt,
+  }) => {
+    return `UPDATE ps130
+            SET    ShopDuplication = '${shopDuplication}',
+                   TimeLimit = '${timeLimit}',
+                   TimeLimitMinutes = '${timeLimitMinutes}',
+                   MaxCnt = '${maxCnt}',
+                   FreeCnt = '${freeCnt}',
+                   PayCnt = '${payCnt}'
+            WHERE  ShopCode = '${shopCode}'`;
+  },
 };

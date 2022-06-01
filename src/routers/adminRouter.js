@@ -14,5 +14,5 @@ adminRouter
   .post(uploadFiles.single("file"), saleCoupon);
 adminRouter.route("/sale-coupon/excel").get(saleCouponExcel);
 adminRouter.route("/setting-account").get(settingAccount);
-adminRouter.route("/discount/user-auth").get(userAuth);
+adminRouter.route("/discount/user-auth").get(userAuth).post(userAuth);
 export default adminRouter;

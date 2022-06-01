@@ -55,27 +55,27 @@ block content
                         .content__item 
                             span 타 매장 중복
                             select.select__arrow#formShopDuplication
-                                option Y
                                 option N
+                                option Y
                         .content__item 
                             span 시간 제한
                             select.select__arrow#formTimeLimit
-                                option Y
                                 option N
+                                option Y
                         .content__item 
                             span 시간 제한 분
-                            input#formTimeLimitMinutes(type="text" maxlength="5" placeholder="0" )
+                            input#formTimeLimitMinutes(type="number" maxlength="3" placeholder="0" value="0" )
                         .content__item 
                             span 총 할인 수
-                            input#formMaxCnt(type="text" maxlength="5" placeholder="0")
+                            input#formMaxCnt(type="number" maxlength="5" placeholder="0" value="1")
                         .content__item 
                             span 무료 할인 수
-                            input#formFreeCnt(type="text" maxlength="5" placeholder="0")
+                            input#formFreeCnt(type="number" maxlength="5" placeholder="0" value="1")
                         .content__item 
                             span 유료 할인 수
-                            input#formPayCnt(type="text" maxlength="5" placeholder="0")    
+                            input#formPayCnt(type="number" maxlength="5" placeholder="0" value="1")    
                     .main__content-right__footer
-                        .sub-btn#insBtn 수정
+                        .sub-btn#updBtn 수정
             include ../../partials/footer
         script(src="/static/js/common.js") 
         include ../../partials/flatpickr

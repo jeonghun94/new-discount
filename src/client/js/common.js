@@ -21,34 +21,81 @@ window.onload = function () {
   const formFreeCnt = document.querySelector("#formFreeCnt");
   const formPayCnt = document.querySelector("#formPayCnt");
 
-  for (let i = 0; i < rows.length; i++) {
-    tableRows.push(rows[i]);
+  // for (let i = 0; i < rows.length; i++) {
+  //   tableRows.push(rows[i]);
 
-    rows[i].addEventListener("click", (e) => {
-      const row = rows[i];
+  //   rows[i].addEventListener("click", (e) => {
+  //     const row = rows[i];
 
-      // row.style.backgroundColor = "#f8981c";
-      // row.style.color = "white";
+  //     // row.style.backgroundColor = "#f8981c";
+  //     // row.style.color = "white";
 
-      // const shopCode = rows[i].querySelector("td:nth-child(1) > input").value;
-      // const shopName = row.querySelector("td:nth-child(2)").innerText;
-      const shopDuplication = row.querySelector("td:nth-child(3)").innerText;
-      const timeLimit = row.querySelector("td:nth-child(4)").innerText;
-      const timeLimitMinutes = row.querySelector("td:nth-child(5)").innerText;
-      const maxCnt = row.querySelector("td:nth-child(6)").innerText;
-      const freeCnt = row.querySelector("td:nth-child(7)").innerText;
-      const payCnt = row.querySelector("td:nth-child(8)").innerText;
+  //     // const shopCode = rows[i].querySelector("td:nth-child(1) > input").value;
+  //     // const shopName = row.querySelector("td:nth-child(2)").innerText;
+  //     const shopDuplication = row.querySelector("td:nth-child(3)").innerText;
+  //     const timeLimit = row.querySelector("td:nth-child(4)").innerText;
+  //     const timeLimitMinutes = row.querySelector("td:nth-child(5)").innerText;
+  //     const maxCnt = row.querySelector("td:nth-child(6)").innerText;
+  //     const freeCnt = row.querySelector("td:nth-child(7)").innerText;
+  //     const payCnt = row.querySelector("td:nth-child(8)").innerText;
 
-      formShopDuplication.value =
-        shopDuplication === "" ? "N" : shopDuplication;
-      formTimeLimit.value = timeLimit === "" ? "N" : timeLimit;
-      formTimeLimitMinutes.value =
-        timeLimitMinutes === "" ? "0" : timeLimitMinutes;
-      formMaxCnt.value = maxCnt === "" ? "2" : maxCnt;
-      formFreeCnt.value = freeCnt === "" ? "1" : freeCnt;
-      formPayCnt.value = payCnt === "" ? "1" : payCnt;
-    });
-  }
+  //     formShopDuplication.value =
+  //       shopDuplication === "" ? "N" : shopDuplication;
+  //     formTimeLimit.value = timeLimit === "" ? "N" : timeLimit;
+  //     formTimeLimitMinutes.value =
+  //       timeLimitMinutes === "" ? "0" : timeLimitMinutes;
+  //     formMaxCnt.value = maxCnt === "" ? "2" : maxCnt;
+  //     formFreeCnt.value = freeCnt === "" ? "1" : freeCnt;
+  //     formPayCnt.value = payCnt === "" ? "1" : payCnt;
+  //   });
+  // }
+
+  const updBtn = document.querySelector("#updBtn");
+  updBtn.addEventListener("click", (e) => {
+    if (USERS.length <= 0) {
+      alert("선택된 매장이 없습니다.\n매장을 선택해주세요.");
+    } else {
+      if (formTimeLimitMinutes.value === "") {
+        alert("시간 제한 분을 입력 하세요.");
+        return;
+      }
+
+      if (formMaxCnt.value === "") {
+        alert("총 할인 수를 입력 하세요.");
+        return;
+      }
+
+      if (formFreeCnt.value === "") {
+        alert("무료 할인 수를 입력 하세요.");
+        return;
+      }
+
+      if (formPayCnt.value === "") {
+        alert("유료 할인 수를 입력 하세요.");
+        return;
+      }
+    }
+
+    fetch("/admin/discount/user-auth", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        shopCode: USERS,
+        shopDuplication: formShopDuplication.value,
+        timeLimit: formTimeLimit.value,
+        timeLimitMinutes: formTimeLimitMinutes.value,
+        maxCnt: formMaxCnt.value,
+        freeCnt: formFreeCnt.value,
+        payCnt: formPayCnt.value,
+      }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res);
+      });
+  });
 };
 
 let USERS = [];

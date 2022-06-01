@@ -134,5 +134,42 @@ export const userAuth = async (req, res) => {
       usersAuth,
       users,
     });
+  } else if (method === "POST") {
+    const {
+      shopCode,
+      shopDuplication,
+      timeLimit,
+      timeLimitMinutes,
+      maxCnt,
+      freeCnt,
+      payCnt,
+    } = req.body;
+    console.log(
+      shopCode,
+      shopDuplication,
+      timeLimit,
+      timeLimitMinutes,
+      maxCnt,
+      freeCnt,
+      payCnt
+    );
+
+    // console.log(...req.session.user);
+
+    for (let i = 0; i < shopCode.length; i++) {
+      await executeUpdate(
+        ADMIN_QUERY.USERS_AUTH_UPDATE({
+          shopCode: shopCode[i],
+          shopDuplication,
+          timeLimit,
+          timeLimitMinutes,
+          maxCnt,
+          freeCnt,
+          payCnt,
+        })
+      );
+    }
+
+    res.end();
   }
 };
