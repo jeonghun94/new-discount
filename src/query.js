@@ -340,6 +340,7 @@ export const ADMIN_QUERY = {
     maxCnt,
     freeCnt,
     payCnt,
+    updId,
   }) => {
     return `UPDATE ps130
             SET    ShopDuplication = '${shopDuplication}',
@@ -347,7 +348,9 @@ export const ADMIN_QUERY = {
                    TimeLimitMinutes = '${timeLimitMinutes}',
                    MaxCnt = '${maxCnt}',
                    FreeCnt = '${freeCnt}',
-                   PayCnt = '${payCnt}'
+                   PayCnt = '${payCnt}',
+                   UpdId = '${updId}',
+                   UpdDate = (SELECT CONVERT(VARCHAR, Getdate(), 120))
             WHERE  ShopCode = '${shopCode}'`;
   },
 };

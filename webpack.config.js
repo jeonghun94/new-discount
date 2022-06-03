@@ -13,6 +13,7 @@ module.exports = {
     gate: BASE_JS + "gateControl.js",
     jsmpeg: BASE_JS + "jsmpeg.min.js",
     discount: BASE_JS + "discount.js",
+    "user-auth": BASE_JS + "/admin/user-auth.js",
   },
   // mode: "development",
   // watch: true,

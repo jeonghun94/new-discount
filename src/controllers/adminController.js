@@ -144,17 +144,6 @@ export const userAuth = async (req, res) => {
       freeCnt,
       payCnt,
     } = req.body;
-    console.log(
-      shopCode,
-      shopDuplication,
-      timeLimit,
-      timeLimitMinutes,
-      maxCnt,
-      freeCnt,
-      payCnt
-    );
-
-    // console.log(...req.session.user);
 
     for (let i = 0; i < shopCode.length; i++) {
       await executeUpdate(
@@ -166,6 +155,7 @@ export const userAuth = async (req, res) => {
           maxCnt,
           freeCnt,
           payCnt,
+          updId: req.session.user.userId,
         })
       );
     }
