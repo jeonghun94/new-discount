@@ -5,6 +5,7 @@ import { radioInit } from "../common";
 // const tableRows = [];
 
 let USERS = [];
+let USER_CODE = "";
 
 const formShopDuplication = document.querySelector("#formShopDuplication");
 const formTimeLimitMinutes = document.querySelector("#formTimeLimitMinutes");
@@ -16,10 +17,42 @@ const formPayCnt = document.querySelector("#formPayCnt");
 const selectAllBox = document.querySelector("#selectAllBox");
 const checkboxes = document.getElementsByName("user");
 
+const searchBtn = document.getElementById("searchBtn");
 const updBtn = document.querySelector("#updBtn");
 
-function radioChange(val) {
-  const shop = document.querySelector("#searchShopList");
+const handleSearch = () => {
+  let url = "/admin/discount/user-auth";
+  const checkRadio = document.querySelector("input[type=radio]:checked").id;
+  if (checkRadio === "shop") {
+    url += `?shopCode=${USER_CODE}`;
+  }
+
+  fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((res) => res.json())
+    .then((res) => {
+      console.log(res, "EMFDJDH");
+    });
+};
+searchBtn.addEventListener("click", handleSearch);
+
+const searchUserForm = document.getElementById("searchUserForm");
+const findUserCode = (e) => {
+  const datalist = document.querySelector(
+    "#selectUsers option[value='" + e.target.value + "']"
+  ).dataset;
+
+  USER_CODE = datalist.code;
+  console.log(USER_CODE);
+};
+searchUserForm.addEventListener("input", (e) => findUserCode(e));
+
+const radioChange = (val) => {
+  const shop = document.querySelector("#searchUserForm");
   switch (val) {
     case "all":
       shop.disabled = true;
@@ -30,29 +63,33 @@ function radioChange(val) {
     default:
       break;
   }
-}
+};
 
-function selectAll() {
+const selectAll = () => {
   USERS = [];
   checkboxes.forEach((checkbox) => {
     checkbox.checked = selectAllBox.checked;
     selectAllBox.checked ? USERS.push(checkbox.value) : (USERS = []);
     checkbox.addEventListener("change", checkOne);
   });
-}
+};
 
-function checkOne() {
-  if (this.checked) {
-    USERS.push(this.value);
+const checkOne = (e) => {
+  if (e.target.checked) {
+    USERS.push(e.target.value);
   } else {
     for (let i = 0; i < USERS.length; i++) {
-      if (USERS[i] === this.value) {
+      if (USERS[i] === e.target.value) {
         USERS.splice(i, 1);
         i--;
       }
     }
   }
-}
+};
+
+checkboxes.forEach((checkbox) => {
+  checkbox.addEventListener("change", checkOne);
+});
 
 updBtn.addEventListener("click", (e) => {
   if (USERS.length <= 0) {
@@ -101,9 +138,5 @@ updBtn.addEventListener("click", (e) => {
 });
 
 selectAllBox.addEventListener("change", selectAll);
-
-checkboxes.forEach((checkbox) => {
-  checkbox.addEventListener("change", checkOne);
-});
 
 radioInit(radioChange);

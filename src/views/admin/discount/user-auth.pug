@@ -5,15 +5,15 @@ block content
         section.admin__section
             article.admin__search-container
                 .search__content
-                .search__content(style="justify-content:space-around; margin:0;")
+                .search__content
                     .radio__container   
                         input(type="radio" id="all" name="searchType" checked="checked")
                         label(for="all") 전체
                         input(type="radio" id="shop" name="searchType")
                         label(for="shop") 매장 별
                     .search__container
-                        select#searchShopList.select__arrow(disabled)
-                            option 선택
+                        input(id="searchUserForm", list="selectUsers", disabled, placeholder="매장을 선택 또는 검색 하세요." style=" padding:10px")
+                        datalist#selectUsers
                             each user in users
                                 +user(user)
                             else 
@@ -21,7 +21,7 @@ block content
                     .btn__container.file__container
                         .btn__box(style="justify-content:center;") 
                             .main-btn#searchBtn 조회
-                            .sub-btn#downloadBtn 출력
+                            .sub-btn#excelDownBtn 출력
             p.views 조회
                 span#viewsCount &nbsp#{usersAuth.length}
                 span 건

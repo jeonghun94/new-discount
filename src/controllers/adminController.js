@@ -112,11 +112,17 @@ export const settingAccount = async (req, res) => {
 };
 
 export const userAuth = async (req, res) => {
-  const { method } = req;
+  const {
+    method,
+    query: { shopCode },
+  } = req;
+  console.log(shopCode ? shopCode : "없음");
 
   if (method === "GET") {
     const users = await executeQuery(LOCALS_QUERY.USER_LIST);
-    const usersAuth = await executeQuery(ADMIN_QUERY.USERS_AUTH());
+    const usersAuth = await executeQuery(ADMIN_QUERY.USERS_AUTH(shopCode));
+    shopCode ? res.send(usersAuth) : "";
+
     const tableHead = [
       "매장 명",
       "타 매장 중복",

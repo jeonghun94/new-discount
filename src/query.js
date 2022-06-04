@@ -312,7 +312,7 @@ export const ADMIN_QUERY = {
                   ${option}
             ORDER  BY a.insdate DESC`;
   },
-  USERS_AUTH: () => {
+  USERS_AUTH: (shopCode) => {
     return `SELECT ShopCode,
                   ShopName,
                   MainPage,
@@ -330,6 +330,7 @@ export const ADMIN_QUERY = {
                   UpdDate
             FROM   ps130
             WHERE ShopName  != '' and ShopName is not null
+            ${shopCode ? `AND ShopCode = ${shopCode}` : ""}
           `;
   },
   USERS_AUTH_UPDATE: ({
