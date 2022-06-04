@@ -94,11 +94,13 @@ export const DISCOUNT_QUERY = {
   },
   SEARCH_PAY_COUPON: (obj) => {
     const opiton = obj ? `AND b.shopCode = '${obj.shopCode}'` : "";
-    const nullCheck = obj.nullCheck ? "AND b.used IS NULL" : "AND b.used = 'Y'";
-    // const holidayCoupons =
-    //   obj.holidayCoupons !== null
-    //     ? `AND a.couponType in (${obj.holidayCoupons})`
-    //     : "";
+    const nullCheck = obj.nullCheck
+      ? "AND b.used IS NULL "
+      : "AND b.used = 'Y'";
+    const holidayCoupons =
+      obj.holidayCoupons !== null
+        ? `AND a.couponType in (${obj.holidayCoupons})`
+        : "";
     const user = `SELECT a.dcName,
                           a.couponType,
                           Replace(CONVERT(VARCHAR, CONVERT(MONEY, b.stock), 1), '.00', '') AS stock
@@ -107,7 +109,7 @@ export const DISCOUNT_QUERY = {
                                       ON a.coupontype = b.coupontype
                   WHERE  a.paytype = '02'
                           ${holidayCoupons + nullCheck + opiton}`;
-
+    console.log(user);
     const admin = `SELECT * FROM PS132 WHERE paytype = '02'`;
     return obj ? user : admin;
   },

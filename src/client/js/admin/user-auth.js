@@ -85,11 +85,11 @@ searchBtn.addEventListener("click", handleSearch);
 
 const searchUserForm = document.getElementById("searchUserForm");
 const findUserCode = (e) => {
-  const datalist = document.querySelector(
+  const dataList = document.querySelector(
     "#selectUsers option[value='" + e.target.value + "']"
-  ).dataset;
+  );
 
-  USER_CODE = datalist.code;
+  USER_CODE = dataList?.dataset ? dataList.dataset.code : "0000";
   console.log(USER_CODE);
 };
 searchUserForm.addEventListener("input", (e) => findUserCode(e));

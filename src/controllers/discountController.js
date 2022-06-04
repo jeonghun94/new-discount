@@ -93,6 +93,13 @@ export const insertList = async (req, res) => {
     payCnt: shopPayCnt,
   } = req.session.user;
 
+  const carInfo = await executeQuery(
+    DISCOUNT_QUERY.SEARCH_IN_SEQ_NO(req.body.inSeqNo)
+  );
+  const holidayCoupons = checkHoliday(
+    moment(carInfo[0].procDate).format("YYYY-MM-DD")
+  );
+
   // 타 매장 중복 여부 확인
   if (shopDuplication === "Y") {
   }
@@ -162,10 +169,16 @@ export const insertList = async (req, res) => {
   let payCouponList =
     payType === "01"
       ? await executeQuery(
-          DISCOUNT_QUERY.SEARCH_FREE_COUPON({ ...req.session.user })
+          DISCOUNT_QUERY.SEARCH_FREE_COUPON({
+            ...req.session.user,
+            holidayCoupons,
+          })
         )
       : await executeQuery(
-          DISCOUNT_QUERY.SEARCH_PAY_COUPON({ ...req.session.user })
+          DISCOUNT_QUERY.SEARCH_PAY_COUPON({
+            ...req.session.user,
+            holidayCoupons,
+          })
         );
 
   if (payCouponList.length === 0) {
@@ -175,12 +188,14 @@ export const insertList = async (req, res) => {
             DISCOUNT_QUERY.SEARCH_FREE_COUPON({
               ...req.session.user,
               nullCheck: true,
+              holidayCoupons,
             })
           )
         : await executeQuery(
             DISCOUNT_QUERY.SEARCH_PAY_COUPON({
               ...req.session.user,
               nullCheck: true,
+              holidayCoupons,
             })
           );
   }
@@ -196,6 +211,13 @@ export const deleteList = async (req, res) => {
       user: { shopCode },
     },
   } = req;
+
+  const carInfo = await executeQuery(
+    DISCOUNT_QUERY.SEARCH_IN_SEQ_NO(req.body.inSeqNo)
+  );
+  const holidayCoupons = checkHoliday(
+    moment(carInfo[0].procDate).format("YYYY-MM-DD")
+  );
 
   const [{ payType }] = await executeQuery(
     LOCALS_QUERY.SEARCH_PAY_TYPE(couponType)
@@ -231,10 +253,16 @@ export const deleteList = async (req, res) => {
     let payCouponList =
       payType === "01"
         ? await executeQuery(
-            DISCOUNT_QUERY.SEARCH_FREE_COUPON({ ...req.session.user })
+            DISCOUNT_QUERY.SEARCH_FREE_COUPON({
+              ...req.session.user,
+              holidayCoupons,
+            })
           )
         : await executeQuery(
-            DISCOUNT_QUERY.SEARCH_PAY_COUPON({ ...req.session.user })
+            DISCOUNT_QUERY.SEARCH_PAY_COUPON({
+              ...req.session.user,
+              holidayCoupons,
+            })
           );
     if (payCouponList.length === 0) {
       payCouponList =
@@ -243,12 +271,14 @@ export const deleteList = async (req, res) => {
               DISCOUNT_QUERY.SEARCH_FREE_COUPON({
                 ...req.session.user,
                 nullCheck: true,
+                holidayCoupons,
               })
             )
           : await executeQuery(
               DISCOUNT_QUERY.SEARCH_PAY_COUPON({
                 ...req.session.user,
                 nullCheck: true,
+                holidayCoupons,
               })
             );
     }
