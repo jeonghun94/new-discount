@@ -1305,3 +1305,7 @@ select::-ms-expand {
 .fuck .main__content-right:first-child {
   margin-bottom: 25px;
 }
+
+.admin__table tbody tr td:first-child {
+  padding: 0px 30px;
+}

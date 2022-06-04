@@ -114,14 +114,16 @@ export const settingAccount = async (req, res) => {
 export const userAuth = async (req, res) => {
   const {
     method,
-    query: { shopCode },
+    query: { shopCode, search },
   } = req;
-  console.log(shopCode ? shopCode : "없음");
 
   if (method === "GET") {
     const users = await executeQuery(LOCALS_QUERY.USER_LIST);
     const usersAuth = await executeQuery(ADMIN_QUERY.USERS_AUTH(shopCode));
-    shopCode ? res.send(usersAuth) : "";
+
+    if (search === "Y") {
+      return res.send(usersAuth);
+    }
 
     const tableHead = [
       "매장 명",
@@ -151,6 +153,8 @@ export const userAuth = async (req, res) => {
       payCnt,
     } = req.body;
 
+    console.log(shopCode);
+
     for (let i = 0; i < shopCode.length; i++) {
       await executeUpdate(
         ADMIN_QUERY.USERS_AUTH_UPDATE({
@@ -164,8 +168,10 @@ export const userAuth = async (req, res) => {
           updId: req.session.user.userId,
         })
       );
+      console.log(`${shopCode[i]} 업데이트 완료`);
     }
 
-    res.end();
+    const usersAuth = await executeQuery(ADMIN_QUERY.USERS_AUTH());
+    return res.send(usersAuth);
   }
 };

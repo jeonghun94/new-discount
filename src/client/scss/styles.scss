@@ -1298,3 +1298,7 @@ select::-ms-expand {
     }
   }
 }
+
+.admin__table tbody tr td:first-child {
+  padding: 0px 30px;
+}

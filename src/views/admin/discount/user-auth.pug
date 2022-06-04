@@ -27,7 +27,7 @@ block content
                 span 건
             article.admin__main-container
                 .main__content-left                        
-                    table#historyTable.history__table.table-sort
+                    table#historyTable.admin__table.history__table.table-sort
                         thead   
                             tr 
                                 th(style="padding:0px 30px;" class="disable-sort") 
@@ -37,7 +37,7 @@ block content
                         tbody   
                             each auth in usersAuth
                                 tr
-                                    td(style="padding:0px 30px;") 
+                                    td
                                         input(type="checkbox", name="user" value=`${auth.shopCode}` checked=false)
                                     td #{auth.shopName}
                                     td #{auth.shopDuplication}
