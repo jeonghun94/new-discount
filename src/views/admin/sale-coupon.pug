@@ -21,7 +21,8 @@ block content
                         select#searchShopList.select__arrow(disabled)
                             option 선택
                             each x in shopList
-                                +user(x)
+                                //- +user(x)
+                                option(value=`${x.shopCode}`) #{x.shopName} 
                             else 
                                 option 매장이 없습니다.
                         select#searchCouponList.display__none.select__arrow
@@ -66,7 +67,8 @@ block content
                             span 매장명
                             select.select__arrow#shopCode
                                 each x in shopList
-                                    +user(x)
+                                    //- +user(x)
+                                    option(value=`${x.shopCode}`) #{x.shopName} 
                                 else 
                                     option 매장이 없습니다.
                         .content__item 

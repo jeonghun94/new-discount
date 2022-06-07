@@ -1,5 +1,5 @@
 import { async } from "regenerator-runtime";
-import { radioInit } from "../common";
+import { menuActive, radioInit } from "../common";
 
 // const table = document.querySelector("#historyTable tbody");
 // const rows = table.querySelectorAll("tr");
@@ -177,12 +177,14 @@ updBtn.addEventListener("click", (e) => {
   })
     .then((res) => res.json())
     .then((res) => {
+      USERS = [];
+      document.querySelectorAll("input[type=checkbox]")[0].checked = false;
       rerenderRows(res);
       alert("수정되었습니다.");
-      console.log(res);
     });
 });
 
 selectAllBox.addEventListener("change", selectAll);
 
 radioInit(radioChange);
+menuActive();
