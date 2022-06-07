@@ -21,7 +21,9 @@ export const saleCoupon = async (req, res) => {
         DISCOUNT_QUERY.ADD_DISCOUNT_COUPON_HISTORY({ ...user, ...body })
       );
     } else {
+      console.log(file);
       const list = await excelUpload(file.originalname, user);
+      console.log(list);
       resultMessage = await excelSaleCoupon(list, user);
     }
 

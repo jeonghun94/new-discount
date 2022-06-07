@@ -64,7 +64,7 @@ export const excelDownload = async (res, obj, data) => {
 export const excelUpload = async (fileName, user) => {
   const workbook = new Workbook();
   const worksheet = await workbook.xlsx.readFile(
-    `${root}\\uploads\\${fileName}`
+    `${root}/uploads/sale-coupon/${fileName}`
   );
   const rows = [];
   worksheet.eachSheet((sheet) => {
