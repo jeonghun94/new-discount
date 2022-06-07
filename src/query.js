@@ -107,7 +107,6 @@ export const DISCOUNT_QUERY = {
                                       ON a.coupontype = b.coupontype
                   WHERE  a.paytype = '02'
                           ${holidayCoupons + nullCheck + opiton}`;
-    console.log(user);
     const admin = `SELECT * FROM PS132 WHERE paytype = '02'`;
     return obj ? user : admin;
   },
@@ -232,49 +231,47 @@ export const DISCOUNT_QUERY = {
   SEARCH_DISCOUNT_REGISTER_CODE: (shopCode) => {
     return `select ShopCode as RegisterCode from PS134 where Idx = ${shopCode}`;
   },
-  ADD_DISCOUNT_COUPON: (obj) => `UPDATE ps135 
-                                  SET    stock = '${obj.stock}' 
-                                  WHERE  coupontype = '${obj.couponType}'
-                                  AND    shopcode = '${obj.shopCodeIn}' `,
+  ADD_DISCOUNT_COUPON: (obj) => {
+    return `UPDATE ps135 
+            SET    stock = stock + ${obj.stock}
+            WHERE  coupontype = '${obj.couponType}'
+            AND    shopcode = '${obj.shopCodeIn}' `;
+  },
   ADD_DISCOUNT_COUPON_HISTORY: (obj) => {
     return `INSERT INTO ps131
-                                                      (systemno,
-                                                      parkno,
-                                                      procdate,
-                                                      proctime,
-                                                      coupontype,
-                                                      shopcode,
-                                                      salecouponqty,
-                                                      salecouponamt,
-                                                      inspgm,
-                                                      insid,
-                                                      insdate,
-                                                      updpgm,
-                                                      updid,
-                                                      upddate,
-                                                      dctype)
-                                          VALUES      ('0001',
-                                                      '01',
-                                                      (SELECT CONVERT(VARCHAR, Getdate(), 112)),
-                                                      (SELECT Replace(CONVERT(VARCHAR, Getdate(), 8), ':', '')),
-                                                      '${obj.couponType}',
-                                                      '${obj.shopCodeIn}',
-                                                      '${obj.stock}',
-                                                      ${Number(
-                                                        obj.stock
-                                                      )} * (SELECT saleamt
-                                                            FROM   ps132
-                                                            WHERE  coupontype = '${
-                                                              obj.couponType
-                                                            }'
-                                                                    AND paytype = '02') ,
-                                                      'WEB',
-                                                      '${obj.shopName}',
-                                                      (SELECT CONVERT (CHAR(19), Getdate(), 120)),
-                                                      'WEB',
-                                                      '${obj.shopName}',
-                                                      (SELECT CONVERT (CHAR(19), Getdate(), 120)),
-                                                      '2' )`;
+                        (systemno,
+                        parkno,
+                        procdate,
+                        proctime,
+                        coupontype,
+                        shopcode,
+                        salecouponqty,
+                        salecouponamt,
+                        inspgm,
+                        insid,
+                        insdate,
+                        updpgm,
+                        updid,
+                        upddate,
+                        dctype)
+            VALUES      ('0001',
+                        '01',
+                        (SELECT CONVERT(VARCHAR, Getdate(), 112)),
+                        (SELECT Replace(CONVERT(VARCHAR, Getdate(), 8), ':', '')),
+                        '${obj.couponType}',
+                        '${obj.shopCodeIn}',
+                        '${obj.stock}',
+                        ${Number(obj.stock)} * (SELECT saleamt
+                              FROM   ps132
+                              WHERE  coupontype = '${obj.couponType}'
+                                      AND paytype = '02') ,
+                        'WEB',
+                        '${obj.shopName}',
+                        (SELECT CONVERT (CHAR(19), Getdate(), 120)),
+                        'WEB',
+                        '${obj.shopName}',
+                        (SELECT CONVERT (CHAR(19), Getdate(), 120)),
+                        '2' )`;
   },
 };
 

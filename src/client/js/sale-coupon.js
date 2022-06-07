@@ -98,7 +98,7 @@ INS_BTN.addEventListener("click", function () {
     )
   ) {
     addSaleCouponList({
-      shopCode: shopValue,
+      shopCodeIn: shopValue,
       couponType: typeValue,
       stock: cnt.value.replace(/,/gi, ""),
     });
