@@ -66,8 +66,13 @@ function appendSearchList(list) {
       const nowTime = moment().format("YYYY-MM-DD HH:mm:ss");
       const insTime = moment().format(x.insDate);
       const duration = moment.duration(moment(nowTime).diff(moment(insTime)));
-      const asMinutes = Math.floor(duration.asMinutes());
+      let asMinutes = Math.floor(duration.asMinutes());
       console.log(asMinutes);
+
+      asMinutes =
+        +asMinutes > 60
+          ? `${Math.floor(asMinutes / 60)}시간 ${Math.floor(asMinutes % 60)}분`
+          : `${asMinutes}분`;
 
       const container = document.createElement("div");
       container.classList.add("search__container");
@@ -82,7 +87,7 @@ function appendSearchList(list) {
       info.classList.add("search__info");
 
       const inCarNo = document.createElement("p");
-      inCarNo.innerText = `${x.inCarNo}(${asMinutes}분)`;
+      inCarNo.innerText = `${x.inCarNo}(${asMinutes})`;
 
       const tkType = document.createElement("p");
       tkType.innerText = `입차종류: ${x.tkType}`;
