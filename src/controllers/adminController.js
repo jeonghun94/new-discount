@@ -177,3 +177,68 @@ export const userAuth = async (req, res) => {
     return res.send(usersAuth);
   }
 };
+
+export const userCouponAuth = async (req, res) => {
+  const {
+    method,
+    query: { shopCode, search },
+  } = req;
+
+  if (method === "GET") {
+    const users = await executeQuery(LOCALS_QUERY.USER_LIST);
+    const usersAuth = await executeQuery(ADMIN_QUERY.USERS_AUTH(shopCode));
+
+    if (search === "Y") {
+      return res.send(usersAuth);
+    }
+
+    const tableHead = [
+      "매장 명",
+      "타 매장 중복",
+      "시간 제한",
+      "시간 제한 분",
+      "총 할인 수",
+      "무료 할인 수",
+      "유료 할인 수",
+      "수정일시",
+    ];
+
+    res.render("admin/discount/user-auth", {
+      pageTitle: "관리자",
+      tableHead,
+      usersAuth,
+      users,
+    });
+  } else if (method === "POST") {
+    const {
+      shopCode,
+      shopDuplication,
+      timeLimit,
+      timeLimitMinutes,
+      maxCnt,
+      freeCnt,
+      payCnt,
+    } = req.body;
+
+    console.log(shopCode);
+
+    for (let i = 0; i < shopCode.length; i++) {
+      await executeUpdate(
+        ADMIN_QUERY.USERS_AUTH_UPDATE({
+          shopCode: shopCode[i],
+          shopDuplication,
+          timeLimit,
+          timeLimitMinutes,
+          maxCnt,
+          freeCnt,
+          payCnt,
+          updId: req.session.user.userId,
+        })
+      );
+      console.log(`${shopCode[i]} 업데이트 완료`);
+    }
+
+    const usersAuth = await executeQuery(ADMIN_QUERY.USERS_AUTH());
+    return res.send(usersAuth);
+  }
+};
