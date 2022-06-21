@@ -85,8 +85,9 @@ export const login = async (req, res) => {
       }
 
       // res.redirect("/admin/discount/user-auth");
+      res.redirect("/admin/discount/user-coupon-auth");
       // res.redirect("/admin/setting-account");
-      res.redirect("/discount/main");
+      // res.redirect("/discount/main");
       console.log(`USER LOGIN ${req.session.user.shopName}`);
     } else {
       // 로그인 실패

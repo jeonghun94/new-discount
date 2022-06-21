@@ -192,18 +192,18 @@ export const userCouponAuth = async (req, res) => {
       return res.send(usersAuth);
     }
 
-    const tableHead = [
-      "매장 명",
-      "타 매장 중복",
-      "시간 제한",
-      "시간 제한 분",
-      "총 할인 수",
-      "무료 할인 수",
-      "유료 할인 수",
-      "수정일시",
-    ];
+    const tableHead = ["매장 명", "아이디", "사용 가능 할인키"];
 
-    res.render("admin/discount/user-auth", {
+    const d = await executeQuery(`SELECT Stuff((SELECT ',' + b.dcname
+    FROM   ps135 a
+           LEFT OUTER JOIN ps132 b
+                        ON a.coupontype = b.coupontype
+    WHERE  a.used IN ( 'Y' )
+    FOR xml path ('')), 1, 1, '') AS dcName `);
+
+    console.log(d);
+
+    res.render("admin/discount/user-auth2", {
       pageTitle: "관리자",
       tableHead,
       usersAuth,

@@ -1,0 +1,77 @@
+extends ../../admin-base
+include ../../mixins/user
+include ../../mixins/coupon
+block content 
+        section.admin__section
+            article.admin__search-container
+                .search__content
+                .search__content
+                    .radio__container   
+                        input(type="radio" id="all" name="searchType" checked="checked")
+                        label(for="all") 전체
+                        input(type="radio" id="shop" name="searchType")
+                        label(for="shop") 매장 별
+                    .search__container
+                        input(id="searchUserForm", list="selectUsers", disabled, placeholder="매장을 선택 또는 검색 하세요." style=" padding:10px")
+                        datalist#selectUsers
+                            each user in users
+                                +user(user)
+                            else 
+                                option 매장이 없습니다.
+                    .btn__container.file__container
+                        .btn__box(style="justify-content:center;") 
+                            .main-btn#searchBtn 조회
+                            .sub-btn#excelDownBtn(style="opacity:0.5;") 출력
+            p.views 조회
+                span#viewsCount &nbsp#{usersAuth.length}
+                span 건
+            article.admin__main-container
+                .main__content-left                        
+                    table#historyTable.admin__table.history__table.table-sort
+                        thead   
+                            tr 
+                                th(style="padding:0px 30px;" class="disable-sort") 
+                                    input#selectAllBox(type="checkbox") 
+                                each head in tableHead
+                                    th(style="padding:13px 15px") #{head}
+                        tbody   
+                            each auth in usersAuth
+                                tr
+                                    td(style="width:10%")
+                                        input(type="checkbox", name="user" value=`${auth.shopCode}` checked=false)
+                                    td(style="width:10%") #{auth.shopName}
+                                    td(style="width:10%") #{auth.id}
+                                    td(style="width:70%") #{auth.shopDuplication}
+                            else 
+                                td.not__found(colspan="100%") 조회된 데이터가 없습니다.
+                .main__content-right
+                    .main__content-right-title 할인키 정보
+                    .main__content-right-content 
+                        .content__item 
+                            span 타 매장 중복
+                            select.select__arrow#formShopDuplication
+                                option N
+                                option Y
+                        .content__item 
+                            span 시간 제한
+                            select.select__arrow#formTimeLimit
+                                option N
+                                option Y
+                        .content__item 
+                            span 시간 제한 분
+                            input#formTimeLimitMinutes(type="number" maxlength="3" placeholder="0" value="0" )
+                        .content__item 
+                            span 총 할인 수
+                            input#formMaxCnt(type="number" maxlength="5" placeholder="0" value="1")
+                        .content__item 
+                            span 무료 할인 수
+                            input#formFreeCnt(type="number" maxlength="5" placeholder="0" value="1")
+                        .content__item 
+                            span 유료 할인 수
+                            input#formPayCnt(type="number" maxlength="5" placeholder="0" value="1")    
+                    .main__content-right__footer
+                        .sub-btn#updBtn 수정
+            include ../../partials/footer
+        script(src="/static/js/common.js") 
+        script(src="/static/js/user-auth.js") 
+        include ../../partials/flatpickr

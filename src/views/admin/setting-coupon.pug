@@ -13,7 +13,7 @@ block content
                     .search__container
                         select#searchShopList.select__arrow(disabled)
                             option 선택
-                            each x in userList
+                            each x in users
                                 +user(x)
                             else 
                                 option 매장이 없습니다.
@@ -24,7 +24,7 @@ block content
                             .third-btn#uploadBtn 수정
                             .sub-btn#downloadBtn 출력
             p.views 조회
-                span#viewsCount &nbsp#{userList.length}
+                span#viewsCount &nbsp#{users.length}
                 span 건
             article.admin__main-container
                 .main__content-left                        
@@ -34,7 +34,7 @@ block content
                                 each th in tableHead
                                     th #{th}
                         tbody   
-                            each user in userList
+                            each user in users
                                 tr
                                     td #{user.shopName}
                                     td #{user.telNo}
