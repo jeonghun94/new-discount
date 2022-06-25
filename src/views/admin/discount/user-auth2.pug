@@ -35,13 +35,15 @@ block content
                                 each head in tableHead
                                     th(style="padding:13px 15px") #{head}
                         tbody   
-                            each auth in usersAuth
+                            each user in users
                                 tr
                                     td(style="width:10%")
-                                        input(type="checkbox", name="user" value=`${auth.shopCode}` checked=false)
-                                    td(style="width:10%") #{auth.shopName}
-                                    td(style="width:10%") #{auth.id}
-                                    td(style="width:70%") #{auth.shopDuplication}
+                                        input(type="checkbox", name="user" value=`${user.shopCode}` checked=false)
+                                    td(style="width:10%") #{user.shopName}
+                                    td(style="width:10%") #{user.id}
+                                    td(style="width:70%") 
+                                        each coupon in user.coupons
+                                            button(style="border: 2px solid #012D6B; border-radius:2px; background-color:white; padding:2px 15px; margin:0px 10px;") #{coupon.dcName}
                             else 
                                 td.not__found(colspan="100%") 조회된 데이터가 없습니다.
                 .main__content-right

@@ -185,7 +185,7 @@ export const userCouponAuth = async (req, res) => {
   } = req;
 
   if (method === "GET") {
-    const users = await executeQuery(LOCALS_QUERY.USER_LIST);
+    const users = await executeQuery(ADMIN_QUERY.USER_LIST());
     const usersAuth = await executeQuery(ADMIN_QUERY.USERS_AUTH(shopCode));
 
     if (search === "Y") {
@@ -194,14 +194,30 @@ export const userCouponAuth = async (req, res) => {
 
     const tableHead = ["매장 명", "아이디", "사용 가능 할인키"];
 
-    const d = await executeQuery(`SELECT Stuff((SELECT ',' + b.dcname
-    FROM   ps135 a
-           LEFT OUTER JOIN ps132 b
-                        ON a.coupontype = b.coupontype
-    WHERE  a.used IN ( 'Y' )
-    FOR xml path ('')), 1, 1, '') AS dcName `);
+    const userCoupons = await executeQuery(`SELECT a.shopCode,
+                                      a.used,
+                                      b.dcName,
+                                      b.couponType
+                                  FROM   ps135 a
+                                      LEFT OUTER JOIN ps132 b
+                                                  ON a.coupontype = b.coupontype
+                                  AND a.used in ('Y')       
+                                  ORDER  BY a.shopcode `);
 
-    console.log(d);
+    console.log(userCoupons);
+
+    for (let i = 0; i < users.length; i++) {
+      const shopCode = users[i].shopCode;
+      let coupons = userCoupons.filter(
+        (coupon) => coupon.shopCode === shopCode
+      );
+      coupons = coupons.filter(
+        (coupon) => coupon.used === "Y" || coupon.used === null
+      );
+      users[i].coupons = coupons;
+    }
+
+    // console.log(users);
 
     res.render("admin/discount/user-auth2", {
       pageTitle: "관리자",

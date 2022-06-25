@@ -106,7 +106,7 @@ export const DISCOUNT_QUERY = {
                         LEFT OUTER JOIN ps135 b
                                       ON a.coupontype = b.coupontype
                   WHERE  a.paytype = '02'
-                          ${holidayCoupons + nullCheck + opiton}`;
+                          ${nullCheck + opiton}`;
     const admin = `SELECT * FROM PS132 WHERE paytype = '02'`;
     return obj ? user : admin;
   },
