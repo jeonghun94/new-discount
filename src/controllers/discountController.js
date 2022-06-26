@@ -101,13 +101,33 @@ export const insertList = async (req, res) => {
   );
 
   // 타 매장 중복 여부 확인
-  if (shopDuplication === "Y") {
-  }
+  // if (shopDuplication === "Y") {
+  // }
+
+  const parkingLotDayLimit = process.env.DAY_LIMIT;
+  const parkingLotDayLimitCnt = process.env.DAY_LIMIT_CNT;
 
   // 현재 할인을 등록할 차량에 등록된 할인 정보
   const result = await executeQuery(DISCOUNT_QUERY.CONDITION_CHECK(obj));
-  const { payType, couponCnt, totalDcVal, totalCnt, freeCnt, payCnt } =
-    result[0];
+  const {
+    payType,
+    couponCnt,
+    totalDcVal,
+    totalCnt,
+    freeCnt,
+    payCnt,
+    dayLimitCnt,
+  } = result[0];
+
+  if (parkingLotDayLimit === "Y") {
+    if (dayLimitCnt >= parkingLotDayLimitCnt) {
+      res.send({
+        result: "fail",
+        msg: "이미 일수제한이 적용된 차량입니다.",
+      });
+      return;
+    }
+  }
 
   // 분 단위 제한 확인 및 처리
   if (timeLimit === "Y") {

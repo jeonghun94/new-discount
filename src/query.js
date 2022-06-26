@@ -198,6 +198,12 @@ export const DISCOUNT_QUERY = {
             SELECT  (SELECT paytype
                       FROM   ps132
                       WHERE  coupontype = @couponType) AS PayType,
+                    (SELECT Count(*)
+                      FROM   ps500
+                      WHERE  incarno = (SELECT incarno
+                                        FROM   ps500
+                                        WHERE  inseqno = @inSeqNo)
+                              AND procdate = CONVERT(VARCHAR, Getdate(), 112)) AS DayLimitCnt,
                     (SELECT Isnull (Sum(CONVERT(INT, stock)), 0)
                       FROM   ps135
                       WHERE  coupontype = @couponType
