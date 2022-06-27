@@ -201,8 +201,10 @@ export const DISCOUNT_QUERY = {
                     (SELECT Count(*)
                       FROM   ps500
                       WHERE  incarno = (SELECT incarno
-                                        FROM   ps500
-                                        WHERE  inseqno = @inSeqNo)
+                                        FROM   ps500 a
+                                        LEFT OUTER JOIN ps134 b
+                                                    ON a.inseqno = b.inseqno
+                                        WHERE  b.inseqno = @inSeqNo)
                               AND procdate = CONVERT(VARCHAR, Getdate(), 112)) AS DayLimitCnt,
                     (SELECT Isnull (Sum(CONVERT(INT, stock)), 0)
                       FROM   ps135
