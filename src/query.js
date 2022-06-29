@@ -199,13 +199,14 @@ export const DISCOUNT_QUERY = {
                       FROM   ps132
                       WHERE  coupontype = @couponType) AS PayType,
                     (SELECT Count(*)
-                      FROM   ps500
-                      WHERE  incarno = (SELECT incarno
-                                        FROM   ps500 a
-                                        LEFT OUTER JOIN ps134 b
-                                                    ON a.inseqno = b.inseqno
-                                        WHERE  b.inseqno = @inSeqNo)
-                              AND procdate = CONVERT(VARCHAR, Getdate(), 112)) AS DayLimitCnt,
+                      FROM   ps500 a
+                            LEFT OUTER JOIN ps134 b
+                                          ON a.inseqno = b.inseqno
+                                          AND a.procdate = CONVERT(VARCHAR, Getdate(), 112)
+                      WHERE  a.incarno = (SELECT incarno
+                                          FROM   ps500
+                                          WHERE  inseqno = @inSeqNo)
+                            AND b.idx IS NOT NULL) AS DayLimitCnt,
                     (SELECT Isnull (Sum(CONVERT(INT, stock)), 0)
                       FROM   ps135
                       WHERE  coupontype = @couponType
