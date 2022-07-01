@@ -119,8 +119,6 @@ export const insertList = async (req, res) => {
     dayLimitCnt,
   } = result[0];
 
-  console.log(parkingLotDayLimit, parkingLotDayLimitCnt);
-  console.log(dayLimitCnt);
   if (parkingLotDayLimit === "Y") {
     if (dayLimitCnt >= parkingLotDayLimitCnt) {
       res.send({
