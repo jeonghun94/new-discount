@@ -185,39 +185,13 @@ export const userCouponAuth = async (req, res) => {
   } = req;
 
   if (method === "GET") {
-    const users = await executeQuery(ADMIN_QUERY.USER_LIST());
     const usersAuth = await executeQuery(ADMIN_QUERY.USERS_AUTH(shopCode));
-
     if (search === "Y") {
       return res.send(usersAuth);
     }
 
     const tableHead = ["매장 명", "아이디", "사용 가능 할인키"];
-
-    const userCoupons = await executeQuery(`SELECT a.shopCode,
-                                      a.used,
-                                      b.dcName,
-                                      b.couponType
-                                  FROM   ps135 a
-                                      LEFT OUTER JOIN ps132 b
-                                                  ON a.coupontype = b.coupontype
-                                  AND a.used in ('Y')       
-                                  ORDER  BY a.shopcode `);
-
-    console.log(userCoupons);
-
-    for (let i = 0; i < users.length; i++) {
-      const shopCode = users[i].shopCode;
-      let coupons = userCoupons.filter(
-        (coupon) => coupon.shopCode === shopCode
-      );
-      coupons = coupons.filter(
-        (coupon) => coupon.used === "Y" || coupon.used === null
-      );
-      users[i].coupons = coupons;
-    }
-
-    // console.log(users);
+    const users = await getUsersCouponAuth();
 
     res.render("admin/discount/user-auth2", {
       pageTitle: "관리자",
@@ -226,35 +200,28 @@ export const userCouponAuth = async (req, res) => {
       users,
     });
   } else if (method === "POST") {
-    const {
-      shopCode,
-      shopDuplication,
-      timeLimit,
-      timeLimitMinutes,
-      maxCnt,
-      freeCnt,
-      payCnt,
-    } = req.body;
-
-    console.log(shopCode);
-
-    for (let i = 0; i < shopCode.length; i++) {
-      await executeUpdate(
-        ADMIN_QUERY.USERS_AUTH_UPDATE({
-          shopCode: shopCode[i],
-          shopDuplication,
-          timeLimit,
-          timeLimitMinutes,
-          maxCnt,
-          freeCnt,
-          payCnt,
-          updId: req.session.user.userId,
-        })
-      );
-      console.log(`${shopCode[i]} 업데이트 완료`);
-    }
-
-    const usersAuth = await executeQuery(ADMIN_QUERY.USERS_AUTH());
-    return res.send(usersAuth);
+    const { shopCode, couponType } = req.body;
+    await executeUpdate(`UPDATE ps135
+                          SET    used = 'N'
+                          WHERE  shopcode = '${shopCode}'
+                                AND coupontype = '${couponType}'`);
+    const users = await getUsersCouponAuth();
+    return res.send(users);
   }
+};
+
+const getUsersCouponAuth = async () => {
+  const users = await executeQuery(ADMIN_QUERY.USER_LIST());
+  const userCoupons = await executeQuery(ADMIN_QUERY.USERS_COUPONS_AUTH());
+
+  for (let i = 0; i < users.length; i++) {
+    const shopCode = users[i].shopCode;
+    let coupons = userCoupons.filter((coupon) => coupon.shopCode === shopCode);
+    coupons = coupons.filter(
+      (coupon) => coupon.used === "Y" || coupon.used === null
+    );
+    users[i].coupons = coupons;
+  }
+
+  return users;
 };

@@ -351,13 +351,24 @@ export const ADMIN_QUERY = {
   }) => {
     return `UPDATE ps130
             SET    ShopDuplication = '${shopDuplication}',
-                   TimeLimit = '${timeLimit}',
-                   TimeLimitMinutes = '${timeLimitMinutes}',
-                   MaxCnt = '${maxCnt}',
-                   FreeCnt = '${freeCnt}',
-                   PayCnt = '${payCnt}',
-                   UpdId = '${updId}',
-                   UpdDate = (SELECT CONVERT(VARCHAR, Getdate(), 120))
+                    TimeLimit = '${timeLimit}',
+                    TimeLimitMinutes = '${timeLimitMinutes}',
+                    MaxCnt = '${maxCnt}',
+                    FreeCnt = '${freeCnt}',
+                    PayCnt = '${payCnt}',
+                    UpdId = '${updId}',
+                    UpdDate = (SELECT CONVERT(VARCHAR, Getdate(), 120))
             WHERE  ShopCode = '${shopCode}'`;
+  },
+
+  USERS_COUPONS_AUTH: () => {
+    return `SELECT a.shopCode,
+                  a.used,
+                  b.dcName,
+                  b.couponType
+            FROM   ps135 a
+                LEFT OUTER JOIN ps132 b
+                          ON a.coupontype = b.coupontype
+            AND a.used in ('Y')`;
   },
 };

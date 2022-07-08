@@ -1302,3 +1302,12 @@ select::-ms-expand {
 .admin__table tbody tr td:first-child {
   padding: 0px 30px;
 }
+
+.user_auth-btn {
+  border: 2px solid #012d6b;
+  border-radius: 4px;
+  background-color: white;
+  padding: 2px 15px;
+  margin: 0px 10px;
+  cursor: pointer;
+}

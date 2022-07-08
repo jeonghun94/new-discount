@@ -16,5 +16,8 @@ adminRouter
 adminRouter.route("/sale-coupon/excel").get(saleCouponExcel);
 adminRouter.route("/setting-account").get(settingAccount);
 adminRouter.route("/discount/user-auth").get(userAuth).post(userAuth);
-adminRouter.route("/discount/user-coupon-auth").get(userCouponAuth);
+adminRouter
+  .route("/discount/user-coupon-auth")
+  .get(userCouponAuth)
+  .post(userCouponAuth);
 export default adminRouter;

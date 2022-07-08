@@ -188,3 +188,95 @@ selectAllBox.addEventListener("change", selectAll);
 
 radioInit(radioChange);
 menuActive();
+
+const discountKey = document.querySelectorAll("button");
+discountKey.forEach((btn) => {
+  btn.addEventListener("click", (e) => {
+    const couponType = e.target.dataset.key;
+    const shopCode = e.target.dataset.shop;
+
+    discountKeyUpdate(shopCode, couponType);
+  });
+});
+
+const discountKeyUpdate = (shopCode, couponType) => {
+  const url = `/admin/discount/user-coupon-auth`;
+  fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      couponType,
+      shopCode,
+    }),
+  })
+    .then((res) => res.json())
+    .then((res) => {
+      rerenderAuthRows(res);
+    });
+};
+
+const rerenderAuthRows = (users) => {
+  VIEWS_COUNT.innerText = ` ${users.length}`;
+  while (TABLE_ROWS.hasChildNodes()) {
+    TABLE_ROWS.removeChild(TABLE_ROWS.firstChild);
+  }
+
+  if (users.length > 0) {
+    users.map((user) => {
+      const newRow = TABLE_ROWS.insertRow();
+      const input = document.createElement("input");
+      input.type = "checkbox";
+      input.name = "user";
+      input.value = user.shopCode;
+      input.checked = false;
+      input.addEventListener("change", checkOne);
+
+      const chkBoxCell = newRow.insertCell(0);
+      const shopNameCell = newRow.insertCell(1);
+      const idCell = newRow.insertCell(2);
+      const btnCell = newRow.insertCell(3);
+
+      chkBoxCell.appendChild(input);
+      chkBoxCell.style.width = "10%";
+
+      shopNameCell.innerText = user.shopName;
+      shopNameCell.style.width = "10%";
+
+      idCell.innerText = user.id;
+      idCell.style.width = "10%";
+
+      btnCell.style.width = "70%";
+
+      if (user.coupons.length > 0) {
+        user.coupons.map((coupon) => {
+          const btn = document.createElement("button");
+          btn.dataset.key = coupon.couponType;
+          btn.dataset.shop = user.shopCode;
+          btn.innerText = coupon.dcName;
+          btn.classList.add("user_auth-btn");
+
+          btn.addEventListener("click", (e) => {
+            const couponType = e.target.dataset.key;
+            const shopCode = e.target.dataset.shop;
+            discountKeyUpdate(shopCode, couponType);
+          });
+          btnCell.appendChild(btn);
+        });
+      } else {
+        const p = document.createElement("p");
+        p.innerText = "사용 가능한 키가 없습니다.";
+        btnCell.appendChild(p);
+      }
+    });
+  } else {
+    const tr = document.createElement("tr");
+    const td = document.createElement("td");
+    td.setAttribute("colspan", "100%");
+    td.innerText = "조회된 데이터가 없습니다.";
+    td.classList.add("not__found");
+    tr.appendChild(td);
+    TABLE_ROWS.appendChild(tr);
+  }
+};

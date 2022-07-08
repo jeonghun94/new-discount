@@ -43,7 +43,9 @@ block content
                                     td(style="width:10%") #{user.id}
                                     td(style="width:70%") 
                                         each coupon in user.coupons
-                                            button(style="border: 2px solid #012D6B; border-radius:2px; background-color:white; padding:2px 15px; margin:0px 10px;") #{coupon.dcName}
+                                            button(data-key=coupon.couponType data-shop=user.shopCode class="user_auth-btn") #{coupon.dcName}
+                                        else 
+                                            p 사용 가능한 키가 없습니다.
                             else 
                                 td.not__found(colspan="100%") 조회된 데이터가 없습니다.
                 .main__content-right
