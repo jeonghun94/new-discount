@@ -192,12 +192,14 @@ export const userCouponAuth = async (req, res) => {
 
     const tableHead = ["매장 명", "아이디", "사용 가능 할인키"];
     const users = await getUsersCouponAuth();
+    const coupons = await executeQuery(ADMIN_QUERY.GET_COUPONS());
 
     res.render("admin/discount/user-auth2", {
       pageTitle: "관리자",
       tableHead,
       usersAuth,
       users,
+      coupons,
     });
   } else if (method === "POST") {
     const { shopCode, couponType } = req.body;

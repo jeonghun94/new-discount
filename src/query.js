@@ -360,7 +360,6 @@ export const ADMIN_QUERY = {
                     UpdDate = (SELECT CONVERT(VARCHAR, Getdate(), 120))
             WHERE  ShopCode = '${shopCode}'`;
   },
-
   USERS_COUPONS_AUTH: () => {
     return `SELECT a.shopCode,
                   a.used,
@@ -371,4 +370,5 @@ export const ADMIN_QUERY = {
                           ON a.coupontype = b.coupontype
             AND a.used in ('Y')`;
   },
+  GET_COUPONS: () => `SELECT * FROM PS132`,
 };
