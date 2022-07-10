@@ -134,55 +134,57 @@ checkboxes.forEach((checkbox) => {
   checkbox.addEventListener("change", checkOne);
 });
 
-updBtn.addEventListener("click", (e) => {
-  if (USERS.length <= 0) {
-    alert("선택된 매장이 없습니다.\n매장을 선택해주세요.");
-    return;
-  } else {
-    if (formTimeLimitMinutes.value === "") {
-      alert("시간 제한 분을 입력 하세요.");
+if (updBtn) {
+  updBtn.addEventListener("click", (e) => {
+    if (USERS.length <= 0) {
+      alert("선택된 매장이 없습니다.\n매장을 선택해주세요.");
       return;
+    } else {
+      if (formTimeLimitMinutes.value === "") {
+        alert("시간 제한 분을 입력 하세요.");
+        return;
+      }
+
+      if (formMaxCnt.value === "") {
+        alert("총 할인 수를 입력 하세요.");
+        return;
+      }
+
+      if (formFreeCnt.value === "") {
+        alert("무료 할인 수를 입력 하세요.");
+        return;
+      }
+
+      if (formPayCnt.value === "") {
+        alert("유료 할인 수를 입력 하세요.");
+        return;
+      }
     }
 
-    if (formMaxCnt.value === "") {
-      alert("총 할인 수를 입력 하세요.");
-      return;
-    }
-
-    if (formFreeCnt.value === "") {
-      alert("무료 할인 수를 입력 하세요.");
-      return;
-    }
-
-    if (formPayCnt.value === "") {
-      alert("유료 할인 수를 입력 하세요.");
-      return;
-    }
-  }
-
-  fetch("/admin/discount/user-auth", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      shopCode: USERS,
-      shopDuplication: formShopDuplication.value,
-      timeLimit: formTimeLimit.value,
-      timeLimitMinutes: formTimeLimitMinutes.value,
-      maxCnt: formMaxCnt.value,
-      freeCnt: formFreeCnt.value,
-      payCnt: formPayCnt.value,
-    }),
-  })
-    .then((res) => res.json())
-    .then((res) => {
-      USERS = [];
-      document.querySelectorAll("input[type=checkbox]")[0].checked = false;
-      rerenderRows(res);
-      alert("수정되었습니다.");
-    });
-});
+    fetch("/admin/discount/user-auth", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        shopCode: USERS,
+        shopDuplication: formShopDuplication.value,
+        timeLimit: formTimeLimit.value,
+        timeLimitMinutes: formTimeLimitMinutes.value,
+        maxCnt: formMaxCnt.value,
+        freeCnt: formFreeCnt.value,
+        payCnt: formPayCnt.value,
+      }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        USERS = [];
+        document.querySelectorAll("input[type=checkbox]")[0].checked = false;
+        rerenderRows(res);
+        alert("수정되었습니다.");
+      });
+  });
+}
 
 selectAllBox.addEventListener("change", selectAll);
 
@@ -199,7 +201,21 @@ discountKey.forEach((btn) => {
   });
 });
 
-const discountKeyUpdate = (shopCode, couponType) => {
+const resetBtn = document.querySelector("#resetBtn");
+
+if (resetBtn) {
+  resetBtn.addEventListener("click", () => {
+    const confirm = window.confirm(
+      "초기화 하시겠습니까?\n초기화시 모든 할인키가 사용 가능 합니다."
+    );
+
+    if (confirm) {
+      discountKeyUpdate("all", "all", "Y");
+    }
+  });
+}
+
+const discountKeyUpdate = (shopCode, couponType, reset) => {
   const url = `/admin/discount/user-coupon-auth`;
   fetch(url, {
     method: "POST",
@@ -209,6 +225,7 @@ const discountKeyUpdate = (shopCode, couponType) => {
     body: JSON.stringify({
       couponType,
       shopCode,
+      reset,
     }),
   })
     .then((res) => res.json())

@@ -202,11 +202,15 @@ export const userCouponAuth = async (req, res) => {
       coupons,
     });
   } else if (method === "POST") {
-    const { shopCode, couponType } = req.body;
-    await executeUpdate(`UPDATE ps135
-                          SET    used = 'N'
-                          WHERE  shopcode = '${shopCode}'
-                                AND coupontype = '${couponType}'`);
+    const { shopCode, couponType, reset } = req.body;
+    if (reset) {
+      await executeUpdate("UPDATE PS135 SET USED = 'Y'");
+    } else {
+      await executeUpdate(`UPDATE ps135
+                            SET    used = 'N'
+                            WHERE  shopcode = '${shopCode}'
+                            AND coupontype = '${couponType}'`);
+    }
     const users = await getUsersCouponAuth();
     return res.send(users);
   }
