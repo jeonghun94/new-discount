@@ -123,7 +123,7 @@ export const insertList = async (req, res) => {
     if (dayLimitCnt >= parkingLotDayLimitCnt) {
       res.send({
         result: "fail",
-        msg: "이미 일수제한이 적용된 차량입니다.",
+        msg: "오늘 기존 입/출차한 정보에 적용된 할인내역이 있습니다.\n추가 할인은 불가 합니다.",
       });
       return;
     }

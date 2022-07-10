@@ -202,11 +202,15 @@ export const DISCOUNT_QUERY = {
                       FROM   ps500 a
                             LEFT OUTER JOIN ps134 b
                                           ON a.inseqno = b.inseqno
-                                          AND a.procdate = CONVERT(VARCHAR, Getdate(), 112)
                       WHERE  a.incarno = (SELECT incarno
                                           FROM   ps500
                                           WHERE  inseqno = @inSeqNo)
-                            AND b.idx IS NOT NULL) AS DayLimitCnt,
+                            AND a.procdate + a.proctime BETWEEN CONVERT(VARCHAR, Getdate(), 112) +
+                                                                '000000'
+                                                                AND
+                                CONVERT(VARCHAR, Getdate(), 112) + '235959'
+                            AND b.idx IS NOT NULL
+                            AND a.InTKSts IN ('2', '4', '6', '9', '10', '11', '13', '15', '23', '27', '28', '29')) AS DayLimitCnt,
                     (SELECT Isnull (Sum(CONVERT(INT, stock)), 0)
                       FROM   ps135
                       WHERE  coupontype = @couponType
