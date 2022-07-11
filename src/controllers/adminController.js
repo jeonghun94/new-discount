@@ -185,9 +185,11 @@ export const userCouponAuth = async (req, res) => {
   } = req;
 
   if (method === "GET") {
-    const usersAuth = await executeQuery(ADMIN_QUERY.USERS_AUTH(shopCode));
     if (search === "Y") {
-      return res.send(usersAuth);
+      console.log(`${shopCode} 조회`);
+      const users = await getUsersCouponAuth(shopCode);
+      console.log(users);
+      return res.send(users);
     }
 
     const tableHead = ["매장 명", "아이디", "사용 가능 할인키"];
@@ -197,7 +199,7 @@ export const userCouponAuth = async (req, res) => {
     res.render("admin/discount/user-auth2", {
       pageTitle: "관리자",
       tableHead,
-      usersAuth,
+      // usersAuth,
       users,
       coupons,
     });
@@ -216,9 +218,11 @@ export const userCouponAuth = async (req, res) => {
   }
 };
 
-const getUsersCouponAuth = async () => {
-  const users = await executeQuery(ADMIN_QUERY.USER_LIST());
-  const userCoupons = await executeQuery(ADMIN_QUERY.USERS_COUPONS_AUTH());
+const getUsersCouponAuth = async (shopCode) => {
+  const users = await executeQuery(ADMIN_QUERY.USER_LIST(shopCode));
+  const userCoupons = await executeQuery(
+    ADMIN_QUERY.USERS_COUPONS_AUTH(shopCode)
+  );
 
   for (let i = 0; i < users.length; i++) {
     const shopCode = users[i].shopCode;

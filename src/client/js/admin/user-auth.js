@@ -64,6 +64,10 @@ const rerenderRows = (users) => {
 const handleSearch = () => {
   USERS = [];
   let url = `/admin/discount/user-auth?search=Y`;
+
+  if (window.location.pathname.includes("coupon")) {
+    url = `/admin/discount/user-coupon-auth?search=Y`;
+  }
   const checkRadio = document.querySelector("input[type=radio]:checked").id;
 
   if (checkRadio === "shop") {
@@ -78,7 +82,11 @@ const handleSearch = () => {
   })
     .then((res) => res.json())
     .then((res) => {
-      rerenderRows(res);
+      if (window.location.pathname.includes("coupon")) {
+        rerenderAuthRows(res);
+      } else {
+        rerenderRows(res);
+      }
     });
 };
 searchBtn.addEventListener("click", handleSearch);

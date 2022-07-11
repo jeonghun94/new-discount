@@ -289,7 +289,10 @@ export const DISCOUNT_QUERY = {
 };
 
 export const ADMIN_QUERY = {
-  USER_LIST: () => `SELECT * FROM PS130`,
+  USER_LIST: (shopCode) => {
+    const option = shopCode ? `WHERE shopcode = '${shopCode}'` : "";
+    return `SELECT * FROM PS130 ${option}`;
+  },
   SALE_COUPON_LIST: (obj) => {
     const today = "(SELECT CONVERT(VARCHAR(8), Getdate(), 112))";
 
@@ -364,7 +367,8 @@ export const ADMIN_QUERY = {
                     UpdDate = (SELECT CONVERT(VARCHAR, Getdate(), 120))
             WHERE  ShopCode = '${shopCode}'`;
   },
-  USERS_COUPONS_AUTH: () => {
+  USERS_COUPONS_AUTH: (shopCode) => {
+    const opiton = shopCode ? `WHERE a.shopCode = ${shopCode}` : "";
     return `SELECT a.shopCode,
                   a.used,
                   b.dcName,
@@ -372,7 +376,7 @@ export const ADMIN_QUERY = {
             FROM   ps135 a
                 LEFT OUTER JOIN ps132 b
                           ON a.coupontype = b.coupontype
-            AND a.used in ('Y')`;
+            AND a.used in ('Y') ${opiton}`;
   },
   GET_COUPONS: () => `SELECT * FROM PS132`,
 };
