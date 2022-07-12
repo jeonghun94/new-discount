@@ -1323,6 +1323,6 @@ select::-ms-expand {
   margin-top: 20px;
   width: 100%;
   height: auto;
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
 }

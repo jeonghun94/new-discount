@@ -1317,6 +1317,6 @@ select::-ms-expand {
   width: 100%;
   // border: 1px solid red;
   height: auto;
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
 }

@@ -65,7 +65,8 @@ const handleSearch = () => {
   USERS = [];
   let url = `/admin/discount/user-auth?search=Y`;
 
-  if (window.location.pathname.includes("coupon")) {
+  const pathCoupon = window.location.pathname.includes("coupon");
+  if (pathCoupon) {
     url = `/admin/discount/user-coupon-auth?search=Y`;
   }
   const checkRadio = document.querySelector("input[type=radio]:checked").id;
@@ -82,7 +83,7 @@ const handleSearch = () => {
   })
     .then((res) => res.json())
     .then((res) => {
-      if (window.location.pathname.includes("coupon")) {
+      if (pathCoupon) {
         rerenderAuthRows(res);
       } else {
         rerenderRows(res);
@@ -199,7 +200,7 @@ selectAllBox.addEventListener("change", selectAll);
 radioInit(radioChange);
 menuActive();
 
-const discountKey = document.querySelectorAll("button");
+const discountKey = document.querySelectorAll(".updBtn");
 discountKey.forEach((btn) => {
   btn.addEventListener("click", (e) => {
     const couponType = e.target.dataset.key;
@@ -223,7 +224,7 @@ if (resetBtn) {
   });
 }
 
-const discountKeyUpdate = (shopCode, couponType, reset) => {
+const discountKeyUpdate = (shopCode, couponType, reset, users) => {
   const url = `/admin/discount/user-coupon-auth`;
   fetch(url, {
     method: "POST",
@@ -234,6 +235,7 @@ const discountKeyUpdate = (shopCode, couponType, reset) => {
       couponType,
       shopCode,
       reset,
+      users,
     }),
   })
     .then((res) => res.json())
@@ -241,6 +243,21 @@ const discountKeyUpdate = (shopCode, couponType, reset) => {
       rerenderAuthRows(res);
     });
 };
+
+const addCoupon = document.querySelectorAll(".addBtn");
+
+addCoupon.forEach((btn) => {
+  btn.addEventListener("click", (e) => {
+    const couponType = e.target.dataset.key;
+    if (USERS.length <= 0) {
+      alert("선택된 매장이 없습니다.\n매장을 먼저 선택해주세요.");
+      return;
+    } else {
+      discountKeyUpdate("N", couponType, false, USERS);
+      USERS = [];
+    }
+  });
+});
 
 const rerenderAuthRows = (users) => {
   VIEWS_COUNT.innerText = ` ${users.length}`;

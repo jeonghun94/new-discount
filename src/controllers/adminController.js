@@ -199,19 +199,29 @@ export const userCouponAuth = async (req, res) => {
     res.render("admin/discount/user-auth2", {
       pageTitle: "관리자",
       tableHead,
-      // usersAuth,
-      users,
       coupons,
+      users,
     });
   } else if (method === "POST") {
-    const { shopCode, couponType, reset } = req.body;
+    const { shopCode, couponType, reset, users: shops } = req.body;
     if (reset) {
       await executeUpdate("UPDATE PS135 SET USED = 'Y'");
     } else {
-      await executeUpdate(`UPDATE ps135
-                            SET    used = 'N'
-                            WHERE  shopcode = '${shopCode}'
-                            AND coupontype = '${couponType}'`);
+      if (shops) {
+        console.log(shops, couponType);
+        for (let i = 0; i < shops.length; i++) {
+          await executeUpdate(`UPDATE ps135
+                                SET    used = 'Y'
+                                WHERE  shopcode = '${shops[i]}'
+                                AND coupontype = '${couponType}'`);
+          console.log(`${shops[i]} 업데이트 완료`);
+        }
+      } else {
+        await executeUpdate(`UPDATE ps135
+                              SET    used = 'N'
+                              WHERE  shopcode = '${shopCode}'
+                              AND coupontype = '${couponType}'`);
+      }
     }
     const users = await getUsersCouponAuth();
     return res.send(users);
