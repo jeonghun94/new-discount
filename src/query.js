@@ -199,6 +199,10 @@ export const DISCOUNT_QUERY = {
                       FROM   ps132
                       WHERE  coupontype = @couponType) AS PayType,
                     (SELECT Count(*)
+                      FROM   ps134
+                      WHERE  inseqno = @inSeqNo
+                            AND coupontype = '01' ) AS FreeCount , 
+                    (SELECT Count(*)
                       FROM   ps500 a
                             LEFT OUTER JOIN ps134 b
                                           ON a.inseqno = b.inseqno
