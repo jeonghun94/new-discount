@@ -117,11 +117,10 @@ export const insertList = async (req, res) => {
     freeCnt,
     payCnt,
     dayLimitCnt,
-    freeCount,
+    inCouponCnt,
+    settingCouponCnt,
   } = result[0];
 
-  console.log(obj.couponType);
-  console.log(freeCount);
   if (parkingLotDayLimit === "Y") {
     if (dayLimitCnt >= parkingLotDayLimitCnt) {
       res.send({
@@ -132,10 +131,10 @@ export const insertList = async (req, res) => {
     }
   }
 
-  if (freeCount >= 2 && obj.couponType === "01") {
+  if (settingCouponCnt != null && inCouponCnt >= settingCouponCnt) {
     res.send({
       result: "fail",
-      msg: "이 할인권은 2번까지만 사용 가능합니다.\n추가 할인은 불가 합니다.",
+      msg: `이 할인권은 ${settingCouponCnt}번까지만 사용 가능합니다.\n추가 할인은 불가 합니다.`,
     });
     return;
   }

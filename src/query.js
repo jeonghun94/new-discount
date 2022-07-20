@@ -201,7 +201,11 @@ export const DISCOUNT_QUERY = {
                     (SELECT Count(*)
                       FROM   ps134
                       WHERE  inseqno = @inSeqNo
-                            AND coupontype = '01' ) AS FreeCount , 
+                            AND coupontype = @couponType ) AS inCouponCnt, 
+                    (SELECT cnt
+                      FROM   ps135
+                      WHERE  coupontype = @couponType
+                              AND shopcode = @shopCode  ) AS settingCouponCnt, 
                     (SELECT Count(*)
                       FROM   ps500 a
                             LEFT OUTER JOIN ps134 b
