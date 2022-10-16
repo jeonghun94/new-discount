@@ -424,8 +424,10 @@ async function insertList(inSeqNo, couponType, select) {
           discountList(data.list, inSeqNo);
 
           // 유료 할인권 잔여 수량 업데이트
-          select.remove();
-          couponList(data.payCouponList, "유료", data.payType);
+          if (couponType === "01") {
+            select.remove();
+            couponList(data.payCouponList, "유료", data.payType);
+          }
           alert("할인 등록 완료");
         }
         // 선택 초기화
@@ -452,7 +454,9 @@ function deleteList(idx, inSeqNo, dcName, couponType) {
         if (data.result === "success") {
           DISCOUNT_CONTAINER.innerHTML = "";
           discountList(data.list, inSeqNo);
-          deleteListUpdatStock(data.payCouponList, data.payType);
+          if (couponType === "01") {
+            deleteListUpdatStock(data.payCouponList, data.payType);
+          }
           alert("할인 삭제 완료");
         } else {
           alert(`할인 삭제 실패\n사유: ${data.msg}`);

@@ -211,6 +211,8 @@ export const insertList = async (req, res) => {
           })
         );
 
+  console.log("payCouponList", payCouponList);
+
   if (payCouponList.length === 0) {
     payCouponList =
       payType === "01"
@@ -229,6 +231,8 @@ export const insertList = async (req, res) => {
             })
           );
   }
+
+  console.log("payCouponList 아래", payCouponList);
 
   res.send({ result: "success", list: discountList, payCouponList, payType });
 };
